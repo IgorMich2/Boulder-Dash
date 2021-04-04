@@ -7,7 +7,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
 using System.Media;
-
+using System.Windows;
 
 
 namespace Boulder_Dash_Project
@@ -32,7 +32,7 @@ namespace Boulder_Dash_Project
         static string diamond = "@";
         static string sand = "*";
         static string empty = " ";
-
+        static public SoundPlayer player = new SoundPlayer();
         static void GetArrayFromFile(string fileName)
         {
             string[] lines = File.ReadAllLines(fileName);
@@ -50,6 +50,11 @@ namespace Boulder_Dash_Project
 
         static void Win()
         {
+            player.Stop();
+            player.SoundLocation = "win.wav";
+            player.Play();
+
+            Console.Clear();
             Console.WriteLine("Win!");
             Thread.Sleep(3000);
             gameStatus = false;
@@ -58,11 +63,12 @@ namespace Boulder_Dash_Project
 
         static void Loose()
         {
+            player.Stop();
+            Console.Clear();
             Console.WriteLine("Loose!");
             Thread.Sleep(3000);
             gameStatus = false;
             Console.ReadKey();
-
         }
 
         static void ThreadFunction()
@@ -75,16 +81,31 @@ namespace Boulder_Dash_Project
             }
         }
 
+        static void MusicFunction()
+        {
+            player.SoundLocation = "music.wav";
+            while (gameStatus == true)
+            {
+                player.Play();
+                Thread.Sleep(175000);
+            }
+            player.Stop();
+        }
+
         static void Main(string[] args)
         {
             GetArrayFromFile("game.txt");
             Thread thread = new Thread(ThreadFunction);
+            Thread music = new Thread(MusicFunction);
             thread.Start();
+            music.Start();
             thread.Priority = ThreadPriority.Normal;
+            music.Priority = ThreadPriority.Normal;
             Console.ForegroundColor = ConsoleColor.Cyan;
             Renderer();
-            Console.SetCursorPosition(20, 20);
+            Console.SetCursorPosition(24, 24);
             Console.Write("Score: " + score);
+            
             while (gameStatus == true)
             {
                 Console.SetCursorPosition(frame[1].Length, frame.Count);
@@ -140,8 +161,8 @@ namespace Boulder_Dash_Project
         static void AddScores()
         {
             score += 100;
-            if (score >= 500) Win();
-            Console.SetCursorPosition(20, 20);
+            if (score >= 3400) Win();
+            Console.SetCursorPosition(24, 24);
             Console.Write("Score: " + score);
         }
         static void GoUp(ref int i, ref int x, ref bool stat)
@@ -207,6 +228,7 @@ namespace Boulder_Dash_Project
         {
             if ((x - 1) <= (frame[i].Length - 1) && frame[i][x + 1] == sand || frame[i][x + 1] == empty)
             {
+
                 frame[i][x] = empty;
                 frame[i][x + 1] = hero;
                 Console.SetCursorPosition(x, i);
@@ -228,7 +250,6 @@ namespace Boulder_Dash_Project
                 Console.SetCursorPosition(x + 2, i);
                 Console.Write(rock);
                 stat = false;
-
             }
         }
         static void CollectUp(ref int i, ref int x)
