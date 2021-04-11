@@ -148,8 +148,8 @@ namespace Boulder_Dash_Project
 
                 Console.Clear();
                 Console.WriteLine("Win!");
-                Thread.Sleep(3000);
-                Console.WriteLine("Choose level: 1, 2 or 3:");
+                Thread.Sleep(5000);
+
 
                 gameField.gameStatus = false;
                 System.Environment.Exit(0);
