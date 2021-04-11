@@ -14,25 +14,117 @@ namespace Boulder_Dash_Project
 {
     class Program
     {
-        struct Field
+        class Field
+        {
+            public static List<string[]> frame = new List<string[]>();
+            public static bool gameStatus
+            {
+                get
+                {
+                    return gameStatus;
+                }
+                set
+                {
+                    gameStatus = value;
+                }
+            }
+            public static int score
+            {
+                get
+                {
+                    return score;
+                }
+                set
+                {
+                    score = value;
+                }
+            }
+
+            public static string hero
+            {
+                get
+                {
+                    return hero;
+                }
+                set
+                {
+                    hero = value;
+                }
+            }
+            public static string rock
+            {
+                get
+                {
+                    return rock;
+                }
+                set
+                {
+                    rock = value;
+                }
+            }
+            public static string diamond
+            {
+                get
+                {
+                    return diamond;
+                }
+                set
+                {
+                    diamond = value;
+                }
+            }
+            public static string sand
+            {
+                get
+                {
+                    return sand;
+                }
+                set
+                {
+                    sand = value;
+                }
+            }
+            public static string empty
+            {
+                get
+                {
+                    return empty;
+                }
+                set
+                {
+                    empty = value;
+                }
+            }
+            static public SoundPlayer player = new SoundPlayer();
+
+        }
+
+        class gameField : Field
+        {
+            public static List<string[]> frame = new List<string[]>();
+            public static bool gameStatus = true;
+
+            public static int score = 0;
+            public static string hero = "I";
+            public static string rock = "o";
+            public static string diamond = "@";
+            public static string sand = "*";
+            public static string empty = " ";
+            static public SoundPlayer player = new SoundPlayer();
+        }
+
+        struct Fieldel
         {
             public string value;
 
-            public Field(string Value)
+            public Fieldel(string Value)
             {
                 value = Value;
             }
         }
 
-        static List<string[]> frame = new List<string[]>();
-        static bool gameStatus = true;
-        static int score = 0;
-        static string hero = "I";
-        static string rock = "o";
-        static string diamond = "@";
-        static string sand = "*";
-        static string empty = " ";
-        static public SoundPlayer player = new SoundPlayer();
+        
+        
         static void GetArrayFromFile(string fileName)
         {
             string[] lines = File.ReadAllLines(fileName);
@@ -44,38 +136,38 @@ namespace Boulder_Dash_Project
                 string[] strline = new string[line.Length];
                 for (int k = 0; k < line.Length; k++)
                     strline[k] = Convert.ToString(line[k]);
-                frame.Add(strline);
+                Field.frame.Add(strline);
             }
         }
 
         static void Win()
         {
-            player.Stop();
-            player.SoundLocation = "win.wav";
-            player.Play();
+            Field.player.Stop();
+            Field.player.SoundLocation = "win.wav";
+            Field.player.Play();
 
             Console.Clear();
             Console.WriteLine("Win!");
             Thread.Sleep(3000);
-            gameStatus = false;
-            Console.ReadKey();
+            gameField.gameStatus = false;
+            System.Environment.Exit(0);
         }
 
         static void Loose()
         {
-            player.Stop();
+            Field.player.Stop();
             Console.Clear();
             Console.WriteLine("Loose!");
             Thread.Sleep(3000);
-            gameStatus = false;
-            Console.ReadKey();
+            gameField.gameStatus = false;
+            System.Environment.Exit(0);
         }
 
         static void ThreadFunction()
         {
-            while (gameStatus == true)
+            while (gameField.gameStatus == true)
             {
-                Console.SetCursorPosition(frame[1].Length, frame.Count);
+                Console.SetCursorPosition(Field.frame[1].Length, Field.frame.Count);
                 MoveRock();
                 Thread.Sleep(200);
             }
@@ -83,13 +175,13 @@ namespace Boulder_Dash_Project
 
         static void MusicFunction()
         {
-            player.SoundLocation = "music.wav";
-            while (gameStatus == true)
+            Field.player.SoundLocation = "music.wav";
+            while (gameField.gameStatus == true)
             {
-                player.Play();
+                Field.player.Play();
                 Thread.Sleep(175000);
             }
-            player.Stop();
+            Field.player.Stop();
         }
 
         static void Main(string[] args)
@@ -104,11 +196,11 @@ namespace Boulder_Dash_Project
             Console.ForegroundColor = ConsoleColor.Cyan;
             Renderer();
             Console.SetCursorPosition(24, 24);
-            Console.Write("Score: " + score);
+            Console.Write("Score: " + gameField.score);
             
-            while (gameStatus == true)
+            while (gameField.gameStatus == true)
             {
-                Console.SetCursorPosition(frame[1].Length, frame.Count);
+                Console.SetCursorPosition(Field.frame[1].Length, Field.frame.Count);
                 var keyInfo = Console.ReadKey();
                 MoveHero(keyInfo);
             }
@@ -116,9 +208,9 @@ namespace Boulder_Dash_Project
         static void Renderer()
         {
             Console.Clear();
-            for (int i = 0; i < frame.Count; i++)
+            for (int i = 0; i < Field.frame.Count; i++)
             {
-                Console.WriteLine(string.Join("", frame[i]));
+                Console.WriteLine(string.Join("", Field.frame[i]));
             }
 
         }
@@ -126,11 +218,11 @@ namespace Boulder_Dash_Project
         static void MoveHero(ConsoleKeyInfo keyInfo)
         {
             bool stat = true;
-            for (int i = frame.Count - 1; i >= 0; i--)
+            for (int i = Field.frame.Count - 1; i >= 0; i--)
             {
-                for (int x = 0; x < frame[i].Length; x++)
+                for (int x = 0; x < Field.frame[i].Length; x++)
                 {
-                    if (frame[i][x] == hero)
+                    if (Field.frame[i][x] == gameField.hero)
                     {
                         if (keyInfo.Key == ConsoleKey.W || keyInfo.Key == ConsoleKey.UpArrow)
                         {
@@ -160,35 +252,35 @@ namespace Boulder_Dash_Project
         }
         static void AddScores()
         {
-            score += 100;
-            if (score >= 3400) Win();
+            gameField.score += 100;
+            if (gameField.score >= 3400) Win();
             Console.SetCursorPosition(24, 24);
-            Console.Write("Score: " + score);
+            Console.Write("Score: " + gameField.score);
         }
         static void GoUp(ref int i, ref int x, ref bool stat)
         {
-            if ((i - 1) >= 0 && frame[i - 1][x] == sand || frame[i - 1][x] == empty)
+            if ((i - 1) >= 0 && Field.frame[i - 1][x] == gameField.sand || Field.frame[i - 1][x] == gameField.empty)
             {
-                frame[i][x] = empty;
-                frame[i - 1][x] = hero;
+                Field.frame[i][x] = gameField.empty;
+                Field.frame[i - 1][x] = gameField.hero;
                 Console.SetCursorPosition(x, i);
-                Console.Write(empty);
+                Console.Write(gameField.empty);
                 Console.SetCursorPosition(x, i - 1);
-                Console.Write(hero);
+                Console.Write(gameField.hero);
                 stat = false;
 
             }
         }
         static void GoDown(ref int i, ref int x, ref bool stat)
         {
-            if ((i + 1) <= (frame.Count - 1) && frame[i + 1][x] == sand || frame[i + 1][x] == empty)
+            if ((i + 1) <= (Field.frame.Count - 1) && Field.frame[i + 1][x] == gameField.sand || Field.frame[i + 1][x] == gameField.empty)
             {
-                frame[i][x] = empty;
-                frame[i + 1][x] = hero;
+                Field.frame[i][x] = gameField.empty;
+                Field.frame[i + 1][x] = gameField.hero;
                 Console.SetCursorPosition(x, i);
-                Console.Write(empty);
+                Console.Write(gameField.empty);
                 Console.SetCursorPosition(x, i + 1);
-                Console.Write(hero);
+                Console.Write(gameField.hero);
                 stat = false;
 
             }
@@ -196,140 +288,140 @@ namespace Boulder_Dash_Project
         static void GoLeft(ref int i, ref int x, ref bool stat)
         {
             
-            if((x - 1) >= 0 && frame[i][x - 1] == sand || frame[i][x - 1] == empty)
+            if((x - 1) >= 0 && Field.frame[i][x - 1] == gameField.sand || Field.frame[i][x - 1] == gameField.empty)
             {
-                frame[i][x] = empty;
-                frame[i][x - 1] = hero;
+                Field.frame[i][x] = gameField.empty;
+                Field.frame[i][x - 1] = gameField.hero;
                 Console.SetCursorPosition(x, i);
-                Console.Write(empty);
+                Console.Write(gameField.empty);
                 Console.SetCursorPosition(x - 1, i);
-                Console.Write(hero);
+                Console.Write(gameField.hero);
                 stat = false;
 
             }
-            else if((x - 2) >= 0 && frame[i][x - 2] == empty && frame[i][x - 1] == rock)
+            else if((x - 2) >= 0 && Field.frame[i][x - 2] == gameField.empty && Field.frame[i][x - 1] == gameField.rock)
             {
-                frame[i][x] = empty;
-                frame[i][x - 1] = hero;
-                frame[i][x - 2] = rock;
+                Field.frame[i][x] = gameField.empty;
+                Field.frame[i][x - 1] = gameField.hero;
+                Field.frame[i][x - 2] = gameField.rock;
                 Console.SetCursorPosition(x, i);
-                Console.Write(empty);
+                Console.Write(gameField.empty);
                 Console.SetCursorPosition(x, i - 1);
-                Console.Write(empty);
+                Console.Write(gameField.empty);
                 Console.SetCursorPosition(x - 1, i);
-                Console.Write(hero);
+                Console.Write(gameField.hero);
                 Console.SetCursorPosition(x - 2, i);
-                Console.Write(rock);
+                Console.Write(gameField.rock);
                 stat = false;
 
             }
         }
         static void GoRight(ref int i, ref int x, ref bool stat)
         {
-            if ((x - 1) <= (frame[i].Length - 1) && frame[i][x + 1] == sand || frame[i][x + 1] == empty)
+            if ((x - 1) <= (Field.frame[i].Length - 1) && Field.frame[i][x + 1] == gameField.sand || Field.frame[i][x + 1] == gameField.empty)
             {
 
-                frame[i][x] = empty;
-                frame[i][x + 1] = hero;
+                Field.frame[i][x] = gameField.empty;
+                Field.frame[i][x + 1] = gameField.hero;
                 Console.SetCursorPosition(x, i);
-                Console.Write(empty);
+                Console.Write(gameField.empty);
                 Console.SetCursorPosition(x + 1, i);
-                Console.Write(hero);
+                Console.Write(gameField.hero);
                 stat = false;
 
             }
-            else if ((x - 2) <= (frame[i].Length - 1) && frame[i][x + 1] == rock && frame[i][x + 2] == empty)
+            else if ((x - 2) <= (Field.frame[i].Length - 1) && Field.frame[i][x + 1] == gameField.rock && Field.frame[i][x + 2] == gameField.empty)
             {
-                frame[i][x] = empty;
-                frame[i][x + 1] = hero;
-                frame[i][x + 2] = rock;
+                Field.frame[i][x] = gameField.empty;
+                Field.frame[i][x + 1] = gameField.hero;
+                Field.frame[i][x + 2] = gameField.rock;
                 Console.SetCursorPosition(x, i);
-                Console.Write(empty);
+                Console.Write(gameField.empty);
                 Console.SetCursorPosition(x + 1, i);
-                Console.Write(hero);
+                Console.Write(gameField.hero);
                 Console.SetCursorPosition(x + 2, i);
-                Console.Write(rock);
+                Console.Write(gameField.rock);
                 stat = false;
             }
         }
         static void CollectUp(ref int i, ref int x)
         {
-            if ((i - 1) >= 0 && frame[i - 1][x] == diamond)
+            if ((i - 1) >= 0 && Field.frame[i - 1][x] == gameField.diamond)
             {
-                frame[i][x] = empty;
-                frame[i - 1][x] = hero;
+                Field.frame[i][x] = gameField.empty;
+                Field.frame[i - 1][x] = gameField.hero;
                 Console.SetCursorPosition(x, i);
-                Console.Write(empty);
+                Console.Write(gameField.empty);
                 Console.SetCursorPosition(x, i - 1);
-                Console.Write(hero);
+                Console.Write(gameField.hero);
                 AddScores();
             }
         }
         static void CollectDown(ref int i, ref int x)
         {
-            if ((i + 1) <= (frame.Count - 1) && frame[i + 1][x] == diamond)
+            if ((i + 1) <= (Field.frame.Count - 1) && Field.frame[i + 1][x] == gameField.diamond)
             {
-                frame[i][x] = empty;
-                frame[i + 1][x] = hero;
+                Field.frame[i][x] = gameField.empty;
+                Field.frame[i + 1][x] = gameField.hero;
                 Console.SetCursorPosition(x, i);
-                Console.Write(empty);
+                Console.Write(gameField.empty);
                 Console.SetCursorPosition(x, i + 1);
-                Console.Write(hero);
+                Console.Write(gameField.hero);
                 AddScores();
             }
         }
         static void CollectLeft(ref int i, ref int x)
         {
-            if ((x - 1) >= 0 && frame[i][x - 1] == diamond)
+            if ((x - 1) >= 0 && Field.frame[i][x - 1] == gameField.diamond)
             {
-                frame[i][x] = empty;
-                frame[i][x - 1] = hero;
+                Field.frame[i][x] = gameField.empty;
+                Field.frame[i][x - 1] = gameField.hero;
                 Console.SetCursorPosition(x, i);
-                Console.Write(empty);
+                Console.Write(gameField.empty);
                 Console.SetCursorPosition(x - 1, i);
-                Console.Write(hero);
+                Console.Write(gameField.hero);
                 AddScores();
             }
         }
         static void CollectRight(ref int i, ref int x)
         {
-            if ((x - 1) <= (frame[i].Length - 1) && frame[i][x + 1] == diamond)
+            if ((x - 1) <= (Field.frame[i].Length - 1) && Field.frame[i][x + 1] == gameField.diamond)
             {
-                frame[i][x] = empty;
-                frame[i][x + 1] = hero;
+                Field.frame[i][x] = gameField.empty;
+                Field.frame[i][x + 1] = gameField.hero;
                 Console.SetCursorPosition(x, i);
-                Console.Write(empty);
+                Console.Write(gameField.empty);
                 Console.SetCursorPosition(x + 1, i);
-                Console.Write(hero);
+                Console.Write(gameField.hero);
                 AddScores();
             }
         }
         static void MoveRock()
         {
-            for (int i = 0; i <= frame.Count - 1; i++)
+            for (int i = 0; i <= Field.frame.Count - 1; i++)
             {
-                for (int x = 0; x < frame[i].Length; x++)
+                for (int x = 0; x < Field.frame[i].Length; x++)
                 {
-                    if (frame[i][x] == rock)
+                    if (Field.frame[i][x] == gameField.rock)
                     {
-                        if (frame[i + 1][x] == hero)
+                        if (Field.frame[i + 1][x] == gameField.hero)
                         {
-                            frame[i][x] = empty;
-                            frame[i + 1][x] = rock;
+                            Field.frame[i][x] = gameField.empty;
+                            Field.frame[i + 1][x] = gameField.rock;
                             Console.SetCursorPosition(x, i);
-                            Console.Write(empty);
+                            Console.Write(gameField.empty);
                             Console.SetCursorPosition(x, i + 1);
-                            Console.Write(rock);
+                            Console.Write(gameField.rock);
                             Loose();
                         }
-                        if (frame[i + 1][x] == empty)
+                        if (Field.frame[i + 1][x] == gameField.empty)
                         {
-                            frame[i][x] = empty;
-                            frame[i + 1][x] = rock;
+                            Field.frame[i][x] = gameField.empty;
+                            Field.frame[i + 1][x] = gameField.rock;
                             Console.SetCursorPosition(x, i);
-                            Console.Write(empty);
+                            Console.Write(gameField.empty);
                             Console.SetCursorPosition(x, i + 1);
-                            Console.Write(rock);
+                            Console.Write(gameField.rock);
                             return;
                         }
                     }
