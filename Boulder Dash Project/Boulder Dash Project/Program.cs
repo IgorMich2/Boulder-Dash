@@ -128,46 +128,38 @@ namespace Boulder_Dash_Project
 
             public static void MusicFunction()
             {
-                int i = rnd.Next() % 4;
-                if (i == 0)
+                int i;
+                while (true)
                 {
-                    Field.player.SoundLocation = "music.wav";
-                    while (gameField.gameStatus == true)
+                    i = rnd.Next() % 4;
+                    if (i == 0)
                     {
+                        Field.player.SoundLocation = "music.wav";
                         Field.player.Play();
                         Thread.Sleep(175000);
+                        Field.player.Stop();
                     }
-                    Field.player.Stop();
-                }
-                else if (i==1)
-                {
-                    Field.player.SoundLocation = "music2.wav";
-                    while (gameField.gameStatus == true)
+                    else if (i == 1)
                     {
+                        Field.player.SoundLocation = "music2.wav";
                         Field.player.Play();
                         Thread.Sleep(101000);
+                        Field.player.Stop();
                     }
-                    Field.player.Stop();
-                }
-                else if (i == 2)
-                {
-                    Field.player.SoundLocation = "music3.wav";
-                    while (gameField.gameStatus == true)
+                    else if (i == 2)
                     {
+                        Field.player.SoundLocation = "music3.wav";
                         Field.player.Play();
                         Thread.Sleep(308000);
+                        Field.player.Stop();
                     }
-                    Field.player.Stop();
-                }
-                else if (i == 3)
-                {
-                    Field.player.SoundLocation = "music4.wav";
-                    while (gameField.gameStatus == true)
+                    else if (i == 3)
                     {
+                        Field.player.SoundLocation = "music4.wav";
                         Field.player.Play();
                         Thread.Sleep(193000);
+                        Field.player.Stop();
                     }
-                    Field.player.Stop();
                 }
             }
 
@@ -253,7 +245,7 @@ namespace Boulder_Dash_Project
                 {
                     Console.WriteLine(string.Join("", Field.frame[i]));
                 }
-                Console.WriteLine(BFS_res);
+                //Console.WriteLine(BFS_res);
             }
 
             public static void MoveHero(ConsoleKeyInfo keyInfo)
@@ -587,6 +579,60 @@ namespace Boulder_Dash_Project
                 while (BFS_res == false);
                 
             }
+            public static void Random2()
+            {
+                do
+                {
+                    gameField.maxpoint = 0;
+                    int temp, bs=0, bd=0, br=0;
+                    string prev = sand;
+                    for (int i = 1; i < Field.frame.Count - 1; i++)
+                    {
+                        for (int x = 1; x < Field.frame[i].Length - 1; x++)
+                        {
+                            temp = rnd.Next() % 100;
+                            if (prev == sand)
+                            {
+                                bs = 10;
+                                bd = 0;
+                                br = 0;
+                            }
+                            else if (prev == diamond)
+                            {
+                                bs = 0;
+                                bd = 10;
+                                br = 0;
+                            }
+                            else if (prev == rock)
+                            {
+                                bs = 0;
+                                bd = 0;
+                                br = 10;
+                            }
+                            if (temp < (70 + bs - bd - br))
+                            {
+                                Field.frame[i][x] = gameField.sand;
+                                prev = sand;
+                            }
+                            else if (temp < 80 + bs + bd - br)
+                            {
+                                Field.frame[i][x] = gameField.diamond;
+                                maxpoint += 100;
+                                prev = diamond;
+                            }
+                            else if (temp < 100 + bs + bd + br)
+                            {
+                                Field.frame[i][x] = gameField.rock;
+                                prev = rock;
+                            }
+                        }
+                    }
+                    Field.frame[1][1] = gameField.hero;
+                    BFS_res = BFS(1, 1);
+                }
+                while (BFS_res == false);
+
+            }
             public static void MoveRock2()
             {
                 for (int i = 0; i <= Field.frame.Count - 1; i++)
@@ -648,7 +694,8 @@ namespace Boulder_Dash_Project
             
             thread.Priority = ThreadPriority.Normal;
 
-                int x = 0;
+            Console.ForegroundColor = ConsoleColor.Cyan;
+            int x = 0;
                 Console.WriteLine("____________________________________");
                 Console.WriteLine("|Boulder Dash Game by Ihor Michurin|");
                 Console.WriteLine("____________________________________");
@@ -677,14 +724,14 @@ namespace Boulder_Dash_Project
                 else if (i == 4)
                 {
                     gameField.GetArrayFromFile("4.txt");
-                    gameField.Random();
+                    gameField.Random2();
                 }
 
 
                 
                 thread.Start();
 
-
+            
                 Console.ForegroundColor = ConsoleColor.Cyan;
                 gameField.Renderer();
                 Console.SetCursorPosition(24, 24);
