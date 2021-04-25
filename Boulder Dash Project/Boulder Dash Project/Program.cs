@@ -259,8 +259,19 @@ namespace Boulder_Dash_Project
                         {
                             if (keyInfo.Key == ConsoleKey.W || keyInfo.Key == ConsoleKey.UpArrow)
                             {
-                                if (stat) GoUp(ref i, ref x, ref stat);
-                                CollectUp(ref i, ref x);
+                                if (stat)
+                                {
+                                    if ((i - 1) >= 0 && Field.frame[i - 1][x] == gameField.diamond)
+                                    {
+                                        CollectUp(ref i, ref x);
+                                        stat = false;
+                                    }
+                                    else
+                                    {
+                                        GoUp(ref i, ref x, ref stat);
+                                    }
+                                }
+                                
                             }
                             if (keyInfo.Key == ConsoleKey.S || keyInfo.Key == ConsoleKey.DownArrow)
                             {
