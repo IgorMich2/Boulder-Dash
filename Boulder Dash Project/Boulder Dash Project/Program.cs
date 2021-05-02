@@ -3,15 +3,22 @@ using System.Collections.Generic;
 using System.Threading;
 using System.IO;
 using System.Media;
+using NAudio.Wave;
 
 
 
 namespace Boulder_Dash_Project
 {
+
     class Program
     {
+
+
+
+
         class Field
         {
+
             public static List<string[]> frame = new List<string[]>();
             public static bool gameStatus
             {
@@ -126,40 +133,413 @@ namespace Boulder_Dash_Project
             public static List<int> BFS_x = new List<int>();
             public static List<int> BFS_y = new List<int>();
 
+
             public static void MusicFunction()
             {
-                int i;
-                while (true)
-                {
-                    i = rnd.Next() % 4;
-                    if (i == 0)
+                
+                int i, time;
+                TimeSpan totalTime;
+                    while (true)
                     {
-                        Field.player.SoundLocation = "music.wav";
-                        Field.player.Play();
-                        Thread.Sleep(175000);
-                        Field.player.Stop();
-                    }
-                    else if (i == 1)
-                    {
-                        Field.player.SoundLocation = "music2.wav";
-                        Field.player.Play();
-                        Thread.Sleep(101000);
-                        Field.player.Stop();
-                    }
-                    else if (i == 2)
-                    {
-                        Field.player.SoundLocation = "music3.wav";
-                        Field.player.Play();
-                        Thread.Sleep(308000);
-                        Field.player.Stop();
-                    }
-                    else if (i == 3)
-                    {
-                        Field.player.SoundLocation = "music4.wav";
-                        Field.player.Play();
-                        Thread.Sleep(193000);
-                        Field.player.Stop();
-                    }
+                        i = rnd.Next() % 15 + 1;
+                        var reader = new Mp3FileReader("music1.mp3");
+                        var waveOut = new WaveOut();
+                        switch (i)
+                        {
+                            case 1:
+                                reader = new Mp3FileReader("music1.mp3");
+                                totalTime = reader.TotalTime;
+                                waveOut.Init(reader);
+                                waveOut.Play();
+                                time = totalTime.Minutes * 60 + totalTime.Seconds;
+                                while (time > 0)
+                                {
+                                    var key = Console.ReadKey();
+                                    if (key.Key == ConsoleKey.N)
+                                    {
+                                        break;
+                                    }
+                                    else if (key.Key == ConsoleKey.R)
+                                    {
+                                    waveOut.Volume = Convert.ToSingle(Math.Min(waveOut.Volume + Convert.ToSingle(0.1), 1.0));
+                                    }
+                                    else if (key.Key == ConsoleKey.F)
+                                    {
+                                    waveOut.Volume = Convert.ToSingle(Math.Max(waveOut.Volume - Convert.ToSingle(0.1), 0));
+                                    }
+                                    time = time - 2;
+                                    Thread.Sleep(2000);
+                                }
+                                waveOut.Stop();
+                                break;
+                            case 2:
+                                reader = new Mp3FileReader("music2.mp3");
+                                totalTime = reader.TotalTime;
+                                waveOut.Init(reader);
+                                waveOut.Play();
+                                time = totalTime.Minutes * 60 + totalTime.Seconds;
+                                while (time > 0)
+                                {
+                                    var key = Console.ReadKey();
+                                    if (key.Key == ConsoleKey.N)
+                                    {
+                                        break;
+                                    }
+                                    else if (key.Key == ConsoleKey.R)
+                                    {
+                                    waveOut.Volume = Convert.ToSingle(Math.Min(waveOut.Volume + Convert.ToSingle(0.1), 1.0));
+                                    }
+                                    else if (key.Key == ConsoleKey.F)
+                                    {
+                                    waveOut.Volume = Convert.ToSingle(Math.Max(waveOut.Volume - Convert.ToSingle(0.1), 0));
+                                    }
+                                time = time - 2;
+                                    Thread.Sleep(2000);
+                                }
+                                waveOut.Stop();
+                                break;
+                            case 3:
+                                reader = new Mp3FileReader("music3.mp3");
+                                totalTime = reader.TotalTime;
+                                waveOut.Init(reader);
+                                waveOut.Play();
+                                time = totalTime.Minutes * 60 + totalTime.Seconds;
+                                while (time > 0)
+                                {
+                                    var key = Console.ReadKey();
+                                    if (key.Key == ConsoleKey.N)
+                                    {
+                                        break;
+                                    }
+                                    else if (key.Key == ConsoleKey.R)
+                                    {
+                                    waveOut.Volume = Convert.ToSingle(Math.Min(waveOut.Volume + Convert.ToSingle(0.1), 1.0));
+                                    }
+                                    else if (key.Key == ConsoleKey.F)
+                                    {
+                                    waveOut.Volume = Convert.ToSingle(Math.Max(waveOut.Volume - Convert.ToSingle(0.1), 0));
+                                    }
+                                    time = time - 2;
+                                    Thread.Sleep(2000);
+                                }
+                                waveOut.Stop();
+                                break;
+                            case 4:
+                                reader = new Mp3FileReader("music4.mp3");
+                                totalTime = reader.TotalTime;
+                                waveOut.Init(reader);
+                                waveOut.Play();
+                                time = totalTime.Minutes * 60 + totalTime.Seconds;
+                                while (time > 0)
+                                {
+                                    var key = Console.ReadKey();
+                                    if (key.Key == ConsoleKey.N)
+                                    {
+                                        break;
+                                    }
+                                    else if (key.Key == ConsoleKey.R)
+                                    {
+                                    waveOut.Volume = Convert.ToSingle(Math.Min(waveOut.Volume + Convert.ToSingle(0.1), 1.0));
+                                    }
+                                    else if (key.Key == ConsoleKey.F)
+                                    {
+                                    waveOut.Volume = Convert.ToSingle(Math.Max(waveOut.Volume - Convert.ToSingle(0.1), 0));
+                                    }
+                                    time = time - 2;
+                                    Thread.Sleep(2000);
+                                }
+                                waveOut.Stop();
+                                break;
+                            case 5:
+                                reader = new Mp3FileReader("music5.mp3");
+                                totalTime = reader.TotalTime;
+                                waveOut.Init(reader);
+                                waveOut.Play();
+                                time = totalTime.Minutes * 60 + totalTime.Seconds;
+                                while (time > 0)
+                                {
+                                    var key = Console.ReadKey();
+                                    if (key.Key == ConsoleKey.N)
+                                    {
+                                        break;
+                                    }
+                                    else if (key.Key == ConsoleKey.R)
+                                    {
+                                    waveOut.Volume = Convert.ToSingle(Math.Min(waveOut.Volume + Convert.ToSingle(0.1), 1.0));
+                                    }
+                                    else if (key.Key == ConsoleKey.F)
+                                    {
+                                    waveOut.Volume = Convert.ToSingle(Math.Max(waveOut.Volume - Convert.ToSingle(0.1), 0));
+                                    }
+                                    time = time - 2;
+                                    Thread.Sleep(2000);
+                                }
+                                waveOut.Stop();
+                                break;
+                            case 6:
+                                reader = new Mp3FileReader("music6.mp3");
+                                totalTime = reader.TotalTime;
+                                waveOut.Init(reader);
+                                waveOut.Play();
+                                time = totalTime.Minutes * 60 + totalTime.Seconds;
+                                while (time > 0)
+                                {
+                                    var key = Console.ReadKey();
+                                    if (key.Key == ConsoleKey.N)
+                                    {
+                                        break;
+                                    }
+                                    else if (key.Key == ConsoleKey.R)
+                                    {
+                                    waveOut.Volume = Convert.ToSingle(Math.Min(waveOut.Volume + Convert.ToSingle(0.1), 1.0));
+                                    }
+                                    else if (key.Key == ConsoleKey.F)
+                                    {
+                                    waveOut.Volume = Convert.ToSingle(Math.Max(waveOut.Volume - Convert.ToSingle(0.1), 0));
+                                    }
+                                    time = time - 2;
+                                    Thread.Sleep(2000);
+                                }
+                                waveOut.Stop();
+                                break;
+                            case 7:
+                                reader = new Mp3FileReader("music7.mp3");
+                                totalTime = reader.TotalTime;
+                                waveOut.Init(reader);
+                                waveOut.Play();
+                                time = totalTime.Minutes * 60 + totalTime.Seconds;
+                                while (time > 0)
+                                {
+                                    var key = Console.ReadKey();
+                                    if (key.Key == ConsoleKey.N)
+                                    {
+                                        break;
+                                    }
+                                    else if (key.Key == ConsoleKey.R)
+                                    {
+                                    waveOut.Volume = Convert.ToSingle(Math.Min(waveOut.Volume + Convert.ToSingle(0.1), 1.0));
+                                    }
+                                    else if (key.Key == ConsoleKey.F)
+                                    {
+                                    waveOut.Volume = Convert.ToSingle(Math.Max(waveOut.Volume - Convert.ToSingle(0.1), 0));
+                                    }
+                                    time = time - 2;
+                                    Thread.Sleep(2000);
+                                }
+                                waveOut.Stop();
+                                break;
+                            case 8:
+                                reader = new Mp3FileReader("music8.mp3");
+                                totalTime = reader.TotalTime;
+                                waveOut.Init(reader);
+                                waveOut.Play();
+                                time = totalTime.Minutes * 60 + totalTime.Seconds;
+                                while (time > 0)
+                                {
+                                    var key = Console.ReadKey();
+                                    if (key.Key == ConsoleKey.N)
+                                    {
+                                        break;
+                                    }
+                                    else if (key.Key == ConsoleKey.R)
+                                    {
+                                    waveOut.Volume = Convert.ToSingle(Math.Min(waveOut.Volume + Convert.ToSingle(0.1), 1.0));
+                                    }
+                                    else if (key.Key == ConsoleKey.F)
+                                    {
+                                    waveOut.Volume = Convert.ToSingle(Math.Max(waveOut.Volume - Convert.ToSingle(0.1), 0));
+                                    }
+                                    time = time - 2;
+                                    Thread.Sleep(2000);
+                                }
+                                waveOut.Stop();
+                                break;
+                            case 9:
+                                reader = new Mp3FileReader("music9.mp3");
+                                totalTime = reader.TotalTime;
+                                waveOut.Init(reader);
+                                waveOut.Play();
+                                time = totalTime.Minutes * 60 + totalTime.Seconds;
+                                while (time > 0)
+                                {
+                                    var key = Console.ReadKey();
+                                    if (key.Key == ConsoleKey.N)
+                                    {
+                                        break;
+                                    }
+                                    else if (key.Key == ConsoleKey.R)
+                                    {
+                                    waveOut.Volume = Convert.ToSingle(Math.Min(waveOut.Volume + Convert.ToSingle(0.1), 1.0));
+                                    }
+                                    else if (key.Key == ConsoleKey.F)
+                                    {
+                                    waveOut.Volume = Convert.ToSingle(Math.Max(waveOut.Volume - Convert.ToSingle(0.1), 0));
+                                    }
+                                    time = time - 2;
+                                    Thread.Sleep(2000);
+                                }
+                                waveOut.Stop();
+                                break;
+                            case 10:
+                                reader = new Mp3FileReader("music10.mp3");
+                                totalTime = reader.TotalTime;
+                                waveOut.Init(reader);
+                                waveOut.Play();
+                                time = totalTime.Minutes * 60 + totalTime.Seconds;
+                                while (time > 0)
+                                {
+                                    var key = Console.ReadKey();
+                                    if (key.Key == ConsoleKey.N)
+                                    {
+                                        break;
+                                    }
+                                    else if (key.Key == ConsoleKey.R)
+                                    {
+                                    waveOut.Volume = Convert.ToSingle(Math.Min(waveOut.Volume + Convert.ToSingle(0.1), 1.0));
+                                    }
+                                    else if (key.Key == ConsoleKey.F)
+                                    {
+                                    waveOut.Volume = Convert.ToSingle(Math.Max(waveOut.Volume - Convert.ToSingle(0.1), 0));
+                                    }
+                                    time = time - 2;
+                                    Thread.Sleep(2000);
+                                }
+                                waveOut.Stop();
+                                break;
+                            case 11:
+                                reader = new Mp3FileReader("music11.mp3");
+                                totalTime = reader.TotalTime;
+                                waveOut.Init(reader);
+                                waveOut.Play();
+                                time = totalTime.Minutes * 60 + totalTime.Seconds;
+                                while (time > 0)
+                                {
+                                    var key = Console.ReadKey();
+                                    if (key.Key == ConsoleKey.N)
+                                    {
+                                        break;
+                                    }
+                                    else if (key.Key == ConsoleKey.R)
+                                    {
+                                    waveOut.Volume = Convert.ToSingle(Math.Min(waveOut.Volume + Convert.ToSingle(0.1), 1.0));
+                                    }
+                                    else if (key.Key == ConsoleKey.F)
+                                    {
+                                    waveOut.Volume = Convert.ToSingle(Math.Max(waveOut.Volume - Convert.ToSingle(0.1), 0));
+                                    }
+                                    time = time - 2;
+                                    Thread.Sleep(2000);
+                                }
+                                waveOut.Stop();
+                                break;
+                            case 12:
+                                reader = new Mp3FileReader("music12.mp3");
+                                totalTime = reader.TotalTime;
+                                waveOut.Init(reader);
+                                waveOut.Play();
+                                time = totalTime.Minutes * 60 + totalTime.Seconds;
+                                while (time > 0)
+                                {
+                                    var key = Console.ReadKey();
+                                    if (key.Key == ConsoleKey.N)
+                                    {
+                                        break;
+                                    }
+                                    else if (key.Key == ConsoleKey.R)
+                                    {
+                                    waveOut.Volume = Convert.ToSingle(Math.Min(waveOut.Volume + Convert.ToSingle(0.1), 1.0));
+                                    }
+                                    else if (key.Key == ConsoleKey.F)
+                                    {
+                                    waveOut.Volume = Convert.ToSingle(Math.Max(waveOut.Volume - Convert.ToSingle(0.1), 0));
+                                    }
+                                    time = time - 2;
+                                    Thread.Sleep(2000);
+                                }
+                                waveOut.Stop();
+                                break;
+                            case 13:
+                                reader = new Mp3FileReader("music13.mp3");
+                                totalTime = reader.TotalTime;
+                                waveOut.Init(reader);
+                                waveOut.Play();
+                                time = totalTime.Minutes * 60 + totalTime.Seconds;
+                                while (time > 0)
+                                {
+                                    var key = Console.ReadKey();
+                                    if (key.Key == ConsoleKey.N)
+                                    {
+                                        break;
+                                    }
+                                    else if (key.Key == ConsoleKey.R)
+                                    {
+                                    waveOut.Volume = Convert.ToSingle(Math.Min(waveOut.Volume + Convert.ToSingle(0.1), 1.0));
+                                    }
+                                    else if (key.Key == ConsoleKey.F)
+                                    {
+                                    waveOut.Volume = Convert.ToSingle(Math.Max(waveOut.Volume - Convert.ToSingle(0.1), 0));
+                                    }
+                                    time = time - 2;
+                                    Thread.Sleep(2000);
+                                }
+                                waveOut.Stop();
+                                break;
+                            case 14:
+                                reader = new Mp3FileReader("music14.mp3");
+                                totalTime = reader.TotalTime;
+                                waveOut.Init(reader);
+                                waveOut.Play();
+                                time = totalTime.Minutes * 60 + totalTime.Seconds;
+                                while (time > 0)
+                                {
+                                    var key = Console.ReadKey();
+                                    if (key.Key == ConsoleKey.N)
+                                    {
+                                        break;
+                                    }
+                                    else if (key.Key == ConsoleKey.R)
+                                    {
+                                    waveOut.Volume = Convert.ToSingle(Math.Min(waveOut.Volume + Convert.ToSingle(0.1), 1.0));
+                                    }
+                                    else if (key.Key == ConsoleKey.F)
+                                    {
+                                    waveOut.Volume = Convert.ToSingle(Math.Max(waveOut.Volume - Convert.ToSingle(0.1), 0));
+                                    }
+                                    time = time - 2;
+                                    Thread.Sleep(2000);
+                                }
+                                waveOut.Stop();
+                                break;
+                            case 15:
+                                reader = new Mp3FileReader("music15.mp3");
+                                totalTime = reader.TotalTime;
+                                waveOut.Init(reader);
+                                waveOut.Play();
+                                time = totalTime.Minutes * 60 + totalTime.Seconds;
+                                while (time > 0)
+                                {
+                                    var key = Console.ReadKey();
+                                    if (key.Key == ConsoleKey.N)
+                                    {
+                                        break;
+                                    }
+                                    else if (key.Key == ConsoleKey.R)
+                                    {
+                                    waveOut.Volume = Convert.ToSingle(Math.Min(waveOut.Volume + Convert.ToSingle(0.1), 1.0));
+                                    }
+                                    else if (key.Key == ConsoleKey.F)
+                                    {
+                                    waveOut.Volume = Convert.ToSingle(Math.Max(waveOut.Volume - Convert.ToSingle(0.1), 0));
+                                    }
+                                    time = time - 2;
+                                    Thread.Sleep(2000);
+                                }
+                                waveOut.Stop();
+                                break;
+                        }
+
+                    
+                    
                 }
             }
 
@@ -222,21 +602,27 @@ namespace Boulder_Dash_Project
 
             public static void ThreadFunction()
             {
-                while (gameField.gameStatus == true)
-                {
-                    Console.SetCursorPosition(Field.frame[1].Length, Field.frame.Count);
-                    if (CountRock() == 1)
+                
+                
+                    while (gameField.gameStatus == true)
                     {
-                        MoveRock1();
+                        Console.SetCursorPosition(Field.frame[1].Length, Field.frame.Count);
+                        if (CountRock() == 1)
+                        {
+                            MoveRock1();
+                            
+                        }
+                        else if (CountRock() > 1)
+                        {
+                            
+                                MoveRock1();
+                                for (int i = 0; i < 5; i++)
+                                    MoveRock2();
+                            
+                        }
+                        Thread.Sleep(200);
                     }
-                    else
-                    {
-                        MoveRock1();
-                        for (int i = 0; i < 5; i++)
-                            MoveRock2();
-                    }
-                    Thread.Sleep(200);
-                }
+                
             }
             public static void Renderer()
             {
@@ -251,52 +637,55 @@ namespace Boulder_Dash_Project
             public static void MoveHero(ConsoleKeyInfo keyInfo)
             {
                 bool stat = true;
-                for (int i = Field.frame.Count - 1; i >= 0; i--)
-                {
-                    for (int x = 0; x < Field.frame[i].Length; x++)
+                
+                
+                    for (int i = Field.frame.Count - 1; i >= 0; i--)
                     {
-                        if (Field.frame[i][x] == gameField.hero)
+                        for (int x = 0; x < Field.frame[i].Length; x++)
                         {
-                            if (keyInfo.Key == ConsoleKey.W || keyInfo.Key == ConsoleKey.UpArrow)
+                            if (Field.frame[i][x] == gameField.hero)
                             {
-                                if (stat)
+                                if (keyInfo.Key == ConsoleKey.W || keyInfo.Key == ConsoleKey.UpArrow)
                                 {
-                                    if ((i - 1) >= 0 && Field.frame[i - 1][x] == gameField.diamond)
+                                    if (stat)
                                     {
-                                        CollectUp(ref i, ref x);
-                                        stat = false;
+                                        if ((i - 1) >= 0 && Field.frame[i - 1][x] == gameField.diamond)
+                                        {
+                                            CollectUp(ref i, ref x);
+                                            stat = false;
+                                        }
+                                        else
+                                        {
+                                            GoUp(ref i, ref x, ref stat);
+                                        }
                                     }
-                                    else
-                                    {
-                                        GoUp(ref i, ref x, ref stat);
-                                    }
-                                }
-                                
-                            }
-                            if (keyInfo.Key == ConsoleKey.S || keyInfo.Key == ConsoleKey.DownArrow)
-                            {
-                                if (stat) GoDown(ref i, ref x, ref stat);
-                                CollectDown(ref i, ref x);
-                            }
-                            if (keyInfo.Key == ConsoleKey.A || keyInfo.Key == ConsoleKey.LeftArrow)
-                            {
-                                if (stat) GoLeft(ref i, ref x, ref stat);
-                                CollectLeft(ref i, ref x);
-                            }
-                            if (keyInfo.Key == ConsoleKey.D || keyInfo.Key == ConsoleKey.RightArrow)
-                            {
-                                if (stat) GoRight(ref i, ref x, ref stat);
-                                CollectRight(ref i, ref x);
-                            }
-                            if (keyInfo.Key == ConsoleKey.F)
-                            {
-                                if (stat) GoDig(ref i, ref x, ref stat);
-                            }
-                            break;
-                        }
 
+                                }
+                                if (keyInfo.Key == ConsoleKey.S || keyInfo.Key == ConsoleKey.DownArrow)
+                                {
+                                    if (stat) GoDown(ref i, ref x, ref stat);
+                                    CollectDown(ref i, ref x);
+                                }
+                                if (keyInfo.Key == ConsoleKey.A || keyInfo.Key == ConsoleKey.LeftArrow)
+                                {
+                                    if (stat) GoLeft(ref i, ref x, ref stat);
+                                    CollectLeft(ref i, ref x);
+                                }
+                                if (keyInfo.Key == ConsoleKey.D || keyInfo.Key == ConsoleKey.RightArrow)
+                                {
+                                    if (stat) GoRight(ref i, ref x, ref stat);
+                                    CollectRight(ref i, ref x);
+                                }
+                                if (keyInfo.Key == ConsoleKey.E)
+                                {
+                                    if (stat) GoDig(ref i, ref x, ref stat);
+                                }
+                                break;
+                            }
+
+                        }
                     }
-                }
+                
             }
             public static void AddScores()
             {
@@ -592,11 +981,16 @@ namespace Boulder_Dash_Project
             }
             public static void Random2()
             {
+                int temp, bs = 0, bd = 0, br = 0;
+                string prev = sand;
                 do
                 {
+                    BFS_x.Clear();
+                    BFS_y.Clear();
+
                     gameField.maxpoint = 0;
-                    int temp, bs=0, bd=0, br=0;
-                    string prev = sand;
+                    bs = 0; bd = 0; br=0;
+                    prev = sand;
                     for (int i = 1; i < Field.frame.Count - 1; i++)
                     {
                         for (int x = 1; x < Field.frame[i].Length - 1; x++)
@@ -740,6 +1134,7 @@ namespace Boulder_Dash_Project
 
 
                 
+
                 thread.Start();
 
             
@@ -751,13 +1146,13 @@ namespace Boulder_Dash_Project
                 Console.Write("Lives: " + gameField.lives);
                 while (gameField.gameStatus == true)
                 {
+                
+                
                     Console.SetCursorPosition(Field.frame[1].Length, Field.frame.Count);
                     var keyInfo = Console.ReadKey();
                     gameField.MoveHero(keyInfo);
-                }
-
                 
-            
+                }
         }
       
     }
