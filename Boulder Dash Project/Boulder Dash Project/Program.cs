@@ -10,49 +10,16 @@ namespace Boulder_Dash_Project
 {
     class Program
     {
-        class Field
-        {
-            public static List<string[]> frame = new List<string[]>();
-            
-            public static int score
-            {
-                get
-                {
-                    return score;
-                }
-                set
-                {
-                    score = value;
-                }
-            }
-
-            public static int lives
-            {
-                get
-                {
-                    return lives;
-                }
-                set
-                {
-                    lives = value;
-                }
-            }
-            static public SoundPlayer player = new SoundPlayer();
-
-        }
-
 
         class gameField : Field
         {
-            public static List<string[]> frame = new List<string[]>();
-            
             public static Random rnd = new Random();
             public static int score = 0;
             public static int maxpoint = 0;
             public static int lives = 500;
             public static bool BFS_res = false;
             public static int BFS_score;
-            static public SoundPlayer player = new SoundPlayer();
+            
             public static List<int> BFS_x = new List<int>();
             public static List<int> BFS_y = new List<int>();
             public static List<int> BFS_x_help = new List<int>();
@@ -60,9 +27,6 @@ namespace Boulder_Dash_Project
             public static bool Deadlock = false;
             public static int x;
             public static int y;
-            public static int distance;
-
-
             
 
             public static void Win()
@@ -76,7 +40,6 @@ namespace Boulder_Dash_Project
                 Thread.Sleep(5000);
                 Field.player.Stop();
                 gameField.score = gameField.maxpoint;
-
                 Console.Clear();
                 
             }
@@ -107,27 +70,10 @@ namespace Boulder_Dash_Project
                         strline[k] = Convert.ToString(line[k]);
                     Field.frame.Add(strline);
                 }
-            }
-            
-            public static void GetResFromFile(string fileName)
-            {
-                string[] lines = File.ReadAllLines(fileName);
-                int rowCount = lines.Length;
-
-                for (int i = 0; i < rowCount - 1; i++)
-                {
-                    char[] line = lines[i + 1].ToCharArray();
-                    string[] strline = new string[line.Length];
-                    for (int k = 0; k < line.Length; k++)
-                        strline[k] = Convert.ToString(line[k]);
-                    Console.WriteLine(strline);
-                }
-            }
+            }       
 
             public static void ThreadFunction()
             {
-                
-                
                     while (true)
                     {
                         Console.SetCursorPosition(Field.frame[1].Length, Field.frame.Count);
@@ -155,7 +101,6 @@ namespace Boulder_Dash_Project
                 {
                     Console.WriteLine(string.Join("", Field.frame[i]));
                 }
-                //Console.WriteLine(BFS_res);
             }
 
             public static void MoveHero(ConsoleKeyInfo keyInfo)
@@ -699,17 +644,6 @@ namespace Boulder_Dash_Project
             }
 
         }
-
-        struct Fieldel
-        {
-            public string value;
-
-            public Fieldel(string Value)
-            {
-                value = Value;
-            }
-        }
-
 
         static void Main(string[] args)
         {
