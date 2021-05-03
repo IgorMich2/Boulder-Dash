@@ -9,13 +9,8 @@ using NAudio.Wave;
 
 namespace Boulder_Dash_Project
 {
-
     class Program
     {
-
-
-
-
         class Field
         {
 
@@ -132,6 +127,12 @@ namespace Boulder_Dash_Project
             static public SoundPlayer player = new SoundPlayer();
             public static List<int> BFS_x = new List<int>();
             public static List<int> BFS_y = new List<int>();
+            public static List<int> BFS_x_help = new List<int>();
+            public static List<int> BFS_y_help = new List<int>();
+            public static bool Deadlock = false;
+            public static int x;
+            public static int y;
+            public static int distance;
 
 
             public static void MusicFunction()
@@ -753,29 +754,31 @@ namespace Boulder_Dash_Project
 
             public static void Win()
             {
-                Field.player.Stop();
+                
                 Field.player.SoundLocation = "win.wav";
                 Field.player.Play();
 
                 Console.Clear();
                 Console.WriteLine("Win!");
                 Thread.Sleep(5000);
+                Field.player.Stop();
+                gameField.score = gameField.maxpoint;
 
-
-                gameField.gameStatus = false;
-                System.Environment.Exit(0);
-
+                Console.Clear();
+                
             }
 
-            public static void Loose()
+            public static void Defeat()
             {
-                Field.player.Stop();
                 Console.Clear();
-                Console.WriteLine("Loose!");
+                Field.player.Stop();
+                Field.player.SoundLocation = "loose.wav";
+                Field.player.Play();
+                
+                Console.WriteLine("Defeat!");
                 Thread.Sleep(3000);
-
-                gameField.gameStatus = false;
-                System.Environment.Exit(0);
+                Field.player.Stop();
+                gameField.score = gameField.maxpoint;
             }
 
             public static void GetArrayFromFile(string fileName)
@@ -852,8 +855,8 @@ namespace Boulder_Dash_Project
                         for (int x = 0; x < Field.frame[i].Length; x++)
                         {
                             if (Field.frame[i][x] == gameField.hero)
-                            {
-                                if (keyInfo.Key == ConsoleKey.W || keyInfo.Key == ConsoleKey.UpArrow)
+                            {  
+                            if (keyInfo.Key == ConsoleKey.W || keyInfo.Key == ConsoleKey.UpArrow)
                                 {
                                     if (stat)
                                     {
@@ -888,33 +891,54 @@ namespace Boulder_Dash_Project
                                 {
                                     if (stat) GoDig(ref i, ref x, ref stat);
                                 }
-                                break;
+                                if (keyInfo.Key == ConsoleKey.Q)
+                                {
+                                    if (stat) GoDigL(ref i, ref x, ref stat);
+                                }
+                                if (keyInfo.Key == ConsoleKey.L)
+                                {
+                                    gameField.score = gameField.maxpoint;
+                                    gameField.Defeat();
+                                }
+                                if (keyInfo.Key == ConsoleKey.K)
+                                {
+                                    gameField.Win();
+                                }
+                            break;
                             }
 
                         }
                     }
                 
+
             }
             public static void AddScores()
             {
                 gameField.score += 100;
                 if (gameField.score >= gameField.maxpoint) gameField.Win();
-                Console.SetCursorPosition(24, 24);
+                Console.SetCursorPosition(12, 24);
                 Console.Write("Score: " + gameField.score);
             }
             public static void GoUp(ref int i, ref int x, ref bool stat)
             {
-                if ((i - 1) >= 0 && Field.frame[i - 1][x] == gameField.sand || Field.frame[i - 1][x] == gameField.empty)
+                try
                 {
-                    Field.frame[i][x] = gameField.empty;
-                    Field.frame[i - 1][x] = gameField.hero;
-                    Console.SetCursorPosition(x, i);
-                    Console.Write(gameField.empty);
-                    Console.SetCursorPosition(x, i - 1);
-                    Console.Write(gameField.hero);
-                    stat = false;
-
+                    if ((i - 1) >= 0 && Field.frame[i - 1][x] == gameField.sand || Field.frame[i - 1][x] == gameField.empty)
+                    {
+                        Field.frame[i][x] = gameField.empty;
+                        Field.frame[i - 1][x] = gameField.hero;
+                        Console.SetCursorPosition(x, i);
+                        Console.Write(gameField.empty);
+                        Console.SetCursorPosition(x, i - 1);
+                        Console.Write(gameField.hero);
+                        stat = false;
+                        gameField.x = x;
+                        gameField.y = i - 1;
+                        Console.SetCursorPosition(40, 24);
+                        Console.Write("Coordinates: x=" + gameField.x + ", y=" + gameField.y + " ");
+                    }
                 }
+                catch { }
             }
             public static void GoDown(ref int i, ref int x, ref bool stat)
             {
@@ -927,8 +951,12 @@ namespace Boulder_Dash_Project
                     Console.SetCursorPosition(x, i + 1);
                     Console.Write(gameField.hero);
                     stat = false;
-
+                    gameField.x = x;
+                    gameField.y = i + 1;
+                    Console.SetCursorPosition(40, 24);
+                    Console.Write("Coordinates: x=" + gameField.x + ", y=" + gameField.y + " ");
                 }
+                
             }
             public static void GoLeft(ref int i, ref int x, ref bool stat)
             {
@@ -942,7 +970,10 @@ namespace Boulder_Dash_Project
                     Console.SetCursorPosition(x - 1, i);
                     Console.Write(gameField.hero);
                     stat = false;
-
+                    gameField.x = x - 1;
+                    gameField.y = i;
+                    Console.SetCursorPosition(40, 24);
+                    Console.Write("Coordinates: x=" + gameField.x + ", y=" + gameField.y + " ");
                 }
                 else if ((x - 2) >= 0 && Field.frame[i][x - 2] == gameField.empty && Field.frame[i][x - 1] == gameField.rock)
                 {
@@ -958,8 +989,12 @@ namespace Boulder_Dash_Project
                     Console.SetCursorPosition(x - 2, i);
                     Console.Write(gameField.rock);
                     stat = false;
-
+                    gameField.x = x - 1;
+                    gameField.y = i;
+                    Console.SetCursorPosition(40, 24);
+                    Console.Write("Coordinates: x=" + gameField.x + ", y=" + gameField.y + " ");
                 }
+                
             }
             public static void GoRight(ref int i, ref int x, ref bool stat)
             {
@@ -973,7 +1008,10 @@ namespace Boulder_Dash_Project
                     Console.SetCursorPosition(x + 1, i);
                     Console.Write(gameField.hero);
                     stat = false;
-
+                    gameField.x = x + 1;
+                    gameField.y = i;
+                    Console.SetCursorPosition(40, 24);
+                    Console.Write("Coordinates: x=" + gameField.x + ", y=" + gameField.y + " ");
                 }
                 else if ((x - 2) <= (Field.frame[i].Length - 1) && Field.frame[i][x + 1] == gameField.rock && Field.frame[i][x + 2] == gameField.empty)
                 {
@@ -987,7 +1025,12 @@ namespace Boulder_Dash_Project
                     Console.SetCursorPosition(x + 2, i);
                     Console.Write(gameField.rock);
                     stat = false;
+                    gameField.x = x + 1;
+                    gameField.y = i;
+                    Console.SetCursorPosition(40, 24);
+                    Console.Write("Coordinates: x=" + gameField.x + ", y=" + gameField.y + " ");
                 }
+                
             }
             public static void GoDig(ref int i, ref int x, ref bool stat)
             {
@@ -995,6 +1038,16 @@ namespace Boulder_Dash_Project
                 {
                     Field.frame[i][x + 1] = gameField.empty;
                     Console.SetCursorPosition(x + 1, i);
+                    Console.Write(gameField.empty);
+                    stat = false;
+                }
+            }
+            public static void GoDigL(ref int i, ref int x, ref bool stat)
+            {
+                if ((x - 1) >= 0 && Field.frame[i][x - 1] == gameField.sand)
+                {
+                    Field.frame[i][x - 1] = gameField.empty;
+                    Console.SetCursorPosition(x - 1, i);
                     Console.Write(gameField.empty);
                     stat = false;
                 }
@@ -1080,11 +1133,11 @@ namespace Boulder_Dash_Project
                             if (Field.frame[i + 1][x] == gameField.hero)
                             {
                                 lives = lives - 1;
-                                Console.SetCursorPosition(10, 24);
+                                Console.SetCursorPosition(1, 24);
                                 Console.Write("Lives: " + gameField.lives);
                                 if (lives == 0)
                                 {
-                                    gameField.Loose();
+                                    gameField.Defeat();
                                     Field.frame[i][x] = gameField.empty;
                                     Field.frame[i + 1][x] = gameField.rock;
                                     Console.SetCursorPosition(x, i);
@@ -1127,7 +1180,7 @@ namespace Boulder_Dash_Project
                     BFS_step(i1, i2 + 1);
                     BFS_step(i1, i2 - 1);
                 }
-                else if (Field.frame[i1][i2] == gameField.hero || Field.frame[i1][i2] == gameField.sand)
+                else if (Field.frame[i1][i2] == gameField.hero || Field.frame[i1][i2] == gameField.sand || Field.frame[i1][i2] == gameField.empty)
                 {
                     BFS_x.Add(i1);
                     BFS_y.Add(i2);
@@ -1146,14 +1199,61 @@ namespace Boulder_Dash_Project
 
             public static bool BFS(int i1, int i2)
             {
-                gameField.BFS_score = 0;
+                BFS_x.Clear();
+                BFS_y.Clear();
+                gameField.BFS_score = 0 + gameField.score;
                 BFS_step(i1, i2);
-                if (gameField.BFS_score == gameField.maxpoint)
+                if (gameField.BFS_score >= gameField.maxpoint)
                 {
                     return true;
                 }
                 return false;
             }
+
+            public static int BFS_step_help(int i1, int i2, int distance)
+            {
+                distance++;
+                int a = 1000, b = 1000, c = 1000, d = 1000;
+                for (int i = 0; i < BFS_x_help.Count; i++)
+                {
+                    if (BFS_x_help[i] == i1 && BFS_y_help[i] == i2)
+                    {
+                        return 1000;
+                    }
+                }
+
+                if (Field.frame[i1][i2] == gameField.diamond)
+                {
+                    BFS_x_help.Add(i1);
+                    BFS_y_help.Add(i2);
+                    return distance;
+                }
+                else if (Field.frame[i1][i2] == gameField.hero || Field.frame[i1][i2] == gameField.sand || Field.frame[i1][i2] == gameField.empty)
+                {
+                    BFS_x_help.Add(i1);
+                    BFS_y_help.Add(i2);
+                    a = BFS_step_help(i1 + 1, i2, distance);
+                    b = BFS_step_help(i1 - 1, i2, distance);
+                    c = BFS_step_help(i1, i2 + 1, distance);
+                    d = BFS_step_help(i1, i2 - 1, distance);
+                }
+                else
+                {
+                    BFS_x_help.Add(i1);
+                    BFS_y_help.Add(i2);
+                    return 1000;
+                }
+                return Math.Min(Math.Min(a,b),Math.Min(c,d));
+            }
+
+            public static int BFS_help(int i1, int i2)
+            {
+                BFS_x_help.Clear();
+                BFS_y_help.Clear();
+                int distance = BFS_step_help(i1, i2, -1);
+                return distance;
+            }
+
 
             public static void Random()
             {
@@ -1257,11 +1357,11 @@ namespace Boulder_Dash_Project
                             if (Field.frame[i + 1][x] == gameField.hero)
                             {
                                 lives = lives - 1;
-                                Console.SetCursorPosition(10, 24);
+                                Console.SetCursorPosition(1, 24);
                                 Console.Write("Lives: " + gameField.lives);
                                 if (lives == 0)
                                 {
-                                    gameField.Loose();
+                                    gameField.Defeat();
                                     Field.frame[i][x] = gameField.empty;
                                     Field.frame[i + 1][x] = gameField.rock;
                                     Console.SetCursorPosition(x, i);
@@ -1300,67 +1400,112 @@ namespace Boulder_Dash_Project
 
         static void Main(string[] args)
         {
+
+            Console.ForegroundColor = ConsoleColor.Cyan;
             Thread music = new Thread(gameField.MusicFunction);
             music.Priority = ThreadPriority.Normal;
             music.Start();
             Thread thread = new Thread(gameField.ThreadFunction);
             
             thread.Priority = ThreadPriority.Normal;
-
-            Console.ForegroundColor = ConsoleColor.Cyan;
-            int x = 0;
-                Console.WriteLine("____________________________________");
-                Console.WriteLine("|Boulder Dash Game by Ihor Michurin|");
-                Console.WriteLine("____________________________________");
-                Console.WriteLine("|             Main Menu            |");
-                Console.WriteLine("____________________________________");
-                Console.WriteLine("");
-                Console.WriteLine("Choose level: 1, 2, 3 or enter 4 to generate random level.");
-                int i = Convert.ToInt32(Console.ReadLine());
-                if (i == 1)
+            gameField.GetArrayFromFile("menu.txt");
+            gameField.Renderer();
+            thread.Start();
+            while (true)
+            {
+                gameField.maxpoint = 400;
+                int choose = -1;
+                while (choose == -1)
                 {
-                    gameField.GetArrayFromFile("game.txt");
-                    gameField.maxpoint = 3400;
-                }
-                else if (i == 2)
-                {
-                    gameField.GetArrayFromFile("2.txt");
-                    gameField.maxpoint = 3400;
-
-                }
-                else if (i == 3)
-                {
-                    gameField.GetArrayFromFile("3.txt");
-                    gameField.maxpoint = 3400;
-
-                }
-                else if (i == 4)
-                {
-                    gameField.GetArrayFromFile("4.txt");
-                    gameField.Random2();
-                }
-
-
-                
-
-                thread.Start();
-
-            
-                Console.ForegroundColor = ConsoleColor.Cyan;
-                gameField.Renderer();
-                Console.SetCursorPosition(24, 24);
-                Console.Write("Score: " + gameField.score);
-                Console.SetCursorPosition(10, 24);
-                Console.Write("Lives: " + gameField.lives);
-                while (gameField.gameStatus == true)
-                {
-                
-                
                     Console.SetCursorPosition(Field.frame[1].Length, Field.frame.Count);
                     var keyInfo = Console.ReadKey();
                     gameField.MoveHero(keyInfo);
-                
+                    if (gameField.score == 100)
+                    {
+                        for (int k = 6; k < Field.frame.Count; k++)
+                        {
+                            if (Field.frame[k][2] == gameField.hero)
+                            {
+                                choose = k - 5;
+                                break;
+                            }
+                        }
+                    }
                 }
+
+                Console.Clear();
+                Field.frame.Clear();
+                gameField.frame.Clear();
+                Console.SetCursorPosition(0, 0);
+                gameField.score = 0;
+                switch (choose)
+                {
+                    case 1:
+                        {
+                            gameField.GetArrayFromFile("game.txt");
+                            gameField.maxpoint = 3400;
+                            break;
+                        }
+                    case 2:
+                        {
+                            gameField.GetArrayFromFile("2.txt");
+                            gameField.maxpoint = 3400;
+                            break;
+                        }
+                    case 3:
+                        {
+                            gameField.GetArrayFromFile("3.txt");
+                            gameField.maxpoint = 3400;
+                            break;
+                        }
+                    case 4:
+                        {
+                            gameField.GetArrayFromFile("4.txt");
+                            gameField.Random2();
+                            break;
+                        }
+                    case 5:
+                        {
+                            System.Environment.Exit(0);
+                            break;
+                        }
+                }
+
+                Console.ForegroundColor = ConsoleColor.Cyan;
+                gameField.Renderer();
+                Console.SetCursorPosition(12, 24);
+                Console.Write("Score: " + gameField.score);
+                Console.SetCursorPosition(1, 24);
+                Console.Write("Lives: " + gameField.lives);
+                
+                
+                while (gameField.gameStatus == true)
+                {
+                    Console.SetCursorPosition(Field.frame[1].Length, Field.frame.Count);
+                    var keyInfo = Console.ReadKey();
+                    gameField.MoveHero(keyInfo);
+                    
+                    if (gameField.score >= gameField.maxpoint)
+                    {
+                        break;
+                    }
+                    Console.SetCursorPosition(24, 24);
+                    Console.Write("Deadlock: " + !gameField.BFS(gameField.y, gameField.x));
+                    Console.Write(" ");
+                    Console.SetCursorPosition(64, 24);
+                    Console.Write("Steps to @: " + gameField.BFS_help(gameField.y, gameField.x));
+                    Console.Write(" ");
+                }
+
+                gameField.score = 0;
+
+                Console.Clear();
+                Field.frame.Clear();
+                gameField.frame.Clear();
+                Console.SetCursorPosition(0, 0);
+                gameField.GetArrayFromFile("menu.txt");
+                gameField.Renderer();
+            }
         }
       
     }
