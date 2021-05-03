@@ -127,9 +127,13 @@ namespace Boulder_Dash_Project
             static public SoundPlayer player = new SoundPlayer();
             public static List<int> BFS_x = new List<int>();
             public static List<int> BFS_y = new List<int>();
+            public static List<int> BFS_x_help = new List<int>();
+            public static List<int> BFS_y_help = new List<int>();
             public static bool Deadlock = false;
             public static int x;
             public static int y;
+            public static int distance;
+
 
             public static void MusicFunction()
             {
@@ -912,7 +916,7 @@ namespace Boulder_Dash_Project
             {
                 gameField.score += 100;
                 if (gameField.score >= gameField.maxpoint) gameField.Win();
-                Console.SetCursorPosition(15, 24);
+                Console.SetCursorPosition(12, 24);
                 Console.Write("Score: " + gameField.score);
             }
             public static void GoUp(ref int i, ref int x, ref bool stat)
@@ -930,7 +934,7 @@ namespace Boulder_Dash_Project
                         stat = false;
                         gameField.x = x;
                         gameField.y = i - 1;
-                        Console.SetCursorPosition(45, 24);
+                        Console.SetCursorPosition(40, 24);
                         Console.Write("Coordinates: x=" + gameField.x + ", y=" + gameField.y + " ");
                     }
                 }
@@ -949,7 +953,7 @@ namespace Boulder_Dash_Project
                     stat = false;
                     gameField.x = x;
                     gameField.y = i + 1;
-                    Console.SetCursorPosition(45, 24);
+                    Console.SetCursorPosition(40, 24);
                     Console.Write("Coordinates: x=" + gameField.x + ", y=" + gameField.y + " ");
                 }
                 
@@ -968,7 +972,7 @@ namespace Boulder_Dash_Project
                     stat = false;
                     gameField.x = x - 1;
                     gameField.y = i;
-                    Console.SetCursorPosition(45, 24);
+                    Console.SetCursorPosition(40, 24);
                     Console.Write("Coordinates: x=" + gameField.x + ", y=" + gameField.y + " ");
                 }
                 else if ((x - 2) >= 0 && Field.frame[i][x - 2] == gameField.empty && Field.frame[i][x - 1] == gameField.rock)
@@ -987,7 +991,7 @@ namespace Boulder_Dash_Project
                     stat = false;
                     gameField.x = x - 1;
                     gameField.y = i;
-                    Console.SetCursorPosition(45, 24);
+                    Console.SetCursorPosition(40, 24);
                     Console.Write("Coordinates: x=" + gameField.x + ", y=" + gameField.y + " ");
                 }
                 
@@ -1006,7 +1010,7 @@ namespace Boulder_Dash_Project
                     stat = false;
                     gameField.x = x + 1;
                     gameField.y = i;
-                    Console.SetCursorPosition(45, 24);
+                    Console.SetCursorPosition(40, 24);
                     Console.Write("Coordinates: x=" + gameField.x + ", y=" + gameField.y + " ");
                 }
                 else if ((x - 2) <= (Field.frame[i].Length - 1) && Field.frame[i][x + 1] == gameField.rock && Field.frame[i][x + 2] == gameField.empty)
@@ -1023,7 +1027,7 @@ namespace Boulder_Dash_Project
                     stat = false;
                     gameField.x = x + 1;
                     gameField.y = i;
-                    Console.SetCursorPosition(45, 24);
+                    Console.SetCursorPosition(40, 24);
                     Console.Write("Coordinates: x=" + gameField.x + ", y=" + gameField.y + " ");
                 }
                 
@@ -1129,7 +1133,7 @@ namespace Boulder_Dash_Project
                             if (Field.frame[i + 1][x] == gameField.hero)
                             {
                                 lives = lives - 1;
-                                Console.SetCursorPosition(3, 24);
+                                Console.SetCursorPosition(1, 24);
                                 Console.Write("Lives: " + gameField.lives);
                                 if (lives == 0)
                                 {
@@ -1176,7 +1180,7 @@ namespace Boulder_Dash_Project
                     BFS_step(i1, i2 + 1);
                     BFS_step(i1, i2 - 1);
                 }
-                else if (Field.frame[i1][i2] == gameField.hero || Field.frame[i1][i2] == gameField.sand)
+                else if (Field.frame[i1][i2] == gameField.hero || Field.frame[i1][i2] == gameField.sand || Field.frame[i1][i2] == gameField.empty)
                 {
                     BFS_x.Add(i1);
                     BFS_y.Add(i2);
@@ -1205,6 +1209,51 @@ namespace Boulder_Dash_Project
                 }
                 return false;
             }
+
+            public static int BFS_step_help(int i1, int i2, int distance)
+            {
+                distance++;
+                int a = 1000, b = 1000, c = 1000, d = 1000;
+                for (int i = 0; i < BFS_x_help.Count; i++)
+                {
+                    if (BFS_x_help[i] == i1 && BFS_y_help[i] == i2)
+                    {
+                        return 1000;
+                    }
+                }
+
+                if (Field.frame[i1][i2] == gameField.diamond)
+                {
+                    BFS_x_help.Add(i1);
+                    BFS_y_help.Add(i2);
+                    return distance;
+                }
+                else if (Field.frame[i1][i2] == gameField.hero || Field.frame[i1][i2] == gameField.sand || Field.frame[i1][i2] == gameField.empty)
+                {
+                    BFS_x_help.Add(i1);
+                    BFS_y_help.Add(i2);
+                    a = BFS_step_help(i1 + 1, i2, distance);
+                    b = BFS_step_help(i1 - 1, i2, distance);
+                    c = BFS_step_help(i1, i2 + 1, distance);
+                    d = BFS_step_help(i1, i2 - 1, distance);
+                }
+                else
+                {
+                    BFS_x_help.Add(i1);
+                    BFS_y_help.Add(i2);
+                    return 1000;
+                }
+                return Math.Min(Math.Min(a,b),Math.Min(c,d));
+            }
+
+            public static int BFS_help(int i1, int i2)
+            {
+                BFS_x_help.Clear();
+                BFS_y_help.Clear();
+                int distance = BFS_step_help(i1, i2, -1);
+                return distance;
+            }
+
 
             public static void Random()
             {
@@ -1308,7 +1357,7 @@ namespace Boulder_Dash_Project
                             if (Field.frame[i + 1][x] == gameField.hero)
                             {
                                 lives = lives - 1;
-                                Console.SetCursorPosition(3, 24);
+                                Console.SetCursorPosition(1, 24);
                                 Console.Write("Lives: " + gameField.lives);
                                 if (lives == 0)
                                 {
@@ -1424,9 +1473,9 @@ namespace Boulder_Dash_Project
 
                 Console.ForegroundColor = ConsoleColor.Cyan;
                 gameField.Renderer();
-                Console.SetCursorPosition(15, 24);
+                Console.SetCursorPosition(12, 24);
                 Console.Write("Score: " + gameField.score);
-                Console.SetCursorPosition(3, 24);
+                Console.SetCursorPosition(1, 24);
                 Console.Write("Lives: " + gameField.lives);
                 
                 
@@ -1440,9 +1489,12 @@ namespace Boulder_Dash_Project
                     {
                         break;
                     }
-                    Console.SetCursorPosition(28, 24);
-                    Console.Write("Deadlock: " + gameField.BFS(gameField.y, gameField.x));
-                    Console.Write("  ");
+                    Console.SetCursorPosition(24, 24);
+                    Console.Write("Deadlock: " + !gameField.BFS(gameField.y, gameField.x));
+                    Console.Write(" ");
+                    Console.SetCursorPosition(64, 24);
+                    Console.Write("Steps to @: " + gameField.BFS_help(gameField.y, gameField.x));
+                    Console.Write(" ");
                 }
 
                 gameField.score = 0;
