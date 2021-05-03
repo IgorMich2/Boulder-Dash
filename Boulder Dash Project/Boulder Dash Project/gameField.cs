@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading;
 using System.IO;
 
@@ -71,21 +70,61 @@ namespace Boulder_Dash_Project
         {
             while (true)
             {
-                Console.SetCursorPosition(Field.frame[1].Length, Field.frame.Count);
-                if (CountRock() == 1)
+                
+                    Console.SetCursorPosition(Field.frame[1].Length, Field.frame.Count);
+                    if (CountRock() == 1)
+                    {
+                        MoveRock1();
+
+                    }
+                    else if (CountRock() > 1)
+                    {
+
+                        MoveRock1();
+                        for (int i = 0; i < 5; i++)
+                            MoveRock2();
+
+                    }
+                    Thread.Sleep(200);
+                
+            }
+
+        }
+        public static void ThreadFunction2()
+        {
+            while (true)
+            {
+                for (int i = 0; i <= Field.frame.Count - 1; i++)
                 {
-                    MoveRock1();
-
+                    for (int x = 0; x <= Field.frame[i].Length - 1; x++)
+                    {
+                        if (Field.frame[i][x] == Rock.value)
+                        {
+                            try
+                            {
+                                if (Field.frame[i + 1][x] == Hero.value)
+                                {
+                                    lives = lives - 1;
+                                    Console.SetCursorPosition(1, 24);
+                                    Console.Write("Lives: " + gameField.lives + "  ");
+                                    if (lives == 0)
+                                    {
+                                        gameField.Defeat();
+                                        Field.frame[i][x] = Empty.value;
+                                        Field.frame[i + 1][x] = Rock.value;
+                                        Console.SetCursorPosition(x, i);
+                                        Console.Write(Empty.value);
+                                        Console.SetCursorPosition(x, i + 1);
+                                        Console.Write(Rock.value);
+                                    }
+                                }
+                            }
+                            catch { }
+                        }
+                    }
                 }
-                else if (CountRock() > 1)
-                {
-
-                    MoveRock1();
-                    for (int i = 0; i < 5; i++)
-                        MoveRock2();
-
-                }
-                Thread.Sleep(200);
+            
+                    Thread.Sleep(200);
             }
 
         }
@@ -190,8 +229,10 @@ namespace Boulder_Dash_Project
                     Console.SetCursorPosition(40, 24);
                     Console.Write("Coordinates: x=" + gameField.x + ", y=" + gameField.y + " ");
                 }
+
             }
             catch { }
+            
         }
         public static void GoDown(ref int i, ref int x, ref bool stat)
         {
@@ -317,6 +358,7 @@ namespace Boulder_Dash_Project
                 Console.Write(Hero.value);
                 AddScores();
             }
+            
         }
         public static void CollectDown(ref int i, ref int x)
         {
@@ -422,32 +464,35 @@ namespace Boulder_Dash_Project
                     return;
                 }
             }
-
-            if (Field.frame[i1][i2] == Diamong.value)
+            try
             {
-                gameField.BFS_score = gameField.BFS_score + 100;
-                BFS_x.Add(i1);
-                BFS_y.Add(i2);
-                BFS_step(i1 + 1, i2);
-                BFS_step(i1 - 1, i2);
-                BFS_step(i1, i2 + 1);
-                BFS_step(i1, i2 - 1);
+                if (Field.frame[i1][i2] == Diamong.value)
+                {
+                    gameField.BFS_score = gameField.BFS_score + 100;
+                    BFS_x.Add(i1);
+                    BFS_y.Add(i2);
+                    BFS_step(i1 + 1, i2);
+                    BFS_step(i1 - 1, i2);
+                    BFS_step(i1, i2 + 1);
+                    BFS_step(i1, i2 - 1);
+                }
+                else if (Field.frame[i1][i2] == Hero.value || Field.frame[i1][i2] == Sand.value || Field.frame[i1][i2] == Empty.value)
+                {
+                    BFS_x.Add(i1);
+                    BFS_y.Add(i2);
+                    BFS_step(i1 + 1, i2);
+                    BFS_step(i1 - 1, i2);
+                    BFS_step(i1, i2 + 1);
+                    BFS_step(i1, i2 - 1);
+                }
+                else
+                {
+                    BFS_x.Add(i1);
+                    BFS_y.Add(i2);
+                    return;
+                }
             }
-            else if (Field.frame[i1][i2] == Hero.value || Field.frame[i1][i2] == Sand.value || Field.frame[i1][i2] == Empty.value)
-            {
-                BFS_x.Add(i1);
-                BFS_y.Add(i2);
-                BFS_step(i1 + 1, i2);
-                BFS_step(i1 - 1, i2);
-                BFS_step(i1, i2 + 1);
-                BFS_step(i1, i2 - 1);
-            }
-            else
-            {
-                BFS_x.Add(i1);
-                BFS_y.Add(i2);
-                return;
-            }
+            catch { }
         }
 
         public static bool BFS(int i1, int i2)

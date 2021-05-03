@@ -16,7 +16,9 @@ namespace Boulder_Dash_Project
             music.Priority = ThreadPriority.Normal;
             music.Start();
             Thread thread = new Thread(gameField.ThreadFunction);
-            
+            Thread lives = new Thread(gameField.ThreadFunction2);
+            lives.Priority = ThreadPriority.Highest;
+            lives.Start();
             thread.Priority = ThreadPriority.Normal;
             gameField.GetArrayFromFile("menu.txt");
             gameField.Renderer();
@@ -102,9 +104,9 @@ namespace Boulder_Dash_Project
                     Console.SetCursorPosition(24, 24);
                     Console.Write("Deadlock: " + !gameField.BFS(gameField.y, gameField.x));
                     Console.Write(" ");
-                    Console.SetCursorPosition(64, 24);
-                    Console.Write("Steps to @: " + gameField.BFS_help(gameField.y, gameField.x));
-                    Console.Write(" ");
+                    //Console.SetCursorPosition(64, 24);
+                    //Console.Write("Steps to @: " + gameField.BFS_help(gameField.y, gameField.x));
+                    //Console.Write(" ");
                 }
 
                 gameField.score = 0;
