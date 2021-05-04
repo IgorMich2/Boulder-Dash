@@ -70,7 +70,6 @@ namespace Boulder_Dash_Project
         {
             while (true)
             {
-                
                     Console.SetCursorPosition(Field.frame[1].Length, Field.frame.Count);
                     if (CountRock() == 1)
                     {
@@ -86,9 +85,7 @@ namespace Boulder_Dash_Project
 
                     }
                     Thread.Sleep(200);
-                
             }
-
         }
         public static void LivesFunction()
         {
