@@ -15,14 +15,14 @@ namespace Boulder_Dash_Project
             Thread music = new Thread(Music.MusicFunction);
             music.Priority = ThreadPriority.Normal;
             music.Start();
-            Thread thread = new Thread(gameField.ThreadFunction);
-            Thread lives = new Thread(gameField.ThreadFunction2);
+            Thread gravity = new Thread(gameField.GravityFunction);
+            Thread lives = new Thread(gameField.LivesFunction);
             lives.Priority = ThreadPriority.Highest;
             lives.Start();
-            thread.Priority = ThreadPriority.Normal;
+            gravity.Priority = ThreadPriority.Normal;
             gameField.GetArrayFromFile("menu.txt");
             gameField.Renderer();
-            thread.Start();
+            gravity.Start();
             while (true)
             {
                 gameField.maxpoint = 400;
