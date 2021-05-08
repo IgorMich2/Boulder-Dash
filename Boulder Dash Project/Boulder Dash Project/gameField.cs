@@ -66,11 +66,10 @@ namespace Boulder_Dash_Project
             }
         }
 
-        public static void ThreadFunction()
+        public static void GravityFunction()
         {
             while (true)
             {
-                
                     Console.SetCursorPosition(Field.frame[1].Length, Field.frame.Count);
                     if (CountRock() == 1)
                     {
@@ -86,11 +85,9 @@ namespace Boulder_Dash_Project
 
                     }
                     Thread.Sleep(200);
-                
             }
-
         }
-        public static void ThreadFunction2()
+        public static void LivesFunction()
         {
             while (true)
             {
@@ -425,23 +422,7 @@ namespace Boulder_Dash_Project
                 {
                     if (Field.frame[i][x] == Rock.value)
                     {
-                        if (Field.frame[i + 1][x] == Hero.value)
-                        {
-                            lives = lives - 1;
-                            Console.SetCursorPosition(1, 24);
-                            Console.Write("Lives: " + gameField.lives);
-                            if (lives == 0)
-                            {
-                                gameField.Defeat();
-                                Field.frame[i][x] = Empty.value;
-                                Field.frame[i + 1][x] = Rock.value;
-                                Console.SetCursorPosition(x, i);
-                                Console.Write(Empty.value);
-                                Console.SetCursorPosition(x, i + 1);
-                                Console.Write(Rock.value);
-                            }
-                        }
-                        else if (Field.frame[i + 1][x] == Empty.value)
+                       if (Field.frame[i + 1][x] == Empty.value)
                         {
                             Field.frame[i][x] = Empty.value;
                             Field.frame[i + 1][x] = Rock.value;
@@ -652,23 +633,7 @@ namespace Boulder_Dash_Project
                 {
                     if (Field.frame[i][x] == Rock.value)
                     {
-                        if (Field.frame[i + 1][x] == Hero.value)
-                        {
-                            lives = lives - 1;
-                            Console.SetCursorPosition(1, 24);
-                            Console.Write("Lives: " + gameField.lives);
-                            if (lives == 0)
-                            {
-                                gameField.Defeat();
-                                Field.frame[i][x] = Empty.value;
-                                Field.frame[i + 1][x] = Rock.value;
-                                Console.SetCursorPosition(x, i);
-                                Console.Write(Empty.value);
-                                Console.SetCursorPosition(x, i + 1);
-                                Console.Write(Rock.value);
-                            }
-                        }
-                        else if (Field.frame[i + 1][x] == Empty.value)
+                        if (Field.frame[i + 1][x] == Empty.value)
                         {
                             Field.frame[i][x] = Empty.value;
                             Field.frame[i + 1][x] = Rock.value;
