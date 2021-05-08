@@ -54,7 +54,7 @@ namespace Boulder_Dash_Project
                 {
                     case 1:
                         {
-                            gameField.GetArrayFromFile("game.txt");
+                            gameField.GetArrayFromFile("1.txt");
                             gameField.maxpoint = 3400;
                             break;
                         }
