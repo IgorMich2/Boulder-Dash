@@ -2,7 +2,7 @@
 using System.Threading;
 
 namespace Boulder_Dash_Project
-{
+{//
     class Program
     {
         static void Main(string[] args)
@@ -93,7 +93,7 @@ namespace Boulder_Dash_Project
                 Console.SetCursorPosition(12, 24);
                 Console.Write("Score: " + GameField.score);
                 Console.SetCursorPosition(1, 24);
-                Console.Write("Lives: " + GameField.lives);
+                Console.Write("Lives: " + Hero.lives);
                 
                 while (true)
                 {

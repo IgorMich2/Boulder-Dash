@@ -8,35 +8,31 @@ namespace Boulder_Dash_Project
     {
         public static int score = 0;
         public static int maxpoint = 0;
-        public static int lives = 500;
-
         
-
         public static void Win()
         {
-            Field.player.SoundLocation = "win.wav";
-            Field.player.Play();
+            player.SoundLocation = "win.wav";
+            player.Play();
 
             Console.Clear();
             Console.WriteLine("Win!");
             Thread.Sleep(5000);
-            Field.player.Stop();
-            GameField.score = GameField.maxpoint;
+            player.Stop();
+            score = maxpoint;
             Console.Clear();
-
         }
 
         public static void Defeat()
         {
-            Console.Clear();
-            Field.player.Stop();
-            Field.player.SoundLocation = "loose.wav";
-            Field.player.Play();
+            player.SoundLocation = "loose.wav";
+            player.Play();
 
+            Console.Clear();
             Console.WriteLine("Defeat!");
             Thread.Sleep(3000);
-            Field.player.Stop();
-            GameField.score = GameField.maxpoint;
+            player.Stop();
+            score = maxpoint;
+            Console.Clear();
         }
 
         public static void GetArrayFromFile(string fileName)
@@ -50,7 +46,7 @@ namespace Boulder_Dash_Project
                 string[] strline = new string[line.Length];
                 for (int k = 0; k < line.Length; k++)
                     strline[k] = Convert.ToString(line[k]);
-                Field.frame.Add(strline);
+                frame.Add(strline);
             }
         }
 
@@ -62,7 +58,6 @@ namespace Boulder_Dash_Project
                 if (Rock.CountRock() == 1)
                 {
                     Rock.MoveRock1();
-
                 }
                 else if (Rock.CountRock() > 1)
                 {
@@ -89,10 +84,10 @@ namespace Boulder_Dash_Project
                             {
                                 if (Field.frame[i + 1][x] == Hero.value)
                                 {
-                                    lives = lives - 1;
+                                    Hero.lives = Hero.lives - 1;
                                     Console.SetCursorPosition(1, 24);
-                                    Console.Write("Lives: " + GameField.lives + "  ");
-                                    if (lives == 0)
+                                    Console.Write("Lives: " + Hero.lives + "  ");
+                                    if (Hero.lives == 0)
                                     {
                                         GameField.Defeat();
                                         Field.frame[i][x] = Empty.value;

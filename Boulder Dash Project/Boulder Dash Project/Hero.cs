@@ -4,6 +4,7 @@ namespace Boulder_Dash_Project
 {
     class Hero : Ceil
     {
+        public static int lives = 500;
         public static int x;
         public static int y;
         public static string value = "I";
