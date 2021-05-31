@@ -70,21 +70,21 @@ namespace Boulder_Dash_Project
         {
             while (true)
             {
-                    Console.SetCursorPosition(Field.frame[1].Length, Field.frame.Count);
-                    if (CountRock() == 1)
-                    {
-                        MoveRock1();
+                Console.SetCursorPosition(Field.frame[1].Length, Field.frame.Count);
+                if (CountRock() == 1)
+                {
+                    MoveRock1();
 
-                    }
-                    else if (CountRock() > 1)
-                    {
+                }
+                else if (CountRock() > 1)
+                {
 
-                        MoveRock1();
-                        for (int i = 0; i < 5; i++)
-                            MoveRock2();
+                    MoveRock1();
+                    for (int i = 0; i < 5; i++)
+                        MoveRock2();
 
-                    }
-                    Thread.Sleep(200);
+                }
+                Thread.Sleep(200);
             }
         }
         public static void LivesFunction()
@@ -120,8 +120,8 @@ namespace Boulder_Dash_Project
                         }
                     }
                 }
-            
-                    Thread.Sleep(200);
+
+                Thread.Sleep(200);
             }
 
         }
@@ -229,7 +229,7 @@ namespace Boulder_Dash_Project
 
             }
             catch { }
-            
+
         }
         public static void GoDown(ref int i, ref int x, ref bool stat)
         {
@@ -355,7 +355,7 @@ namespace Boulder_Dash_Project
                 Console.Write(Hero.value);
                 AddScores();
             }
-            
+
         }
         public static void CollectDown(ref int i, ref int x)
         {
@@ -422,7 +422,7 @@ namespace Boulder_Dash_Project
                 {
                     if (Field.frame[i][x] == Rock.value)
                     {
-                       if (Field.frame[i + 1][x] == Empty.value)
+                        if (Field.frame[i + 1][x] == Empty.value)
                         {
                             Field.frame[i][x] = Empty.value;
                             Field.frame[i + 1][x] = Rock.value;

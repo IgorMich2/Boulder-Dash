@@ -10,23 +10,31 @@ namespace Boulder_Dash_Project
     {
         static void Main(string[] args)
         {
+            int choose;
 
             Console.ForegroundColor = ConsoleColor.Cyan;
+
             Thread music = new Thread(Music.MusicFunction);
             music.Priority = ThreadPriority.Normal;
-            music.Start();
-            Thread gravity = new Thread(gameField.GravityFunction);
+            
             Thread lives = new Thread(gameField.LivesFunction);
             lives.Priority = ThreadPriority.Highest;
-            lives.Start();
+
+            Thread gravity = new Thread(gameField.GravityFunction);
             gravity.Priority = ThreadPriority.Normal;
+
             gameField.GetArrayFromFile("menu.txt");
             gameField.Renderer();
+
+            music.Start();
+            lives.Start();
             gravity.Start();
+
             while (true)
             {
                 gameField.maxpoint = 400;
-                int choose = -1;
+                choose = -1;
+
                 while (choose == -1)
                 {
                     Console.SetCursorPosition(Field.frame[1].Length, Field.frame.Count);
@@ -47,9 +55,9 @@ namespace Boulder_Dash_Project
 
                 Console.Clear();
                 Field.frame.Clear();
-                gameField.frame.Clear();
                 Console.SetCursorPosition(0, 0);
                 gameField.score = 0;
+
                 switch (choose)
                 {
                     case 1:
@@ -83,13 +91,12 @@ namespace Boulder_Dash_Project
                         }
                 }
 
-                Console.ForegroundColor = ConsoleColor.Cyan;
+                //Console.ForegroundColor = ConsoleColor.Cyan;
                 gameField.Renderer();
                 Console.SetCursorPosition(12, 24);
                 Console.Write("Score: " + gameField.score);
                 Console.SetCursorPosition(1, 24);
                 Console.Write("Lives: " + gameField.lives);
-                
                 
                 while (true)
                 {
@@ -102,18 +109,16 @@ namespace Boulder_Dash_Project
                         break;
                     }
                     Console.SetCursorPosition(24, 24);
-                    Console.Write("Deadlock: " + !gameField.BFS(gameField.y, gameField.x));
-                    Console.Write(" ");
-                    //Console.SetCursorPosition(64, 24);
-                    //Console.Write("Steps to @: " + gameField.BFS_help(gameField.y, gameField.x));
-                    //Console.Write(" ");
+                    Console.Write("Deadlock: " + !gameField.BFS(gameField.y, gameField.x) + " ");
+
+                    Console.SetCursorPosition(64, 24);
+                    Console.Write("Steps to @: " + gameField.BFS_help(gameField.y, gameField.x) + " ");
                 }
 
                 gameField.score = 0;
 
                 Console.Clear();
                 Field.frame.Clear();
-                gameField.frame.Clear();
                 Console.SetCursorPosition(0, 0);
                 gameField.GetArrayFromFile("menu.txt");
                 gameField.Renderer();
