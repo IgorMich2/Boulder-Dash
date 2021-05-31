@@ -58,9 +58,9 @@ namespace Boulder_Dash_Project
         {
             BFS_x.Clear();
             BFS_y.Clear();
-            BFS_score = 0 + gameField.score;
+            BFS_score = 0 + GameField.score;
             BFS_step(i1, i2);
-            if (BFS_score >= gameField.maxpoint)
+            if (BFS_score >= GameField.maxpoint)
             {
                 return true;
             }
@@ -120,7 +120,7 @@ namespace Boulder_Dash_Project
                 BFS_x.Clear();
                 BFS_y.Clear();
 
-                gameField.maxpoint = 0;
+                GameField.maxpoint = 0;
                 bs = 0; bd = 0; br = 0;
                 prev = Sand.value;
                 for (int i = 1; i < Field.frame.Count - 1; i++)
@@ -154,7 +154,7 @@ namespace Boulder_Dash_Project
                         else if (temp < 80 + bs + bd - br)
                         {
                             Field.frame[i][x] = Diamong.value;
-                            gameField.maxpoint += 100;
+                            GameField.maxpoint += 100;
                             prev = Diamong.value;
                         }
                         else if (temp < 100 + bs + bd + br)

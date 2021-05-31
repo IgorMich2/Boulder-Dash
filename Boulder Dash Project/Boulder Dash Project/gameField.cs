@@ -4,19 +4,17 @@ using System.IO;
 
 namespace Boulder_Dash_Project
 {
-    class gameField : Field
+    class GameField : Field
     {
         public static int score = 0;
         public static int maxpoint = 0;
         public static int lives = 500;
-        
-        public static bool Deadlock = false;
+
         public static int x;
         public static int y;
 
         public static void Win()
         {
-
             Field.player.SoundLocation = "win.wav";
             Field.player.Play();
 
@@ -24,7 +22,7 @@ namespace Boulder_Dash_Project
             Console.WriteLine("Win!");
             Thread.Sleep(5000);
             Field.player.Stop();
-            gameField.score = gameField.maxpoint;
+            GameField.score = GameField.maxpoint;
             Console.Clear();
 
         }
@@ -39,7 +37,7 @@ namespace Boulder_Dash_Project
             Console.WriteLine("Defeat!");
             Thread.Sleep(3000);
             Field.player.Stop();
-            gameField.score = gameField.maxpoint;
+            GameField.score = GameField.maxpoint;
         }
 
         public static void GetArrayFromFile(string fileName)
@@ -94,10 +92,10 @@ namespace Boulder_Dash_Project
                                 {
                                     lives = lives - 1;
                                     Console.SetCursorPosition(1, 24);
-                                    Console.Write("Lives: " + gameField.lives + "  ");
+                                    Console.Write("Lives: " + GameField.lives + "  ");
                                     if (lives == 0)
                                     {
-                                        gameField.Defeat();
+                                        GameField.Defeat();
                                         Field.frame[i][x] = Empty.value;
                                         Field.frame[i + 1][x] = Rock.value;
                                         Console.SetCursorPosition(x, i);
@@ -128,10 +126,10 @@ namespace Boulder_Dash_Project
         
         public static void AddScores()
         {
-            gameField.score += 100;
-            if (gameField.score >= gameField.maxpoint) gameField.Win();
+            GameField.score += 100;
+            if (GameField.score >= GameField.maxpoint) GameField.Win();
             Console.SetCursorPosition(12, 24);
-            Console.Write("Score: " + gameField.score);
+            Console.Write("Score: " + GameField.score);
         }
         
 
