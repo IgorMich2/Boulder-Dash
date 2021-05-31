@@ -1,12 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Boulder_Dash_Project
 {
     class Rock : Ceil
     {
         public static string value = "o";
+
         public override string Value
         {
             get { return value; }
@@ -14,7 +13,8 @@ namespace Boulder_Dash_Project
 
         public static int CountRock()
         {
-            int c = 0;
+            int count = 0;
+
             for (int i = Field.frame.Count - 1; i >= 0; i--)
             {
                 for (int x = Field.frame[i].Length - 1; x >= 0; x--)
@@ -23,12 +23,12 @@ namespace Boulder_Dash_Project
                     {
                         if (Field.frame[i + 1][x] == Empty.value)
                         {
-                            c++;
+                            count++;
                         }
                     }
                 }
             }
-            return c;
+            return count;
         }
         public static void MoveRock1()
         {

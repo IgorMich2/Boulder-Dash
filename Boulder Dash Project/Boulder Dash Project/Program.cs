@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Threading;
-using System.IO;
-using System.Media;
 
 namespace Boulder_Dash_Project
 {

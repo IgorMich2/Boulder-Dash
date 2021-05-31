@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Threading;
 using System.IO;
 
@@ -7,7 +6,6 @@ namespace Boulder_Dash_Project
 {
     class gameField : Field
     {
-        public static Random rnd = new Random();
         public static int score = 0;
         public static int maxpoint = 0;
         public static int lives = 500;

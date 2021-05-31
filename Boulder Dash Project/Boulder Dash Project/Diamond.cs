@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Boulder_Dash_Project
+﻿namespace Boulder_Dash_Project
 {
     class Diamong : Ceil
     {

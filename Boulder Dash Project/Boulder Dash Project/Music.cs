@@ -1,8 +1,6 @@
 ﻿using System;
 using NAudio.Wave;
 using System.Threading;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Boulder_Dash_Project
 {
