@@ -10,8 +10,7 @@ namespace Boulder_Dash_Project
         public static int maxpoint = 0;
         public static int lives = 500;
 
-        public static int x;
-        public static int y;
+        
 
         public static void Win()
         {

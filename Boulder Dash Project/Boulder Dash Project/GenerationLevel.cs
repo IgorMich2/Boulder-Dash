@@ -5,14 +5,15 @@ namespace Boulder_Dash_Project
 {
     class GenerationLevel
     {
-        public static Random rnd = new Random();
-        public static bool BFS_res = false;
-        public static int BFS_score;
+        static Random randomNumber = new Random();
 
-        public static List<int> BFS_x = new List<int>();
-        public static List<int> BFS_y = new List<int>();
-        public static List<int> BFS_x_help = new List<int>();
-        public static List<int> BFS_y_help = new List<int>();
+        static bool BFS_res = false;
+        static int BFS_score;
+
+        static List<int> BFS_x = new List<int>();
+        static List<int> BFS_y = new List<int>();
+        static List<int> BFS_x_help = new List<int>();
+        static List<int> BFS_y_help = new List<int>();
 
         public static void BFS_step(int i1, int i2)
         {
@@ -127,7 +128,7 @@ namespace Boulder_Dash_Project
                 {
                     for (int x = 1; x < Field.frame[i].Length - 1; x++)
                     {
-                        temp = rnd.Next() % 100;
+                        temp = randomNumber.Next() % 100;
                         if (prev == Sand.value)
                         {
                             bs = 10;

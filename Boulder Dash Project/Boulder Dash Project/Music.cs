@@ -6,7 +6,7 @@ namespace Boulder_Dash_Project
 {
     class Music
     {
-        public static Random rnd = new Random();
+        static Random RandomNumber = new Random();
 
         public static void MusicFunction()
         {
@@ -14,7 +14,7 @@ namespace Boulder_Dash_Project
             TimeSpan totalTime;
             while (true)
             {
-                i = rnd.Next() % 23 + 1;
+                i = RandomNumber.Next() % 23 + 1;
                 var reader = new Mp3FileReader("music1.mp3");
                 var waveOut = new WaveOut();
                 switch (i)
@@ -618,9 +618,6 @@ namespace Boulder_Dash_Project
                         waveOut.Stop();
                         break;
                 }
-
-
-
             }
         }
     }

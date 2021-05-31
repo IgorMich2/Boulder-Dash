@@ -106,10 +106,10 @@ namespace Boulder_Dash_Project
                         break;
                     }
                     Console.SetCursorPosition(24, 24);
-                    Console.Write("Deadlock: " + !GenerationLevel.BFS(GameField.y, GameField.x) + " ");
+                    Console.Write("Deadlock: " + !GenerationLevel.BFS(Hero.y, Hero.x) + " ");
 
                     Console.SetCursorPosition(64, 24);
-                    Console.Write("Steps to @: " + GenerationLevel.BFS_help(GameField.y, GameField.x) + " ");
+                    Console.Write("Steps to @: " + GenerationLevel.BFS_help(Hero.y, Hero.x) + " ");
                 }
 
                 GameField.score = 0;
