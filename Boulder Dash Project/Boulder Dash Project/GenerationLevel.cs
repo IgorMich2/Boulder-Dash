@@ -26,7 +26,7 @@ namespace Boulder_Dash_Project
             }
             try
             {
-                if (Field.frame[i1][i2] == Diamong.value)
+                if (Field.frame[i1][i2] == Diamond.value)
                 {
                     BFS_score = BFS_score + 100;
                     BFS_x.Add(i1);
@@ -71,6 +71,10 @@ namespace Boulder_Dash_Project
         public static int BFS_step_help(int i1, int i2, int distance)
         {
             distance++;
+            if (distance > 8)
+            {
+                return 1000;
+            }
             int a = 1000, b = 1000, c = 1000, d = 1000;
             for (int i = 0; i < BFS_x_help.Count; i++)
             {
@@ -80,7 +84,7 @@ namespace Boulder_Dash_Project
                 }
             }
 
-            if (Field.frame[i1][i2] == Diamong.value)
+            if (Field.frame[i1][i2] == Diamond.value)
             {
                 BFS_x_help.Add(i1);
                 BFS_y_help.Add(i2);
@@ -135,7 +139,7 @@ namespace Boulder_Dash_Project
                             bd = 0;
                             br = 0;
                         }
-                        else if (prev == Diamong.value)
+                        else if (prev == Diamond.value)
                         {
                             bs = 0;
                             bd = 10;
@@ -154,9 +158,9 @@ namespace Boulder_Dash_Project
                         }
                         else if (temp < 80 + bs + bd - br)
                         {
-                            Field.frame[i][x] = Diamong.value;
+                            Field.frame[i][x] = Diamond.value;
                             GameField.maxpoint += 100;
-                            prev = Diamong.value;
+                            prev = Diamond.value;
                         }
                         else if (temp < 100 + bs + bd + br)
                         {

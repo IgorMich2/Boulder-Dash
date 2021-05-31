@@ -1,6 +1,6 @@
 ﻿namespace Boulder_Dash_Project
 {
-    class Diamong : Ceil
+    class Diamond : Ceil
     {
         public static string value = "@";
         public override string Value

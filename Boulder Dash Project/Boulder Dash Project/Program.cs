@@ -29,6 +29,8 @@ namespace Boulder_Dash_Project
 
             while (true)
             {
+                Hero.steps = 0;
+                Hero.digs = 0;
                 GameField.maxpoint = 400;
                 choose = -1;
 
@@ -54,25 +56,24 @@ namespace Boulder_Dash_Project
                 Field.frame.Clear();
                 Console.SetCursorPosition(0, 0);
                 GameField.score = 0;
-
+                GameField.maxpoint = 0;
+                Hero.steps = 0;
+                Hero.digs = 0;
                 switch (choose)
                 {
                     case 1:
                         {
-                            GameField.GetArrayFromFile("1.txt");
-                            GameField.maxpoint = 3400;
+                            GameField.GetArrayFromFile("1.txt");    
                             break;
                         }
                     case 2:
                         {
                             GameField.GetArrayFromFile("2.txt");
-                            GameField.maxpoint = 3400;
                             break;
                         }
                     case 3:
                         {
                             GameField.GetArrayFromFile("3.txt");
-                            GameField.maxpoint = 3400;
                             break;
                         }
                     case 4:
@@ -83,16 +84,21 @@ namespace Boulder_Dash_Project
                         }
                     case 5:
                         {
+                            GameField.GetArrayFromFile("save.txt");
+                            break;
+                        }
+                    case 6:
+                        {
                             System.Environment.Exit(0);
                             break;
                         }
                 }
-
+                GameField.Time = DateTime.Now;
                 //Console.ForegroundColor = ConsoleColor.Cyan;
                 GameField.Renderer();
-                Console.SetCursorPosition(12, 24);
+                Console.SetCursorPosition(1, 27);
                 Console.Write("Score: " + GameField.score);
-                Console.SetCursorPosition(1, 24);
+                Console.SetCursorPosition(1, 26);
                 Console.Write("Lives: " + Hero.lives);
                 
                 while (true)
@@ -105,11 +111,15 @@ namespace Boulder_Dash_Project
                     {
                         break;
                     }
-                    Console.SetCursorPosition(24, 24);
+                    Console.SetCursorPosition(1, 29);
                     Console.Write("Deadlock: " + !GenerationLevel.BFS(Hero.y, Hero.x) + " ");
 
-                    Console.SetCursorPosition(64, 24);
-                    Console.Write("Steps to @: " + GenerationLevel.BFS_help(Hero.y, Hero.x) + " ");
+                    Console.SetCursorPosition(1, 28);
+                    Console.Write("Steps to @: " + GenerationLevel.BFS_help(Hero.y, Hero.x));
+                    Console.Write("  ");
+
+                    Console.SetCursorPosition(1, 30);
+                    Console.Write("Time : " + DateTime.Now.Subtract(GameField.Time));
                 }
 
                 GameField.score = 0;

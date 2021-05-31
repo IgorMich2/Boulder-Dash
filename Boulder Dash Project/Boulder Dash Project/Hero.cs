@@ -7,7 +7,10 @@ namespace Boulder_Dash_Project
         public static int lives = 500;
         public static int x;
         public static int y;
+        public static int steps;
+        public static int digs;
         public static string value = "I";
+
         public override string Value
         {
             get { return value; }
@@ -24,26 +27,32 @@ namespace Boulder_Dash_Project
                         if (keyInfo.Key == ConsoleKey.W || keyInfo.Key == ConsoleKey.UpArrow)
                         {
                             Hero.GoUp(ref y, ref x);
+                            steps++;
                         }
                         else if (keyInfo.Key == ConsoleKey.S || keyInfo.Key == ConsoleKey.DownArrow)
                         {
                             Hero.GoDown(ref y, ref x);
+                            steps++;
                         }
                         else if (keyInfo.Key == ConsoleKey.A || keyInfo.Key == ConsoleKey.LeftArrow)
                         {
                             Hero.GoLeft(ref y, ref x);
+                            steps++;
                         }
                         else if (keyInfo.Key == ConsoleKey.D || keyInfo.Key == ConsoleKey.RightArrow)
                         {
                             Hero.GoRight(ref y, ref x);
+                            steps++;
                         }
                         else if (keyInfo.Key == ConsoleKey.E)
                         {
                             Hero.GoDigRight(ref y, ref x);
+                            digs++;
                         }
                         else if (keyInfo.Key == ConsoleKey.Q)
                         {
                             Hero.GoDigLeft(ref y, ref x);
+                            digs++;
                         }
                         else if (keyInfo.Key == ConsoleKey.L)
                         {
@@ -54,13 +63,21 @@ namespace Boulder_Dash_Project
                         {
                             GameField.Win();
                         }
+                        else if (keyInfo.Key == ConsoleKey.F)
+                        {
+                            GameField.SaveToFile();
+                        }
                         y = -1;
                         break;
                     }
                 }
             }
-            Console.SetCursorPosition(40, 25);
+            Console.SetCursorPosition(40, 28);
             Console.Write("Coordinates: x=" + Hero.x + ", y=" + Hero.y + " ");
+            Console.SetCursorPosition(40, 26);
+            Console.Write("Steps: " + steps + " ");
+            Console.SetCursorPosition(40, 27);
+            Console.Write("Digs: " + digs + " ");
         }
 
         public static void GoUp(ref int y, ref int x)
@@ -76,7 +93,7 @@ namespace Boulder_Dash_Project
                 Hero.x = x;
                 Hero.y = y - 1;
             }
-            else if ((y - 1) >= 0 && Field.frame[y - 1][x] == Diamong.value)
+            else if ((y - 1) >= 0 && Field.frame[y - 1][x] == Diamond.value)
             {
                 Field.frame[y][x] = Empty.value;
                 Field.frame[y - 1][x] = Hero.value;
@@ -103,7 +120,7 @@ namespace Boulder_Dash_Project
                 Hero.y = y + 1;
 
             }
-            else if ((y + 1) <= (Field.frame.Count - 1) && Field.frame[y + 1][x] == Diamong.value)
+            else if ((y + 1) <= (Field.frame.Count - 1) && Field.frame[y + 1][x] == Diamond.value)
             {
                 Field.frame[y][x] = Empty.value;
                 Field.frame[y + 1][x] = Hero.value;
@@ -144,7 +161,7 @@ namespace Boulder_Dash_Project
                 Hero.x = x - 1;
                 Hero.y = y;
             }
-            else if ((x - 1) >= 0 && Field.frame[y][x - 1] == Diamong.value)
+            else if ((x - 1) >= 0 && Field.frame[y][x - 1] == Diamond.value)
             {
                 Field.frame[y][x] = Empty.value;
                 Field.frame[y][x - 1] = Hero.value;
@@ -183,7 +200,7 @@ namespace Boulder_Dash_Project
                 Hero.x = x + 1;
                 Hero.y = y;
             }
-            else if ((x - 1) <= (Field.frame[y].Length - 1) && Field.frame[y][x + 1] == Diamong.value)
+            else if ((x - 1) <= (Field.frame[y].Length - 1) && Field.frame[y][x + 1] == Diamond.value)
             {
                 Field.frame[y][x] = Empty.value;
                 Field.frame[y][x + 1] = Hero.value;
