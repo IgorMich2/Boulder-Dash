@@ -39,7 +39,7 @@ namespace Boulder_Dash_Project
                 {
                     Console.SetCursorPosition(Field.frame[1].Length, Field.frame.Count);
                     var keyInfo = Console.ReadKey();
-                    gameField.MoveHero(keyInfo);
+                    Hero.MoveHero(keyInfo);
                     if (gameField.score == 100)
                     {
                         for (int k = 6; k < Field.frame.Count; k++)
@@ -81,7 +81,7 @@ namespace Boulder_Dash_Project
                     case 4:
                         {
                             gameField.GetArrayFromFile("4.txt");
-                            gameField.Random2();
+                            GenerationLevel.Random2();
                             break;
                         }
                     case 5:
@@ -102,17 +102,17 @@ namespace Boulder_Dash_Project
                 {
                     Console.SetCursorPosition(Field.frame[1].Length, Field.frame.Count);
                     var keyInfo = Console.ReadKey();
-                    gameField.MoveHero(keyInfo);
+                    Hero.MoveHero(keyInfo);
                     
                     if (gameField.score >= gameField.maxpoint)
                     {
                         break;
                     }
                     Console.SetCursorPosition(24, 24);
-                    Console.Write("Deadlock: " + !gameField.BFS(gameField.y, gameField.x) + " ");
+                    Console.Write("Deadlock: " + !GenerationLevel.BFS(gameField.y, gameField.x) + " ");
 
                     Console.SetCursorPosition(64, 24);
-                    Console.Write("Steps to @: " + gameField.BFS_help(gameField.y, gameField.x) + " ");
+                    Console.Write("Steps to @: " + GenerationLevel.BFS_help(gameField.y, gameField.x) + " ");
                 }
 
                 gameField.score = 0;
