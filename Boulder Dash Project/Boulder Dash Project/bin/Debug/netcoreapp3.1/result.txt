@@ -1,7 +1,7 @@
 Name: Igor
 Result: Win
 Score: 3400
-Steps: 2
+Steps: 12
 Digs: 0
 Lives at the end: 500
-Time: 00:00:24.7934181
+Time: 00:03:55.3914637

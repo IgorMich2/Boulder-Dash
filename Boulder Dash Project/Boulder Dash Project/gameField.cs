@@ -46,6 +46,7 @@ namespace Boulder_Dash_Project
         public static void EndLevel(string result)
         {
             Console.WriteLine("Enter name");
+            Console.SetCursorPosition(1, 2);
             string name = Console.ReadLine();
             string writePath = "result.txt";
 
