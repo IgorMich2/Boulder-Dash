@@ -84,10 +84,16 @@ namespace Boulder_Dash_Project
                         }
                     case 5:
                         {
-                            GameField.GetArrayFromFile("save.txt");
+                            GameField.GetArrayFromFile("menu.txt");
+                            GameField.GetResults();
                             break;
                         }
                     case 6:
+                        {
+                            GameField.GetArrayFromFile("save.txt");
+                            break;
+                        }
+                    case 7:
                         {
                             System.Environment.Exit(0);
                             break;

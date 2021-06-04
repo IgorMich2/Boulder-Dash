@@ -1,7 +1,7 @@
-Name: Igor
+Name: Vitalik
 Result: Win
 Score: 3400
-Steps: 12
+Steps: 27
 Digs: 0
 Lives at the end: 500
-Time: 00:03:55.3914637
+Time: 00:00:24.6208406

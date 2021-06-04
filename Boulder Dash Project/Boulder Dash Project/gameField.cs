@@ -3,14 +3,29 @@ using System.Threading;
 using System.IO;
 using System.Diagnostics;
 using System.ComponentModel;
+using System.Data.SqlClient;
+using System.Data.SqlTypes;
+using System.Data;
+using System.Reflection;
+using OfficeOpenXml;
+using OfficeOpenXml.Style;
+using System.Collections.Generic;
+using System.Media;
+using System.Drawing;
 
 namespace Boulder_Dash_Project
 {
     class GameField : Field
     {
+        public static string ConnStr = @"Data Source = (LocalDB)\MSSQLLocalDB; AttachDbFilename =C:\Образование\Boulder Dash\Boulder Dash Project\Boulder Dash Project\Results.mdf; Integrated Security = True";
+
         public static int score = 0;
         public static int maxpoint = 0;
         public static System.DateTime Time = DateTime.Now;
+
+        public static List<int> ids = new List<int>();
+        public static List<string> names = new List<string>();
+        public static List<int> scores = new List<int>();
 
         public static void Win()
         {
@@ -26,6 +41,10 @@ namespace Boulder_Dash_Project
             score = maxpoint;
             Console.Clear();
             EndLevel("Win");
+
+            
+            
+            
         }
 
         public static void Defeat()
@@ -41,6 +60,67 @@ namespace Boulder_Dash_Project
             
             Console.Clear();
             EndLevel("Defeat");
+        }
+
+        public static MemoryStream DataSetToExcelXlsx(DataTable table, string sheetName)
+        {
+            MemoryStream Result = new MemoryStream();
+            ExcelPackage pack = new ExcelPackage();
+            ExcelWorksheet ws = pack.Workbook.Worksheets.Add(sheetName);
+
+            int col = 1;
+            int row = 1;
+            foreach (DataRow rw in table.Rows)
+            {
+                foreach (DataColumn cl in table.Columns)
+                {
+                    if (rw[cl.ColumnName] != DBNull.Value)
+                        ws.Cells[row, col].Value = rw[cl.ColumnName].ToString();
+                    col++;
+                }
+                row++;
+                col = 1;
+            }
+
+            pack.SaveAs(Result);
+            return Result;
+        }
+
+        public static void GetResults()
+        {
+            using (SqlConnection connection = new SqlConnection(ConnStr))
+            {
+                connection.Open();
+                string sql = "SELECT * FROM Players";
+                SqlCommand command = new SqlCommand(sql, connection);
+                SqlDataReader reader = command.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    int id = reader.GetInt32(0);
+                    string name = reader.GetString(1);
+                    int score = reader.GetInt32(2);
+
+                    ids.Add(id);
+                    names.Add(name);
+                    scores.Add(score);
+                }
+            }
+
+            string writePath = "allresult.txt";
+
+            using (StreamWriter sw = new StreamWriter(writePath))
+            {
+                for (int i = 0; i < names.Count; i++)
+                {
+                    sw.WriteLine("Id: " + ids[i]);
+                    sw.WriteLine("Name: " + names[i]);
+                    sw.WriteLine("Result: " + scores[i]);
+                    sw.WriteLine("");
+                }
+            }
+            Process.Start(new ProcessStartInfo(@"allresult.txt") { UseShellExecute = true });
+
         }
 
         public static void EndLevel(string result)
@@ -63,6 +143,30 @@ namespace Boulder_Dash_Project
             }
             score = maxpoint;
             Process.Start(new ProcessStartInfo(@"result.txt") { UseShellExecute = true });
+
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(ConnStr))
+                using (var cmd1 = new SqlDataAdapter())
+                {
+                    connection.Open();
+                    // Now use the open connection.
+
+                    System.Data.SqlClient.SqlCommand cmd = new System.Data.SqlClient.SqlCommand();
+
+                    cmd.Connection = connection;
+                    cmd.CommandText = "INSERT INTO Players (Name, Score) VALUES ('"+name+"', "+score+")";
+                    
+                    cmd.ExecuteNonQuery();
+                    Console.WriteLine("");
+                }
+
+            }
+            catch (SqlException ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+
         }
 
         public static void GetArrayFromFile(string fileName)
