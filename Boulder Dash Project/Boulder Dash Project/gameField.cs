@@ -17,7 +17,9 @@ namespace Boulder_Dash_Project
 {
     class GameField : Field
     {
-        public static string ConnStr = @"Data Source = (LocalDB)\MSSQLLocalDB; AttachDbFilename =C:\Образование\Boulder Dash\Boulder Dash Project\Boulder Dash Project\Results.mdf; Integrated Security = True";
+        public static string s = Path.GetFullPath("Results.mdf");
+        //public static string ConnStr = @"Data Source = (LocalDB)\MSSQLLocalDB; AttachDbFilename =C:\Образование\Boulder Dash\Boulder Dash Project\Boulder Dash Project\Results.mdf; Integrated Security = True";
+        public static string ConnStr = @"Data Source = (LocalDB)\MSSQLLocalDB; AttachDbFilename ="+s+"; Integrated Security = True";
 
         public static int score = 0;
         public static int maxpoint = 0;

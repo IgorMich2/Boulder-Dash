@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Threading;
 
 namespace Boulder_Dash_Project
@@ -26,7 +27,7 @@ namespace Boulder_Dash_Project
             music.Start();
             lives.Start();
             gravity.Start();
-
+            
             while (true)
             {
                 Hero.steps = 0;
