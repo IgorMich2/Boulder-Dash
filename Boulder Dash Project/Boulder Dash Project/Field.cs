@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 using System.Media;
 
 namespace Boulder_Dash_Project
@@ -10,6 +8,5 @@ namespace Boulder_Dash_Project
         public static List<string[]> frame = new List<string[]>();
 
         static public SoundPlayer player = new SoundPlayer();
-
     }
 }

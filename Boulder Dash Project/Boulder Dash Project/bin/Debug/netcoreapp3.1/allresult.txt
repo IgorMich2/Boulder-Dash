@@ -1,0 +1,24 @@
+Id: 1
+Name: Igor
+Result: 1000
+
+Id: 2
+Name: Igor
+Result: 1000
+
+Id: 3
+Name: Igor
+Result: 1000
+
+Id: 4
+Name: Igor
+Result: 900
+
+Id: 5
+Name: Vitalik
+Result: 3400
+
+Id: 6
+Name: Denis
+Result: 3400
+

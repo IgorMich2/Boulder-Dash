@@ -1,38 +1,45 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Threading;
-using System.IO;
-using System.Media;
 
 namespace Boulder_Dash_Project
-{
+{//
     class Program
     {
         static void Main(string[] args)
         {
+            int choose;
 
             Console.ForegroundColor = ConsoleColor.Cyan;
+
             Thread music = new Thread(Music.MusicFunction);
             music.Priority = ThreadPriority.Normal;
-            music.Start();
-            Thread gravity = new Thread(gameField.GravityFunction);
-            Thread lives = new Thread(gameField.LivesFunction);
+            
+            Thread lives = new Thread(GameField.LivesFunction);
             lives.Priority = ThreadPriority.Highest;
-            lives.Start();
+
+            Thread gravity = new Thread(GameField.GravityFunction);
             gravity.Priority = ThreadPriority.Normal;
-            gameField.GetArrayFromFile("menu.txt");
-            gameField.Renderer();
+
+            GameField.GetArrayFromFile("menu.txt");
+            GameField.Renderer();
+
+            music.Start();
+            lives.Start();
             gravity.Start();
+
             while (true)
             {
-                gameField.maxpoint = 400;
-                int choose = -1;
+                Hero.steps = 0;
+                Hero.digs = 0;
+                GameField.maxpoint = 400;
+                choose = -1;
+
                 while (choose == -1)
                 {
                     Console.SetCursorPosition(Field.frame[1].Length, Field.frame.Count);
                     var keyInfo = Console.ReadKey();
-                    gameField.MoveHero(keyInfo);
-                    if (gameField.score == 100)
+                    Hero.MoveHero(keyInfo);
+                    if (GameField.score == 100)
                     {
                         for (int k = 6; k < Field.frame.Count; k++)
                         {
@@ -47,76 +54,87 @@ namespace Boulder_Dash_Project
 
                 Console.Clear();
                 Field.frame.Clear();
-                gameField.frame.Clear();
                 Console.SetCursorPosition(0, 0);
-                gameField.score = 0;
+                GameField.score = 0;
+                GameField.maxpoint = 0;
+                Hero.steps = 0;
+                Hero.digs = 0;
                 switch (choose)
                 {
                     case 1:
                         {
-                            gameField.GetArrayFromFile("1.txt");
-                            gameField.maxpoint = 3400;
+                            GameField.GetArrayFromFile("1.txt");    
                             break;
                         }
                     case 2:
                         {
-                            gameField.GetArrayFromFile("2.txt");
-                            gameField.maxpoint = 3400;
+                            GameField.GetArrayFromFile("2.txt");
                             break;
                         }
                     case 3:
                         {
-                            gameField.GetArrayFromFile("3.txt");
-                            gameField.maxpoint = 3400;
+                            GameField.GetArrayFromFile("3.txt");
                             break;
                         }
                     case 4:
                         {
-                            gameField.GetArrayFromFile("4.txt");
-                            gameField.Random2();
+                            GameField.GetArrayFromFile("4.txt");
+                            GenerationLevel.Random2();
                             break;
                         }
                     case 5:
+                        {
+                            GameField.GetArrayFromFile("menu.txt");
+                            GameField.GetResults();
+                            break;
+                        }
+                    case 6:
+                        {
+                            GameField.GetArrayFromFile("save.txt");
+                            break;
+                        }
+                    case 7:
                         {
                             System.Environment.Exit(0);
                             break;
                         }
                 }
-
-                Console.ForegroundColor = ConsoleColor.Cyan;
-                gameField.Renderer();
-                Console.SetCursorPosition(12, 24);
-                Console.Write("Score: " + gameField.score);
-                Console.SetCursorPosition(1, 24);
-                Console.Write("Lives: " + gameField.lives);
-                
+                GameField.Time = DateTime.Now;
+                //Console.ForegroundColor = ConsoleColor.Cyan;
+                GameField.Renderer();
+                Console.SetCursorPosition(1, 27);
+                Console.Write("Score: " + GameField.score);
+                Console.SetCursorPosition(1, 26);
+                Console.Write("Lives: " + Hero.lives);
                 
                 while (true)
                 {
                     Console.SetCursorPosition(Field.frame[1].Length, Field.frame.Count);
                     var keyInfo = Console.ReadKey();
-                    gameField.MoveHero(keyInfo);
+                    Hero.MoveHero(keyInfo);
                     
-                    if (gameField.score >= gameField.maxpoint)
+                    if (GameField.score >= GameField.maxpoint)
                     {
                         break;
                     }
-                    Console.SetCursorPosition(24, 24);
-                    Console.Write("Deadlock: " + !gameField.BFS(gameField.y, gameField.x));
-                    Console.Write(" ");
-                    //Console.SetCursorPosition(64, 24);
-                    //Console.Write("Steps to @: " + gameField.BFS_help(gameField.y, gameField.x));
-                    //Console.Write(" ");
+                    Console.SetCursorPosition(1, 29);
+                    Console.Write("Deadlock: " + !GenerationLevel.BFS(Hero.y, Hero.x) + " ");
+
+                    Console.SetCursorPosition(1, 28);
+                    Console.Write("Steps to @: " + GenerationLevel.BFS_help(Hero.y, Hero.x));
+                    Console.Write("  ");
+
+                    Console.SetCursorPosition(1, 30);
+                    Console.Write("Time : " + DateTime.Now.Subtract(GameField.Time));
                 }
 
-                gameField.score = 0;
+                GameField.score = 0;
 
                 Console.Clear();
                 Field.frame.Clear();
-                gameField.frame.Clear();
                 Console.SetCursorPosition(0, 0);
-                gameField.GetArrayFromFile("menu.txt");
-                gameField.Renderer();
+                GameField.GetArrayFromFile("menu.txt");
+                GameField.Renderer();
             }
         }
       
