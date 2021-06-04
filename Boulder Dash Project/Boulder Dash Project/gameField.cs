@@ -7,8 +7,6 @@ using System.Data.SqlClient;
 using System.Data.SqlTypes;
 using System.Data;
 using System.Reflection;
-//using OfficeOpenXml;
-//using OfficeOpenXml.Style;
 using System.Collections.Generic;
 using System.Media;
 using System.Drawing;
@@ -18,7 +16,6 @@ namespace Boulder_Dash_Project
     class GameField : Field
     {
         public static string s = Path.GetFullPath("Results.mdf");
-        //public static string ConnStr = @"Data Source = (LocalDB)\MSSQLLocalDB; AttachDbFilename =C:\Образование\Boulder Dash\Boulder Dash Project\Boulder Dash Project\Results.mdf; Integrated Security = True";
         public static string ConnStr = @"Data Source = (LocalDB)\MSSQLLocalDB; AttachDbFilename ="+s+"; Integrated Security = True";
 
         public static int score = 0;
@@ -43,10 +40,7 @@ namespace Boulder_Dash_Project
             score = maxpoint;
             Console.Clear();
             EndLevel("Win");
-
-            
-            
-            
+   
         }
 
         public static void Defeat()
@@ -63,8 +57,6 @@ namespace Boulder_Dash_Project
             Console.Clear();
             EndLevel("Defeat");
         }
-
-       
 
         public static void GetResults()
         {
