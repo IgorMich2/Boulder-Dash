@@ -55,12 +55,12 @@ namespace Boulder_Dash_Project
             catch { }
         }
 
-        public static bool BFS(int i1, int i2)
+        public static bool BFS(int x0, int y0)
         {
             BFS_x.Clear();
             BFS_y.Clear();
             BFS_score = 0 + GameField.score;
-            BFS_step(i1, i2);
+            BFS_step(x0, y0);
             if (BFS_score >= GameField.maxpoint)
             {
                 return true;

@@ -63,6 +63,8 @@ namespace Boulder_Dash_Project
                 GameField.score = 0;
                 GameField.maxpoint = 0;
                 Hero.steps = 0;
+                Rock.RocksDownGravity = 0;
+                Hero.RocksMoveByHero = 0;
                 Hero.digs = 0;
                 switch (choose)
                 {

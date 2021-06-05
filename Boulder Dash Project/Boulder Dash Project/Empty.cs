@@ -1,6 +1,6 @@
 ﻿namespace Boulder_Dash_Project
 {
-    class Empty : Ceil
+    class Empty : Cell
     {
         public static string value = " ";
         public override string Value

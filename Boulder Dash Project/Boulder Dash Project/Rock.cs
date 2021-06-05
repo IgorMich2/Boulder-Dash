@@ -2,9 +2,11 @@
 
 namespace Boulder_Dash_Project
 {
-    class Rock : Ceil
+    class Rock : Cell
     {
         public static string value = "o";
+        public static int RocksDownGravity = 0;
+
 
         public override string Value
         {
@@ -47,6 +49,7 @@ namespace Boulder_Dash_Project
                             Console.Write(Empty.value);
                             Console.SetCursorPosition(x, y + 1);
                             Console.Write(Rock.value);
+                            RocksDownGravity++;
                         }
                     }
                 }
@@ -69,6 +72,7 @@ namespace Boulder_Dash_Project
                             Console.Write(Empty.value);
                             Console.SetCursorPosition(x, i + 1);
                             Console.Write(Rock.value);
+                            RocksDownGravity++;
                         }
                     }
                 }

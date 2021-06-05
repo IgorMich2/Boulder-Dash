@@ -25,6 +25,13 @@ namespace Boulder_Dash_Project
         public static List<int> ids = new List<int>();
         public static List<string> names = new List<string>();
         public static List<int> scores = new List<int>();
+        public static List<int> steps = new List<int>();
+        public static List<int> digs = new List<int>();
+        public static List<int> lives = new List<int>();
+        public static List<string> times = new List<string>();
+        public static List<int> RockDowns = new List<int>();
+        public static List<int> RockMoved = new List<int>();
+        public static List<string> Results = new List<string>();
 
         public static bool win = false;
 
@@ -76,10 +83,24 @@ namespace Boulder_Dash_Project
                     int id = reader.GetInt32(0);
                     string name = reader.GetString(1);
                     int score = reader.GetInt32(2);
+                    int step  = reader.GetInt32(3);
+                    int dig = reader.GetInt32(4);
+                    int live = reader.GetInt32(5);
+                    string time = reader.GetString(6);
+                    int rockdown = reader.GetInt32(7);
+                    int rockmoved = reader.GetInt32(8);
+                    string result = reader.GetString(9);
 
                     ids.Add(id);
                     names.Add(name);
                     scores.Add(score);
+                    steps.Add(step);
+                    digs.Add(dig);
+                    lives.Add(live);
+                    times.Add(time);
+                    RockDowns.Add(rockdown);
+                    RockMoved.Add(rockmoved);
+                    Results.Add(result);
                 }
             }
 
@@ -92,6 +113,13 @@ namespace Boulder_Dash_Project
                     sw.WriteLine("Id: " + ids[i]);
                     sw.WriteLine("Name: " + names[i]);
                     sw.WriteLine("Result: " + scores[i]);
+                    sw.WriteLine("Steps: " + steps[i]);
+                    sw.WriteLine("Digs: " + digs[i]);
+                    sw.WriteLine("Lives at the end: " + lives[i]);
+                    sw.WriteLine("Time: " + times[i]);
+                    sw.WriteLine("Rock down by gravity: " + RockDowns[i]);
+                    sw.WriteLine("Rock moved by hero: " + RockMoved[i]);
+                    sw.WriteLine("Result: " + Results[i]);
                     sw.WriteLine("");
                 }
             }
@@ -133,7 +161,7 @@ namespace Boulder_Dash_Project
             Process.Start(new ProcessStartInfo(@"bestresult.txt") { UseShellExecute = true });
         }
 
-            public static void EndLevel(string result)
+        public static void EndLevel(string result)
         {
             Console.Clear();
             Field.frame.Clear();
@@ -156,6 +184,9 @@ namespace Boulder_Dash_Project
                 sw.WriteLine("Digs: " + Hero.digs);
                 sw.WriteLine("Lives at the end: " + Hero.lives);
                 sw.WriteLine("Time: " + DateTime.Now.Subtract(GameField.Time));
+                sw.WriteLine("Rock down by gravity: " + Rock.RocksDownGravity);
+                sw.WriteLine("Rock moved by hero: " + Hero.RocksMoveByHero);
+                sw.WriteLine("Result: " + result);
                 sw.Close();
             }
             score = maxpoint;
@@ -170,8 +201,9 @@ namespace Boulder_Dash_Project
                     System.Data.SqlClient.SqlCommand cmd = new System.Data.SqlClient.SqlCommand();
                     cmd.Connection = connection;
                     //cmd.CommandText = "INSERT INTO Players (Name, Score, Steps, Digs, Livesend) VALUES ('" + name+"', "+score+", "+Hero.steps+ ", " + Hero.digs + ", " + Hero.lives + ")";
-                    cmd.CommandText = "INSERT INTO Players (Name, Score) VALUES ('" + name + "', " + score + ")";
-                    //cmd.CommandText = "INSERT INTO Players2 (Name, Score, Steps, Digs, Livesend) VALUES ('" + name + "', " + score + ", " + Hero.steps + ", " + Hero.digs + ", " + Hero.lives + ")";
+                    //cmd.CommandText = "INSERT INTO Players (Name, Score) VALUES ('" + name + "', " + score + ")";
+                    string time = Convert.ToString(DateTime.Now - Time);
+                    cmd.CommandText = "INSERT INTO Players (Name, Score, Steps, Digs, Livesend, Time, RockDown, RockMoveByHero, Result) VALUES ('" + name + "', " + score + ", " + Hero.steps + ", " + Hero.digs + ", " + Hero.lives +",'" + time + "'"+ ", " + Rock.RocksDownGravity + ", " + Hero.RocksMoveByHero + ", " +  "'"+result+"')";
                     cmd.ExecuteNonQuery();
                 }
 

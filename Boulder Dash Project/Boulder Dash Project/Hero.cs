@@ -4,7 +4,7 @@ using System.Threading;
 
 namespace Boulder_Dash_Project
 {
-    class Hero : Ceil
+    class Hero : Cell
     {
         public static int lives = 500;
         public static int x;
@@ -12,6 +12,8 @@ namespace Boulder_Dash_Project
         public static int steps;
         public static int digs;
         public static string value = "I";
+        public static int RocksMoveByHero = 0;
+
 
         public override string Value
         {
@@ -177,6 +179,7 @@ namespace Boulder_Dash_Project
                 Console.Write(Rock.value);
                 Hero.x = x - 1;
                 Hero.y = y;
+                RocksMoveByHero++;
             }
             else if ((x - 1) >= 0 && Field.frame[y][x - 1] == Diamond.value)
             {
@@ -216,6 +219,7 @@ namespace Boulder_Dash_Project
                 Console.Write(Rock.value);
                 Hero.x = x + 1;
                 Hero.y = y;
+                RocksMoveByHero++;
             }
             else if ((x - 1) <= (Field.frame[y].Length - 1) && Field.frame[y][x + 1] == Diamond.value)
             {
