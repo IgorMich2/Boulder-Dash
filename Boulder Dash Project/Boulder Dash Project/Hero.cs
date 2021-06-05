@@ -1,4 +1,6 @@
 ﻿using System;
+using NAudio.Wave;
+using System.Threading;
 
 namespace Boulder_Dash_Project
 {
@@ -66,6 +68,21 @@ namespace Boulder_Dash_Project
                         else if (keyInfo.Key == ConsoleKey.F)
                         {
                             GameField.SaveToFile();
+                        }
+                        else if(keyInfo.Key == ConsoleKey.T)
+                        {
+                            Music.waveOut.Volume = Convert.ToSingle(Math.Min(Music.waveOut.Volume + Convert.ToSingle(0.1), 1.0));
+                        }
+                        else if (keyInfo.Key == ConsoleKey.G)
+                        {
+                            Music.waveOut.Volume = Convert.ToSingle(Math.Max(Music.waveOut.Volume - Convert.ToSingle(0.1), 0));
+                        }
+                        else if (keyInfo.Key == ConsoleKey.N)
+                        {
+                            Music.waveOut.Stop();
+                            Thread music = new Thread(Music.MusicFunction);
+                            music.Priority = ThreadPriority.Normal;
+                            music.Start();
                         }
                         y = -1;
                         break;

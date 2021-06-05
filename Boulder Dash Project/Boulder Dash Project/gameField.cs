@@ -26,6 +26,8 @@ namespace Boulder_Dash_Project
         public static List<string> names = new List<string>();
         public static List<int> scores = new List<int>();
 
+        public static bool win = false;
+
         public static void Win()
         {
             player.SoundLocation = "win.wav";
@@ -39,8 +41,8 @@ namespace Boulder_Dash_Project
             player.Stop();
             score = maxpoint;
             Console.Clear();
-            EndLevel("Win");
-   
+
+            win = true;
         }
 
         public static void Defeat()
@@ -55,7 +57,9 @@ namespace Boulder_Dash_Project
             player.Stop();
             
             Console.Clear();
-            EndLevel("Defeat");
+            //EndLevel("Defeat");
+
+            win = false;
         }
 
         public static void GetResults()
@@ -92,14 +96,55 @@ namespace Boulder_Dash_Project
                 }
             }
             Process.Start(new ProcessStartInfo(@"allresult.txt") { UseShellExecute = true });
+            
+            names.Clear();
+            scores.Clear();
 
         }
 
-        public static void EndLevel(string result)
+        public static void GetBestResults()
         {
+            string writePath = "bestresult.txt";
+
+            using (SqlConnection connection = new SqlConnection(ConnStr))
+            {
+                connection.Open();
+                string sql = "SELECT* FROM Players ORDER BY Score DESC";
+                SqlCommand command = new SqlCommand(sql, connection);
+                SqlDataReader reader = command.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    string name = reader.GetString(1);
+                    int score = reader.GetInt32(2);
+
+                    names.Add(name);
+                    scores.Add(score);
+                }
+            }
+
+            using (StreamWriter sw = new StreamWriter(writePath))
+            {
+                for (int i = 0; i < names.Count; i++)
+                {
+                    sw.WriteLine("Name: " + names[i] + "    " + "Result: " + scores[i]);
+                }
+            }
+            Process.Start(new ProcessStartInfo(@"bestresult.txt") { UseShellExecute = true });
+        }
+
+            public static void EndLevel(string result)
+        {
+            Console.Clear();
+            Field.frame.Clear();
+            GameField.GetArrayFromFile("empty.txt");
+            GameField.Renderer();
+            Console.SetCursorPosition(0, 0);
+            Console.SetCursorPosition(1, 1);
             Console.WriteLine("Enter name");
             Console.SetCursorPosition(1, 2);
             string name = Console.ReadLine();
+            Console.WriteLine("Thank you! Saving the result. Please wait...");
             string writePath = "result.txt";
 
             using (StreamWriter sw = new StreamWriter(writePath))
@@ -122,15 +167,12 @@ namespace Boulder_Dash_Project
                 using (var cmd1 = new SqlDataAdapter())
                 {
                     connection.Open();
-                    // Now use the open connection.
-
                     System.Data.SqlClient.SqlCommand cmd = new System.Data.SqlClient.SqlCommand();
-
                     cmd.Connection = connection;
-                    cmd.CommandText = "INSERT INTO Players (Name, Score) VALUES ('"+name+"', "+score+")";
-                    
+                    //cmd.CommandText = "INSERT INTO Players (Name, Score, Steps, Digs, Livesend) VALUES ('" + name+"', "+score+", "+Hero.steps+ ", " + Hero.digs + ", " + Hero.lives + ")";
+                    cmd.CommandText = "INSERT INTO Players (Name, Score) VALUES ('" + name + "', " + score + ")";
+                    //cmd.CommandText = "INSERT INTO Players2 (Name, Score, Steps, Digs, Livesend) VALUES ('" + name + "', " + score + ", " + Hero.steps + ", " + Hero.digs + ", " + Hero.lives + ")";
                     cmd.ExecuteNonQuery();
-                    Console.WriteLine("");
                 }
 
             }
@@ -192,7 +234,6 @@ namespace Boulder_Dash_Project
             {
                 try
                 {
-                    Console.SetCursorPosition(Field.frame[1].Length, Field.frame.Count);
                     if (Rock.CountRock() == 1)
                     {
                         Rock.MoveRock1();
