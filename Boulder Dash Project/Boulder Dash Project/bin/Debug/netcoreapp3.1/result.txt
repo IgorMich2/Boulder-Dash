@@ -1,7 +1,7 @@
-Name: Denis
+Name: Google
 Result: Win
 Score: 3400
-Steps: 400
-Digs: 0
+Steps: 28
+Digs: 12
 Lives at the end: 500
-Time: 00:01:50.6717372
+Time: 00:01:50.4624094
