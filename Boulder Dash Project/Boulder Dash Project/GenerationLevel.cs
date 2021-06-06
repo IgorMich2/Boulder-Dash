@@ -83,28 +83,31 @@ namespace Boulder_Dash_Project
                     return 1000;
                 }
             }
-
-            if (Field.frame[i1][i2] == Diamond.value)
+            try
             {
-                BFS_x_help.Add(i1);
-                BFS_y_help.Add(i2);
-                return distance;
+                if (Field.frame[i1][i2] == Diamond.value)
+                {
+                    BFS_x_help.Add(i1);
+                    BFS_y_help.Add(i2);
+                    return distance;
+                }
+                else if (Field.frame[i1][i2] == Hero.value || Field.frame[i1][i2] == Sand.value || Field.frame[i1][i2] == Empty.value)
+                {
+                    BFS_x_help.Add(i1);
+                    BFS_y_help.Add(i2);
+                    a = BFS_step_help(i1 + 1, i2, distance);
+                    b = BFS_step_help(i1 - 1, i2, distance);
+                    c = BFS_step_help(i1, i2 + 1, distance);
+                    d = BFS_step_help(i1, i2 - 1, distance);
+                }
+                else
+                {
+                    BFS_x_help.Add(i1);
+                    BFS_y_help.Add(i2);
+                    return 1000;
+                }
             }
-            else if (Field.frame[i1][i2] == Hero.value || Field.frame[i1][i2] == Sand.value || Field.frame[i1][i2] == Empty.value)
-            {
-                BFS_x_help.Add(i1);
-                BFS_y_help.Add(i2);
-                a = BFS_step_help(i1 + 1, i2, distance);
-                b = BFS_step_help(i1 - 1, i2, distance);
-                c = BFS_step_help(i1, i2 + 1, distance);
-                d = BFS_step_help(i1, i2 - 1, distance);
-            }
-            else
-            {
-                BFS_x_help.Add(i1);
-                BFS_y_help.Add(i2);
-                return 1000;
-            }
+            catch { }
             return Math.Min(Math.Min(a, b), Math.Min(c, d));
         }
 

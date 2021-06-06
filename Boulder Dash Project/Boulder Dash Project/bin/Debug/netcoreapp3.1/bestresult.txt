@@ -1,3 +1,4 @@
 Name: Vitaliy Lyapota    Result: 14000
 Name: Igor    Result: 11500
 Name: Igor Michurin    Result: 3400
+Name: Vitalik    Result: 3400

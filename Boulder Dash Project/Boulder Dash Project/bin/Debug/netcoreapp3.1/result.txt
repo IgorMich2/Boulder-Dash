@@ -1,10 +1,10 @@
-Name: Igor Michurin
+Name: Vitalik
 Result: Win
 Score: 3400
-Steps: 642
+Steps: 471
 Digs: 7
-Lives at the end: 500
-Time: 00:09:18.1273190
-Rock down by gravity: 8
-Rock moved by hero: 18
+Lives at the end: 499
+Time: 00:02:03.3177796
+Rock down by gravity: 34
+Rock moved by hero: 0
 Result: Win

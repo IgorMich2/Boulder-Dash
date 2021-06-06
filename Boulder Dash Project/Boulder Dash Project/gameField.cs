@@ -17,10 +17,11 @@ namespace Boulder_Dash_Project
     {
         public static string s = Path.GetFullPath("Results.mdf");
         public static string ConnStr = @"Data Source = (LocalDB)\MSSQLLocalDB; AttachDbFilename ="+s+"; Integrated Security = True";
-
+        public static bool Failedload=false;
         public static int score = 0;
         public static int maxpoint = 0;
         public static System.DateTime Time = DateTime.Now;
+        public static bool TechnicalLevel = false;
 
         public static List<int> ids = new List<int>();
         public static List<string> names = new List<string>();
@@ -219,10 +220,16 @@ namespace Boulder_Dash_Project
         {
             string[] lines = File.ReadAllLines(fileName);
             int rowCount = lines.Length;
-
-            for (int i = 0; i < rowCount - 1; i++)
+            int SizeOfLine = lines[0].Length;
+            Failedload = false;
+            for (int i = 0; i < rowCount; i++)
             {
-                char[] line = lines[i + 1].ToCharArray();
+                char[] line = lines[i].ToCharArray();
+                if (line.Length != SizeOfLine)
+                {
+                    Failedload=true;
+                    break;
+                }
                 string[] strline = new string[line.Length];
                 for (int k = 0; k < line.Length; k++)
                 {
@@ -287,36 +294,39 @@ namespace Boulder_Dash_Project
         {
             while (true)
             {
-                for (int i = 0; i <= Field.frame.Count - 1; i++)
+                try
                 {
-                    for (int x = 0; x <= Field.frame[i].Length - 1; x++)
+                    for (int i = 0; i <= Field.frame.Count - 1; i++)
                     {
-                        if (Field.frame[i][x] == Rock.value)
+                        for (int x = 0; x <= Field.frame[i].Length - 1; x++)
                         {
-                            try
+                            if (Field.frame[i][x] == Rock.value)
                             {
-                                if (Field.frame[i + 1][x] == Hero.value)
+                                try
                                 {
-                                    Hero.lives = Hero.lives - 1;
-                                    Console.SetCursorPosition(1, 26);
-                                    Console.Write("Lives: " + Hero.lives + "  ");
-                                    if (Hero.lives == 0)
+                                    if (Field.frame[i + 1][x] == Hero.value)
                                     {
-                                        GameField.Defeat();
-                                        Field.frame[i][x] = Empty.value;
-                                        Field.frame[i + 1][x] = Rock.value;
-                                        Console.SetCursorPosition(x, i);
-                                        Console.Write(Empty.value);
-                                        Console.SetCursorPosition(x, i + 1);
-                                        Console.Write(Rock.value);
+                                        Hero.lives = Hero.lives - 1;
+                                        Console.SetCursorPosition(1, 26);
+                                        Console.Write("Lives: " + Hero.lives + "  ");
+                                        if (Hero.lives == 0)
+                                        {
+                                            GameField.Defeat();
+                                            Field.frame[i][x] = Empty.value;
+                                            Field.frame[i + 1][x] = Rock.value;
+                                            Console.SetCursorPosition(x, i);
+                                            Console.Write(Empty.value);
+                                            Console.SetCursorPosition(x, i + 1);
+                                            Console.Write(Rock.value);
+                                        }
                                     }
                                 }
+                                catch { }
                             }
-                            catch { }
                         }
                     }
                 }
-
+                catch { }
                 Thread.Sleep(200);
             }
 
@@ -334,7 +344,7 @@ namespace Boulder_Dash_Project
         public static void AddScores()
         {
             GameField.score += 100;
-            if (GameField.score >= GameField.maxpoint) GameField.Win();
+            if (GameField.score >= GameField.maxpoint && TechnicalLevel == false) GameField.Win();
             Console.SetCursorPosition(1, 27);
             Console.Write("Score: " + GameField.score);
         }

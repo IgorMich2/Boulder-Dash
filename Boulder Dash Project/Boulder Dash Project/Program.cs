@@ -10,7 +10,7 @@ namespace Boulder_Dash_Project
         static void Main(string[] args)
         {
             int choose;
-
+            bool openfile = false;
             Console.ForegroundColor = ConsoleColor.Cyan;
 
             Thread music = new Thread(Music.MusicFunction);
@@ -33,6 +33,7 @@ namespace Boulder_Dash_Project
 
             while (true)
             {
+                Hero.FindHero();
                 Hero.steps = 0;
                 Hero.digs = 0;
                 GameField.maxpoint = 400;
@@ -41,16 +42,17 @@ namespace Boulder_Dash_Project
                 
                 while (choose == -1)
                 {
-                    Console.SetCursorPosition(Field.frame[1].Length, Field.frame.Count);
+                    Console.SetCursorPosition(40, 25);
+                    Console.Write("Last pressed key: ");
                     var keyInfo = Console.ReadKey();
                     Hero.MoveHero(keyInfo);
                     if (GameField.score == 100)
                     {
-                        for (int k = 6; k < Field.frame.Count; k++)
+                        for (int k = 7; k < Field.frame.Count; k++)
                         {
                             if (Field.frame[k][2] == Hero.value)
                             {
-                                choose = k - 5;
+                                choose = k - 6;
                                 break;
                             }
                         }
@@ -91,25 +93,28 @@ namespace Boulder_Dash_Project
                         }
                     case 5:
                         {
-                            GameField.GetArrayFromFile(@"6.txt");
+                            GameField.GetArrayFromFile("6.txt");
                             break;
                         }
                     case 6:
                         {
                             GameField.GetArrayFromFile("menu.txt");
                             Process.Start(new ProcessStartInfo(@"6.txt") { UseShellExecute = true });
+                            openfile = true;
                             break;
                         }
                     case 7:
                         {
                             GameField.GetArrayFromFile("menu.txt");
                             GameField.GetResults();
+                            openfile = true;
                             break;
                         }
                     case 8:
                         {
                             GameField.GetArrayFromFile("menu.txt");
                             GameField.GetBestResults();
+                            openfile = true;
                             break;
                         }
                     case 9:
@@ -119,8 +124,8 @@ namespace Boulder_Dash_Project
                         }
                     case 10:
                         {
-                            GameField.GetArrayFromFile("menu.txt");
-                            Process.Start(new ProcessStartInfo(@"instruction.txt") { UseShellExecute = true });
+                            GameField.GetArrayFromFile("instruction.txt");
+                            GameField.TechnicalLevel = true;
                             break;
                         }
                     case 11:
@@ -129,11 +134,11 @@ namespace Boulder_Dash_Project
                             break;
                         }
                 }
-                if (choose != 7 && choose != 6 && choose != 8 && choose != 10)
+                if (openfile == false && GameField.TechnicalLevel == false && GameField.Failedload == false)
                 {
                     GameField.Time = DateTime.Now;
-                    //Console.ForegroundColor = ConsoleColor.Cyan;
                     GameField.Renderer();
+                    Hero.FindHero();
                     Console.SetCursorPosition(1, 27);
                     Console.Write("Score: " + GameField.score);
                     Console.SetCursorPosition(1, 26);
@@ -141,7 +146,8 @@ namespace Boulder_Dash_Project
 
                     while (true)
                     {
-                        Console.SetCursorPosition(Field.frame[1].Length, Field.frame.Count);
+                        Console.SetCursorPosition(40, 25);
+                        Console.Write("Last pressed key: ");
                         var keyInfo = Console.ReadKey();
                         Hero.MoveHero(keyInfo);
 
@@ -159,6 +165,9 @@ namespace Boulder_Dash_Project
 
                         Console.SetCursorPosition(1, 30);
                         Console.Write("Time : " + DateTime.Now.Subtract(GameField.Time));
+
+                        Console.SetCursorPosition(40, 27);
+                        Console.Write("Digs: " + Hero.digs + " ");
                     }
 
                     if (GameField.win == true)
@@ -170,13 +179,32 @@ namespace Boulder_Dash_Project
                         GameField.EndLevel("Defeat");
                     }
                 }
-                GameField.score = 0;
+                else if (GameField.TechnicalLevel == true)
+                {
+                    GameField.Renderer();
+                    Hero.FindHero();
 
+                    while (true)
+                    {
+                        Console.SetCursorPosition(40, 25);
+                        Console.Write("Last pressed key: ");
+                        var keyInfo = Console.ReadKey();
+                        Hero.MoveHero(keyInfo);
+
+                        if (GameField.score >= GameField.maxpoint)
+                        {
+                            break;
+                        }
+                    }
+                }
+                GameField.score = 0;
+                openfile = false;
                 Console.Clear();
                 Field.frame.Clear();
                 Console.SetCursorPosition(0, 0);
                 GameField.GetArrayFromFile("menu.txt");
                 GameField.Renderer();
+                GameField.TechnicalLevel = false;
             }
         }
       

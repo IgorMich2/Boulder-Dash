@@ -8,10 +8,10 @@ namespace Boulder_Dash_Project
         public static int RocksDownGravity = 0;
 
 
-        public override string Value
+        /*public override string Value
         {
             get { return value; }
-        }
+        }*/
 
         public static int CountRock()
         {
@@ -50,6 +50,8 @@ namespace Boulder_Dash_Project
                             Console.SetCursorPosition(x, y + 1);
                             Console.Write(Rock.value);
                             RocksDownGravity++;
+                            Console.SetCursorPosition(40, 25);
+                            Console.Write("Last pressed key: ");
                         }
                     }
                 }
@@ -72,6 +74,8 @@ namespace Boulder_Dash_Project
                             Console.Write(Empty.value);
                             Console.SetCursorPosition(x, i + 1);
                             Console.Write(Rock.value);
+                            Console.SetCursorPosition(40, 25);
+                            Console.Write("Last pressed key: ");
                             RocksDownGravity++;
                         }
                     }

@@ -3,9 +3,9 @@
     class Empty : Cell
     {
         public static string value = " ";
-        public override string Value
+        /*public override string Value
         {
             get { return value; }
-        }
+        }*/
     }
 }

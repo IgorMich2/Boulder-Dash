@@ -2,6 +2,10 @@
 {
     abstract class Cell
     {
-        public abstract string Value { get; }
+        public  virtual string Value 
+        { 
+            get { return "0"; }
+        }
+        //public abstract char Value { get; }
     }
 }
