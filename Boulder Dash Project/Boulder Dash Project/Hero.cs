@@ -14,6 +14,8 @@ namespace Boulder_Dash_Project
         public static string value = "I";
         public static int RocksMoveByHero = 0;
 
+        public override char Value { get => 'I'; set => value = 'I'; }
+
 
         /*public override string Value
         {
@@ -22,11 +24,11 @@ namespace Boulder_Dash_Project
 
         public static void FindHero()
         {
-            for (int y = 0; y < Field.frame.Count; y++)
+            for (int y = 0; y < Field.frame2.Count; y++)
             {
-                for (int x = 0; x < Field.frame[y].Length; x++)
+                for (int x = 0; x < Field.frame2[y].Count; x++)
                 {
-                    if (Field.frame[y][x] == Hero.value)
+                    if (Field.frame2[y][x].Value == new Hero().Value)
                     {
                         Hero.x = x;
                         Hero.y = y;
@@ -101,40 +103,40 @@ namespace Boulder_Dash_Project
 
         public static void GoHero(int y, int x)
         {
-            if (x >= 0 && y >= 0 && (Field.frame[y][x] == Sand.value || Field.frame[y][x] == Empty.value))
+            if (x >= 0 && y >= 0 && (Field.frame2[y][x].Value == new Sand().Value || Field.frame2[y][x].Value == new Empty().Value))
             {
-                Field.frame[Hero.y][Hero.x] = Empty.value;
-                Field.frame[y][x] = Hero.value;
+                Field.frame2[Hero.y][Hero.x] = new Empty();
+                Field.frame2[y][x] = new Hero();
                 Console.SetCursorPosition(Hero.x, Hero.y);
-                Console.Write(Empty.value);
+                Console.Write(new Empty().Value);
                 Console.SetCursorPosition(x, y);
-                Console.Write(Hero.value);
+                Console.Write(new Hero().Value);
                 Hero.x = x;
                 Hero.y = y;
             }
-            else if (Field.frame[y][x] == Diamond.value)
+            else if (Field.frame2[y][x].Value == new Diamond().Value)
             {
-                Field.frame[Hero.y][Hero.x] = Empty.value;
-                Field.frame[y][x] = Hero.value;
+                Field.frame2[Hero.y][Hero.x] = new Empty();
+                Field.frame2[y][x] = new Hero();
                 Console.SetCursorPosition(Hero.x, Hero.y);
-                Console.Write(Empty.value);
+                Console.Write(new Empty().Value);
                 Console.SetCursorPosition(x, y);
-                Console.Write(Hero.value);
+                Console.Write(new Hero().Value);
                 GameField.AddScores();
                 Hero.x = x;
                 Hero.y = y;
             }
-            else if (x + (x - Hero.x) > 0 && x + (x - Hero.x) < Field.frame[0].Length && Math.Abs(x - Hero.x) == 1 && Field.frame[y][x + (x-Hero.x)] == Empty.value && Field.frame[y][x] == Rock.value)
+            else if (x + (x - Hero.x) > 0 && x + (x - Hero.x) < Field.frame2[0].Count && Math.Abs(x - Hero.x) == 1 && Field.frame2[y][x + (x-Hero.x)].Value == new Empty().Value && Field.frame2[y][x].Value == new Rock().Value)
             {
-                Field.frame[y][Hero.x] = Empty.value;
-                Field.frame[y][x] = Hero.value;
-                Field.frame[y][x + (x-Hero.x)] = Rock.value;
+                Field.frame2[y][Hero.x] = new Empty();
+                Field.frame2[y][x] = new Hero();
+                Field.frame2[y][x + (x-Hero.x)] = new Rock();
                 Console.SetCursorPosition(Hero.x, Hero.y);
-                Console.Write(Empty.value);
+                Console.Write(new Empty().Value);
                 Console.SetCursorPosition(x, y);
-                Console.Write(Hero.value);
+                Console.Write(new Hero().Value);
                 Console.SetCursorPosition(x + (x-Hero.x), y);
-                Console.Write(Rock.value);
+                Console.Write(new Rock().Value);
                 Hero.x = x;
                 Hero.y = y;
                 RocksMoveByHero++;
@@ -143,32 +145,12 @@ namespace Boulder_Dash_Project
         }
         public static void GoDig(int y, int x)
         {
-            if (Field.frame[y][x] == Sand.value)
+            if (Field.frame2[y][x].Value == new Sand().Value)
             {
-                Field.frame[y][x] = Empty.value;
+                Field.frame2[y][x] = new Empty();
                 Console.SetCursorPosition(x, y);
-                Console.Write(Empty.value);
+                Console.Write(new Empty().Value);
                 digs++;
-            }
-        }
-
-
-        public static void GoDigRight(ref int y, ref int x)
-        {
-            if ((x - 1) <= (Field.frame[y].Length - 1) && Field.frame[y][x + 1] == Sand.value)
-            {
-                Field.frame[y][x + 1] = Empty.value;
-                Console.SetCursorPosition(x + 1, y);
-                Console.Write(Empty.value);
-            }
-        }
-        public static void GoDigLeft(ref int y, ref int x)
-        {
-            if ((x - 1) >= 0 && Field.frame[y][x - 1] == Sand.value)
-            {
-                Field.frame[y][x - 1] = Empty.value;
-                Console.SetCursorPosition(x - 1, y);
-                Console.Write(Empty.value);
             }
         }
     }

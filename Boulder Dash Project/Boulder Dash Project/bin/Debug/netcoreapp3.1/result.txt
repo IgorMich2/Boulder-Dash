@@ -1,10 +1,10 @@
-Name: Vitalik
+Name: Petya
 Result: Win
-Score: 3400
-Steps: 471
-Digs: 7
-Lives at the end: 499
-Time: 00:02:03.3177796
-Rock down by gravity: 34
-Rock moved by hero: 0
+Score: 3500
+Steps: 139
+Digs: 0
+Lives at the end: 490
+Time: 00:00:30.9490733
+Rock down by gravity: 17
+Rock moved by hero: 3
 Result: Win

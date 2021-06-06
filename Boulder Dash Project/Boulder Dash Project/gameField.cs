@@ -11,8 +11,28 @@ using System.Collections.Generic;
 using System.Media;
 using System.Drawing;
 
+
+
+
 namespace Boulder_Dash_Project
 {
+    public static class StringException
+    {
+        
+    }
+
+    public static class ArrayExtensions
+    {
+        public static void Fill<T>(this T[] originalArray, T item)
+        {
+            for (int i = 0; i < originalArray.Length; i++)
+            {
+                originalArray[i] = item;
+            }
+        }
+    }
+
+
     class GameField : Field
     {
         public static string s = Path.GetFullPath("Results.mdf");
@@ -35,6 +55,26 @@ namespace Boulder_Dash_Project
         public static List<string> Results = new List<string>();
 
         public static bool win = false;
+
+        public static Cell ToCell(string symbol)
+        {
+            switch (symbol)
+            {
+                case "@":
+                    return new Diamond();
+                case "*":
+                    return new Sand();
+                case " ":
+                    return new Empty();
+                case "I":
+                    return new Hero();
+                case "o":
+                    return new Rock();
+            }
+            return new NewCell(Convert.ToChar(symbol));
+            throw new ArgumentException();
+        }
+
 
         public static void Win()
         {
@@ -165,7 +205,7 @@ namespace Boulder_Dash_Project
         public static void EndLevel(string result)
         {
             Console.Clear();
-            Field.frame.Clear();
+            Field.frame2.Clear();
             GameField.GetArrayFromFile("empty.txt");
             GameField.Renderer();
             Console.SetCursorPosition(0, 0);
@@ -222,6 +262,7 @@ namespace Boulder_Dash_Project
             int rowCount = lines.Length;
             int SizeOfLine = lines[0].Length;
             Failedload = false;
+
             for (int i = 0; i < rowCount; i++)
             {
                 char[] line = lines[i].ToCharArray();
@@ -230,16 +271,31 @@ namespace Boulder_Dash_Project
                     Failedload=true;
                     break;
                 }
-                string[] strline = new string[line.Length];
+                List<Cell> Temp = new List<Cell>();
+                for (int k = 0; k < line.Length; k++)
+                {
+                    
+                    string temp = Convert.ToString(line[k]);
+                    Temp.Add(ToCell(temp));
+                    if (Temp[k].Value == new Diamond().Value)
+                        {
+                            GameField.maxpoint = GameField.maxpoint + 100;
+                        }
+
+
+                    
+                }
+                frame2.Add(Temp);
+                /*string[] strline = new string[line.Length];
                 for (int k = 0; k < line.Length; k++)
                 {
                     strline[k] = Convert.ToString(line[k]);
-                    if (strline[k] == Diamond.value)
+                    if (strline[k] == new Diamond())
                     {
                         GameField.maxpoint = GameField.maxpoint + 100;
                     }
                 }
-                frame.Add(strline);
+                frame.Add(strline);*/
             }
         }
 
@@ -249,16 +305,16 @@ namespace Boulder_Dash_Project
 
             using (StreamWriter sw = new StreamWriter(writePath))
             {
-                for (int j = 0; j < Field.frame[0].Length; j++)
+                for (int j = 0; j < Field.frame2[0].Count; j++)
                 {
                     sw.Write(String.Format("{0}", "-"));
                 }
                 sw.WriteLine("");
-                for (int i = 0; i < Field.frame.Count; i++)
+                for (int i = 0; i < Field.frame2.Count; i++)
                 {
-                    for (int j = 0; j < Field.frame[0].Length; j++)
+                    for (int j = 0; j < Field.frame2[0].Count; j++)
                     {
-                        sw.Write(String.Format("{0}", Field.frame[i][j]));
+                        sw.Write(String.Format("{0}", Field.frame2[i][j]));
                     }
                     sw.WriteLine("");
                 }
@@ -296,15 +352,15 @@ namespace Boulder_Dash_Project
             {
                 try
                 {
-                    for (int i = 0; i <= Field.frame.Count - 1; i++)
+                    for (int i = 0; i <= Field.frame2.Count - 1; i++)
                     {
-                        for (int x = 0; x <= Field.frame[i].Length - 1; x++)
+                        for (int x = 0; x <= Field.frame2[i].Count - 1; x++)
                         {
-                            if (Field.frame[i][x] == Rock.value)
+                            if (Field.frame2[i][x].Value == new Rock().Value)
                             {
                                 try
                                 {
-                                    if (Field.frame[i + 1][x] == Hero.value)
+                                    if (Field.frame2[i + 1][x].Value == new Hero().Value)
                                     {
                                         Hero.lives = Hero.lives - 1;
                                         Console.SetCursorPosition(1, 26);
@@ -312,12 +368,12 @@ namespace Boulder_Dash_Project
                                         if (Hero.lives == 0)
                                         {
                                             GameField.Defeat();
-                                            Field.frame[i][x] = Empty.value;
-                                            Field.frame[i + 1][x] = Rock.value;
+                                            Field.frame2[i][x].Value = new Empty().Value;
+                                            Field.frame2[i + 1][x].Value = new Rock().Value;
                                             Console.SetCursorPosition(x, i);
-                                            Console.Write(Empty.value);
+                                            Console.Write(new Empty().Value);
                                             Console.SetCursorPosition(x, i + 1);
-                                            Console.Write(Rock.value);
+                                            Console.Write(new Rock().Value);
                                         }
                                     }
                                 }
@@ -333,11 +389,19 @@ namespace Boulder_Dash_Project
         }
         public static void Renderer()
         {
-            Console.Clear();
+            for (int i = 0; i < Field.frame2.Count; i++)
+            {
+                for (int j=0; j < Field.frame2[0].Count; j++)
+                {
+                    Console.Write(Field.frame2[i][j].Value);
+                }
+                Console.WriteLine("");
+            }
+            /*Console.Clear();
             for (int i = 0; i < Field.frame.Count; i++)
             {
                 Console.WriteLine(string.Join("", Field.frame[i]));
-            }
+            }*/
         }
 
         

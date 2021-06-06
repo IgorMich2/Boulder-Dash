@@ -48,9 +48,9 @@ namespace Boulder_Dash_Project
                     Hero.MoveHero(keyInfo);
                     if (GameField.score == 100)
                     {
-                        for (int k = 7; k < Field.frame.Count; k++)
+                        for (int k = 7; k < Field.frame2.Count; k++)
                         {
-                            if (Field.frame[k][2] == Hero.value)
+                            if (Field.frame2[k][2].Value == new Hero().Value)
                             {
                                 choose = k - 6;
                                 break;
@@ -60,7 +60,7 @@ namespace Boulder_Dash_Project
                 }
 
                 Console.Clear();
-                Field.frame.Clear();
+                Field.frame2.Clear();
                 Console.SetCursorPosition(0, 0);
                 GameField.score = 0;
                 GameField.maxpoint = 0;
@@ -200,7 +200,7 @@ namespace Boulder_Dash_Project
                 GameField.score = 0;
                 openfile = false;
                 Console.Clear();
-                Field.frame.Clear();
+                Field.frame2.Clear();
                 Console.SetCursorPosition(0, 0);
                 GameField.GetArrayFromFile("menu.txt");
                 GameField.Renderer();

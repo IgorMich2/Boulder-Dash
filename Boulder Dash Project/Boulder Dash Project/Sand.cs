@@ -1,11 +1,10 @@
-﻿namespace Boulder_Dash_Project
+﻿using System;
+namespace Boulder_Dash_Project
 {
     class Sand : Cell
     {
         public static string value = "*";
-        public override string Value
-        {
-            get { return value; }
-        }
+        public override char Value { get => '*'; set => value = '*'; }
+
     }
 }

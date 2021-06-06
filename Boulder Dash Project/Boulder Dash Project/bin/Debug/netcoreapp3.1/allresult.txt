@@ -42,3 +42,25 @@ Rock down by gravity: 34
 Rock moved by hero: 0
 Result: Win       
 
+Id: 9
+Name: Watcher
+Result: 3400
+Steps: 437
+Digs: 0
+Lives at the end: 500
+Time: 00:01:15.2806328
+Rock down by gravity: 0
+Rock moved by hero: 5
+Result: Win       
+
+Id: 10
+Name: Petya
+Result: 3500
+Steps: 139
+Digs: 0
+Lives at the end: 490
+Time: 00:00:32.8259754
+Rock down by gravity: 17
+Rock moved by hero: 3
+Result: Win       
+
