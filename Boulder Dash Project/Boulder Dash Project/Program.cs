@@ -46,6 +46,7 @@ namespace Boulder_Dash_Project
                     Console.Write("Last pressed key: ");
                     var keyInfo = Console.ReadKey();
                     Hero.MoveHero(keyInfo);
+                    Console.Write("                   ");
                     if (GameField.score == 100)
                     {
                         for (int k = 7; k < Field.frame2.Count; k++)
@@ -149,6 +150,7 @@ namespace Boulder_Dash_Project
                         Console.SetCursorPosition(40, 25);
                         Console.Write("Last pressed key: ");
                         var keyInfo = Console.ReadKey();
+                        Console.Write("                   ");
                         Hero.MoveHero(keyInfo);
 
                         if (GameField.score >= GameField.maxpoint)
@@ -157,10 +159,10 @@ namespace Boulder_Dash_Project
                         }
 
                         Console.SetCursorPosition(1, 29);
-                        Console.Write("Deadlock: " + !GenerationLevel.BFS(Hero.y, Hero.x) + " ");
+                        Console.Write("Deadlock: " + !GenerationLevel.DFS(Hero.y, Hero.x) + " ");
 
                         Console.SetCursorPosition(1, 28);
-                        Console.Write("Steps to @: " + GenerationLevel.BFS_help(Hero.y, Hero.x));
+                        Console.Write("Steps to @: " + GenerationLevel.BFSRadar(Hero.y, Hero.x));
                         Console.Write("    ");
 
                         Console.SetCursorPosition(1, 30);
@@ -190,6 +192,7 @@ namespace Boulder_Dash_Project
                         Console.Write("Last pressed key: ");
                         var keyInfo = Console.ReadKey();
                         Hero.MoveHero(keyInfo);
+                        Console.Write("                   ");
 
                         if (GameField.score >= GameField.maxpoint)
                         {
