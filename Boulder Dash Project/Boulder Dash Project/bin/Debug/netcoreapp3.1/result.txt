@@ -1,7 +1,10 @@
-Name: Google
+Name: Petya
 Result: Win
-Score: 3400
-Steps: 28
-Digs: 12
-Lives at the end: 500
-Time: 00:01:50.4624094
+Score: 3500
+Steps: 139
+Digs: 0
+Lives at the end: 490
+Time: 00:00:30.9490733
+Rock down by gravity: 17
+Rock moved by hero: 3
+Result: Win

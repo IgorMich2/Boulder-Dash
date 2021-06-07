@@ -1,17 +1,4 @@
-Name: Igor    Result: 4600
-Name: Google    Result: 3400
+Name: Vitaliy Lyapota    Result: 14000
+Name: Igor    Result: 11500
+Name: Igor Michurin    Result: 3400
 Name: Vitalik    Result: 3400
-Name: Denis    Result: 3400
-Name: igor2    Result: 3400
-Name: Vitalij Ljapota    Result: 3400
-Name: Anna    Result: 3400
-Name: Mary    Result: 3400
-Name: Den    Result: 3400
-Name: Alex    Result: 3400
-Name: Igor    Result: 3400
-Name: Asd    Result: 3400
-Name: 555    Result: 3400
-Name: Igor    Result: 1000
-Name: Igor    Result: 1000
-Name: Igor    Result: 1000
-Name: Igor    Result: 900

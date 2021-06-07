@@ -1,68 +1,66 @@
-Id: 1
-Name: Igor
-Result: 1000
-
-Id: 2
-Name: Igor
-Result: 1000
-
-Id: 3
-Name: Igor
-Result: 1000
-
-Id: 4
-Name: Igor
-Result: 900
-
 Id: 5
-Name: Vitalik
-Result: 3400
+Name: Igor
+Result: 11500
+Steps: 0
+Digs: 0
+Lives at the end: 500
+Time: 00:00:13.0497292
+Rock down by gravity: 0
+Rock moved by hero: 0
+Result: Win       
 
 Id: 6
-Name: Denis
-Result: 3400
+Name: Vitaliy Lyapota
+Result: 14000
+Steps: 0
+Digs: 0
+Lives at the end: 500
+Time: 00:00:35.0353526
+Rock down by gravity: 0
+Rock moved by hero: 0
+Result: Win       
 
 Id: 7
-Name: igor2
+Name: Igor Michurin
 Result: 3400
+Steps: 642
+Digs: 7
+Lives at the end: 500
+Time: 00:09:19.9524423
+Rock down by gravity: 8
+Rock moved by hero: 18
+Result: Win       
 
 Id: 8
-Name: Vitalij Ljapota
+Name: Vitalik
 Result: 3400
+Steps: 471
+Digs: 7
+Lives at the end: 499
+Time: 00:02:05.8730389
+Rock down by gravity: 34
+Rock moved by hero: 0
+Result: Win       
 
 Id: 9
-Name: Anna
+Name: Watcher
 Result: 3400
+Steps: 437
+Digs: 0
+Lives at the end: 500
+Time: 00:01:15.2806328
+Rock down by gravity: 0
+Rock moved by hero: 5
+Result: Win       
 
 Id: 10
-Name: Mary
-Result: 3400
-
-Id: 11
-Name: Den
-Result: 3400
-
-Id: 12
-Name: Alex
-Result: 3400
-
-Id: 13
-Name: Igor
-Result: 3400
-
-Id: 14
-Name: Asd
-Result: 3400
-
-Id: 15
-Name: 555
-Result: 3400
-
-Id: 16
-Name: Igor
-Result: 4600
-
-Id: 17
-Name: Google
-Result: 3400
+Name: Petya
+Result: 3500
+Steps: 139
+Digs: 0
+Lives at the end: 490
+Time: 00:00:32.8259754
+Rock down by gravity: 17
+Rock moved by hero: 3
+Result: Win       
 
