@@ -188,5 +188,152 @@ namespace Boulder_Dash_Project
             while (BFS_res == false);
 
         }
+
+        public static void Intellectual()
+        {
+            int temp, bs = 0, bd = 0, br = 0;
+            char prev = new Sand().Value;
+            do
+            {
+                DFSX.Clear();
+                DFSY.Clear();
+
+                GameField.maxpoint = 0;
+                bs = 0; bd = 0; br = 0;
+                prev = new Sand().Value;
+                for (int i = 1; i < Field.frame2.Count - 1; i++)
+                {
+                    for (int x = 1; x < Field.frame2[i].Count - 1; x++)
+                    {
+                        temp = randomNumber.Next() % 100;
+                        if (prev == new Sand().Value)
+                        {
+                            bs = 10;
+                            bd = 0;
+                            br = 0;
+                        }
+                        else if (prev == new Diamond().Value)
+                        {
+                            bs = 0;
+                            bd = 10;
+                            br = 0;
+                        }
+                        else if (prev == new Rock().Value)
+                        {
+                            bs = 0;
+                            bd = 0;
+                            br = 10;
+                        }
+                        if (temp < (70 + bs - bd - br))
+                        {
+                            Field.frame2[i][x] = new Sand();
+                            prev = new Sand().Value;
+                        }
+                        else if (temp < 80 + bs + bd - br)
+                        {
+                            Field.frame2[i][x] = new Diamond();
+                            GameField.maxpoint += 100;
+                            prev = new Diamond().Value;
+                        }
+                        else if (temp < 100 + bs + bd + br)
+                        {
+                            Field.frame2[i][x] = new Rock();
+                            prev = new Rock().Value;
+                        }
+                    }
+                }
+
+
+                int h = randomNumber.Next() % 12, w = randomNumber.Next() % 14, num;
+                for (int i = 0; i < h; i++)
+                {
+                    num = randomNumber.Next() % 14;
+                    if (num < 3)
+                    {
+                        num = num + 3;
+                    }
+                    for (int x = 1; x < Field.frame2[0].Count - 1; x++)
+                    {
+                        temp = randomNumber.Next() % 100;
+                        prev = new Rock().Value;
+                        if (prev == new Sand().Value)
+                        {
+                            bs = 10;
+                            br = 0;
+                        }
+                        else if (prev == new Rock().Value)
+                        {
+                            bs = 0;
+                            br = 10;
+                        }
+                        if (temp < 70 + br - bs)
+                        {
+                            if (Field.frame2[num][x].Value == new Diamond().Value)
+                            {
+                                GameField.maxpoint = GameField.maxpoint - 100;
+                            }
+                            Field.frame2[num][x] = new Rock();
+                            prev = new Rock().Value;
+                        }
+                        else
+                        {
+                            if (Field.frame2[num][x].Value == new Diamond().Value)
+                            {
+                                GameField.maxpoint = GameField.maxpoint - 100;
+                            }
+                            Field.frame2[num][x] = new Sand();
+                            prev = new Sand().Value ;
+                        }
+                    }
+                }
+                for (int i = 0; i < w; i++)
+                {
+                    num = randomNumber.Next() % 77;
+                    if (num < 3)
+                    {
+                        num = num + 3;
+                    }
+                    for (int x = 1; x < Field.frame2.Count - 1; x++)
+                    {
+                        temp = randomNumber.Next() % 100;
+                        prev = new Rock().Value;
+                        if (prev == new Sand().Value)
+                        {
+                            bs = 10;
+                            br = 0;
+                        }
+                        else if (prev == new Rock().Value)
+                        {
+                            bs = 0;
+                            br = 10;
+                        }
+                        if (temp < 70 + br - bs)
+                        {
+                            if (Field.frame2[x][num].Value == new Diamond().Value)
+                            {
+                                GameField.maxpoint = GameField.maxpoint - 100;
+                            }
+                            Field.frame2[x][num] = new Rock();
+                            prev = new Rock().Value;
+                        }
+                        else
+                        {
+                            if (Field.frame2[x][num].Value == new Diamond().Value)
+                            {
+                                GameField.maxpoint = GameField.maxpoint - 100;
+                            }
+                            Field.frame2[x][num] = new Sand();
+                            prev = new Sand().Value;
+                        }
+                    }
+                }
+
+
+                Field.frame2[1][1] = new Hero();
+                BFS_res = DFS(1, 1);
+            }
+            while (BFS_res == false);
+            //gameField.Renderer(Boulder);
+        }
     }
 }
