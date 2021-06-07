@@ -92,44 +92,51 @@ namespace Boulder_Dash_Project
                             GenerationLevel.Random2();
                             break;
                         }
+                        
                     case 5:
+                        {
+                            GameField.GetArrayFromFile("4.txt");
+                            GenerationLevel.Intellectual();
+                            break;
+                        }
+                    case 6:
                         {
                             GameField.GetArrayFromFile("6.txt");
                             break;
                         }
-                    case 6:
+                    case 7:
                         {
                             GameField.GetArrayFromFile("menu.txt");
                             Process.Start(new ProcessStartInfo(@"6.txt") { UseShellExecute = true });
                             openfile = true;
                             break;
                         }
-                    case 7:
+                    case 8:
                         {
                             GameField.GetArrayFromFile("menu.txt");
                             GameField.GetResults();
                             openfile = true;
                             break;
                         }
-                    case 8:
+                    case 9:
                         {
                             GameField.GetArrayFromFile("menu.txt");
                             GameField.GetBestResults();
                             openfile = true;
                             break;
                         }
-                    case 9:
+                    case 10:
                         {
                             GameField.GetArrayFromFile("save.txt");
                             break;
                         }
-                    case 10:
+                    case 11:
                         {
                             GameField.GetArrayFromFile("instruction.txt");
                             GameField.TechnicalLevel = true;
                             break;
                         }
-                    case 11:
+                    case 12:
                         {
                             System.Environment.Exit(0);
                             break;
