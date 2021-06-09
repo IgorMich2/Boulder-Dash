@@ -92,8 +92,8 @@ namespace Boulder_Dash_Project
                 music.Start();
             }
 
-            Logic.Coordinates();
-            Logic.Steps();
+            Output.Coordinates();
+            Output.Steps();
 
         }
 
@@ -108,8 +108,8 @@ namespace Boulder_Dash_Project
                 }
                 Field.frame[Hero.y][Hero.x] = new Empty();
                 Field.frame[y][x] = new Hero();
-                Logic.PrintCell(Hero.x, Hero.y, new Empty());
-                Logic.PrintCell(x, y, new Hero()); 
+                Output.PrintCell(Hero.x, Hero.y, new Empty());
+                Output.PrintCell(x, y, new Hero()); 
                 Hero.x = x;
                 Hero.y = y;
                 if (isdiamond)
@@ -122,9 +122,9 @@ namespace Boulder_Dash_Project
                 Field.frame[y][Hero.x] = new Empty();
                 Field.frame[y][x] = new Hero();
                 Field.frame[y][x + (x-Hero.x)] = new Rock();
-                Logic.PrintCell(Hero.x, Hero.y, new Empty());
-                Logic.PrintCell(x, y, new Hero());
-                Logic.PrintCell(x + (x - Hero.x), y, new Rock());
+                Output.PrintCell(Hero.x, Hero.y, new Empty());
+                Output.PrintCell(x, y, new Hero());
+                Output.PrintCell(x + (x - Hero.x), y, new Rock());
                 Hero.x = x;
                 Hero.y = y;
                 RocksMoveByHero++;
@@ -136,7 +136,7 @@ namespace Boulder_Dash_Project
             if (Field.frame[y][x].Value == new Sand().Value)
             {
                 Field.frame[y][x] = new Empty();
-                Logic.PrintCell(x, y, new Empty());
+                Output.PrintCell(x, y, new Empty());
                 digs++;
             }
         }

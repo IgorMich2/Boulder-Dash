@@ -33,7 +33,7 @@ namespace Boulder_Dash_Project
             {
                 DFSX.Add(i1);
                 DFSY.Add(i2);
-                if (Field.frame[i1][i2].CanEnter() == true)
+                if (Field.frame[i1][i2].CanEnter())
                 {
                     if (Field.frame[i1][i2].Value == new Diamond().Value)
                     {
@@ -63,11 +63,14 @@ namespace Boulder_Dash_Project
 
         public static void AddToQuery(int dy, int dx)
         {
-            if (Visited[BFSQuery[0].y + dy][BFSQuery[0].x + dx] == false && (Field.frame[BFSQuery[0].y + dy][BFSQuery[0].x + dx].CanEnter() == true))
+            int y = BFSQuery[0].y + dy;
+            int x = BFSQuery[0].x + dx;
+            int distance = BFSQuery[0].distance + 1;
+
+            if (!Visited[y][x] && Field.frame[y][x].CanEnter())
             {
-                var tuple = (BFSQuery[0].y + dy, BFSQuery[0].x + dx, BFSQuery[0].distance + 1);
-                BFSQuery.Add(tuple);
-                Visited[BFSQuery[0].y + dy][BFSQuery[0].x + dx] = true;
+                BFSQuery.Add((y, x, distance));
+                Visited[y][x] = true;
             }
         }
 

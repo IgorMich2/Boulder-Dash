@@ -116,12 +116,12 @@ namespace Boulder_Dash_Project
 
         public static void EndLevel(string result)
         {
-            Logic.Clear();
+            Output.Clear();
             Field.frame.Clear();
             Levels.GetArrayFromFile("empty.txt");
             Levels.Renderer();
 
-            string name = Logic.GetName();
+            string name = Output.GetName();
 
             string writePath = "result.txt";
 
@@ -160,7 +160,7 @@ namespace Boulder_Dash_Project
             }
             catch (SqlException ex)
             {
-                Logic.Exception(ex);
+                Output.Exception(ex);
             }
 
         }

@@ -82,9 +82,9 @@ namespace Boulder_Dash_Project
             {
                 for (int j = 0; j < Field.frame[0].Count; j++)
                 {
-                    Logic.PrintCellSimple(Field.frame[i][j]);
+                    Output.PrintCellSimple(Field.frame[i][j]);
                 }
-                Logic.PrintSeparator();
+                Output.PrintSeparator();
             }
         }
     }

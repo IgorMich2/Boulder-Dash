@@ -40,9 +40,9 @@ namespace Boulder_Dash_Project
                         {
                             Field.frame[y][x] = new Empty();
                             Field.frame[y + 1][x] = new Rock();
-                            Logic.PrintCell(x, y, new Empty());
-                            Logic.PrintCell(x, y+1, new Rock());
-                            Logic.LastPressedKey();
+                            Output.PrintCell(x, y, new Empty());
+                            Output.PrintCell(x, y+1, new Rock());
+                            Output.LastPressedKey();
                             RocksDownGravity++;      
                         }
                     }
@@ -62,9 +62,9 @@ namespace Boulder_Dash_Project
                         {
                             Field.frame[y][x] = new Empty();
                             Field.frame[y + 1][x] = new Rock();
-                            Logic.PrintCell(x, y, new Empty());
-                            Logic.PrintCell(x, y + 1, new Rock());
-                            Logic.LastPressedKey();
+                            Output.PrintCell(x, y, new Empty());
+                            Output.PrintCell(x, y + 1, new Rock());
+                            Output.LastPressedKey();
                             RocksDownGravity++;
                         }
                     }

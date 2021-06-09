@@ -11,7 +11,7 @@ namespace Boulder_Dash_Project
         {
             int choose;
             bool openfile = false;
-            Logic.SetColor();
+            Output.SetColor();
 
             Thread music = new Thread(Music.MusicFunction);
             music.Priority = ThreadPriority.Normal;
@@ -42,10 +42,10 @@ namespace Boulder_Dash_Project
                 
                 while (choose == -1)
                 {
-                    Logic.LastPressedKey();
-                    var keyInfo = Logic.GetKey();
+                    Output.LastPressedKey();
+                    var keyInfo = Output.GetKey();
                     Hero.MoveHero(keyInfo);
-                    Logic.BigSpace();
+                    Output.BigSpace();
                     if (GameField.score == 100)
                     {
                         for (int k = 7; k < Field.frame.Count; k++)
@@ -59,9 +59,9 @@ namespace Boulder_Dash_Project
                     }
                 }
 
-                Logic.Clear();
+                Output.Clear();
                 Field.frame.Clear();
-                Logic.SetToZero();
+                Output.SetToZero();
                 GameField.score = 0;
                 GameField.maxpoint = 0;
                 Hero.steps = 0;
@@ -145,14 +145,14 @@ namespace Boulder_Dash_Project
                     GameField.Time = DateTime.Now;
                     Levels.Renderer();
                     Hero.FindHero();
-                    Logic.Score();
-                    Logic.Lives();
+                    Output.Score();
+                    Output.Lives();
                     GameField.GameStatus = true;
                     while (true)
                     {
-                        Logic.LastPressedKey();
-                        var keyInfo = Logic.GetKey();
-                        Logic.BigSpace();
+                        Output.LastPressedKey();
+                        var keyInfo = Output.GetKey();
+                        Output.BigSpace();
                         Hero.MoveHero(keyInfo);
 
                         if (GameField.score >= GameField.maxpoint)
@@ -160,10 +160,10 @@ namespace Boulder_Dash_Project
                             break;
                         }
 
-                        Logic.Deadlock();
-                        Logic.Radar();
-                        Logic.Time();
-                        Logic.Digs();
+                        Output.Deadlock();
+                        Output.Radar();
+                        Output.Time();
+                        Output.Digs();
                     }
                     GameField.GameStatus = false;
                     if (GameField.win == true)
@@ -182,10 +182,10 @@ namespace Boulder_Dash_Project
 
                     while (true)
                     {
-                        Logic.LastPressedKey();
-                        var keyInfo = Logic.GetKey();
+                        Output.LastPressedKey();
+                        var keyInfo = Output.GetKey();
                         Hero.MoveHero(keyInfo);
-                        Logic.BigSpace();
+                        Output.BigSpace();
 
                         if (GameField.score >= GameField.maxpoint)
                         {
@@ -195,10 +195,10 @@ namespace Boulder_Dash_Project
                 }
                 GameField.score = 0;
                 openfile = false;
-                Logic.Clear();
+                Output.Clear();
                 Field.frame.Clear();
-                Logic.SetToZero();
-                Logic.SetToZero();
+                Output.SetToZero();
+                Output.SetToZero();
                 Levels.GetArrayFromFile("menu.txt");
                 Levels.Renderer();
                 GameField.TechnicalLevel = false;

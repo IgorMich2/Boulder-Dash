@@ -29,13 +29,13 @@ namespace Boulder_Dash_Project
 
             Process.Start(new ProcessStartInfo(@"win.mp4") { UseShellExecute = true });
 
-            Logic.Clear();
-            Logic.Message("Win!");
+            Output.Clear();
+            Output.Message("Win!");
 
             Thread.Sleep(5000);
             player.Stop();
             score = maxpoint;
-            Logic.Clear();
+            Output.Clear();
             win = true;
         }
 
@@ -45,12 +45,12 @@ namespace Boulder_Dash_Project
             player.Play();
             Process.Start(new ProcessStartInfo(@"defeat.mp4") { UseShellExecute = true });
 
-            Logic.Clear();
-            Logic.Message("Defeat!");
+            Output.Clear();
+            Output.Message("Defeat!");
             Thread.Sleep(3000);
             player.Stop();
 
-            Logic.Clear();
+            Output.Clear();
 
             win = false;
         }

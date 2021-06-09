@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Boulder_Dash_Project
 {
-    class Logic
+    class Output
     {
         public static void PrintCell(int x, int y, Cell PrintedCell)
         {
@@ -71,7 +71,7 @@ namespace Boulder_Dash_Project
         {
             Console.SetCursorPosition(1, 28);
             Console.Write("Steps to @: " + GenerationLevel.BFSRadar(Hero.y, Hero.x));
-            Logic.BigSpace();
+            Output.BigSpace();
         }
 
         public static void Time()
