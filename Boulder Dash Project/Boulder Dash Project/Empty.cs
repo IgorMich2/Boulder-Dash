@@ -4,13 +4,11 @@ namespace Boulder_Dash_Project
 {
     class Empty : Cell
     {
-        public static char value = ' ';
+        public override char Value { get => ' '; }
 
-        public override char Value { get => ' '; set => value = ' '; }
-
-        /*public override string Value
+        public override bool CanEnter()
         {
-            get { return value; }
-        }*/
+            return true;
+        }
     }
 }

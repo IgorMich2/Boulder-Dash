@@ -7,13 +7,17 @@ namespace Boulder_Dash_Project
     {
         static Random randomNumber = new Random();
 
-        static bool BFS_res = false;
-        static int BFS_score;
+        static bool BFSResult = false;
+        public static int BFSScore = 0;
+
+        public static (int, int, int) point;
 
         static List<int> DFSX = new List<int>();
         static List<int> DFSY = new List<int>();
 
-        static List<(int, int, int)> BFSQuery = new List<(int, int, int)>();
+        public static List<List<bool>> Visited = new List<List<bool>>();
+
+        static List<(int y , int x , int distance)> BFSQuery = new List<(int y, int x , int distance)>();
 
         public static void DFSStep(int i1, int i2)
         {
@@ -24,109 +28,92 @@ namespace Boulder_Dash_Project
                     return;
                 }
             }
-            try
+
+            if (i1 > 0 && i2 > 0 && i1 < Field.frame.Count - 1 && i2 < Field.frame[0].Count - 1)
             {
-                if (Field.frame2[i1][i2].Value == new Diamond().Value)
+                DFSX.Add(i1);
+                DFSY.Add(i2);
+                if (Field.frame[i1][i2].CanEnter() == true)
                 {
-                    BFS_score = BFS_score + 100;
-                    DFSX.Add(i1);
-                    DFSY.Add(i2);
+                    if (Field.frame[i1][i2].Value == new Diamond().Value)
+                    {
+                        BFSScore = BFSScore + 100;
+                    }
                     DFSStep(i1 + 1, i2);
                     DFSStep(i1 - 1, i2);
                     DFSStep(i1, i2 + 1);
                     DFSStep(i1, i2 - 1);
                 }
-                else if (Field.frame2[i1][i2].Value == new Hero().Value || Field.frame2[i1][i2].Value == new Sand().Value || Field.frame2[i1][i2].Value == new Empty().Value)
-                {
-                    DFSX.Add(i1);
-                    DFSY.Add(i2);
-                    DFSStep(i1 + 1, i2);
-                    DFSStep(i1 - 1, i2);
-                    DFSStep(i1, i2 + 1);
-                    DFSStep(i1, i2 - 1);
-                }
-                else
-                {
-                    DFSX.Add(i1);
-                    DFSY.Add(i2);
-                    return;
-                }
+                return;
             }
-            catch { }
         }
 
         public static bool DFS(int x0, int y0)
         {
             DFSX.Clear();
             DFSY.Clear();
-            BFS_score = 0 + GameField.score;
+            BFSScore = 0 + GameField.score;
             DFSStep(x0, y0);
-            if (BFS_score >= GameField.maxpoint)
+            if (BFSScore >= GameField.maxpoint)
             {
                 return true;
             }
             return false;
         }
 
-        public static (int, int, int) BFSRadarStep((int, int, int) point2)
+        public static void AddToQuery(int dy, int dx)
         {
-            List<List<bool>> Visited = new List<List<bool>>();
-            for (int i = 0; i < Field.frame2.Count; i++)
+            if (Visited[BFSQuery[0].y + dy][BFSQuery[0].x + dx] == false && (Field.frame[BFSQuery[0].y + dy][BFSQuery[0].x + dx].CanEnter() == true))
+            {
+                var tuple = (BFSQuery[0].y + dy, BFSQuery[0].x + dx, BFSQuery[0].distance + 1);
+                BFSQuery.Add(tuple);
+                Visited[BFSQuery[0].y + dy][BFSQuery[0].x + dx] = true;
+            }
+        }
+
+        public static int BFSRadarStep((int, int, int) point)
+        {
+            Visited.Clear();
+            for (int i = 0; i < Field.frame.Count; i++)
             {
                 List<bool> Temp = new List<bool>();
-                for (int j = 0; j < Field.frame2[0].Count; j++)
+                for (int j = 0; j < Field.frame[0].Count; j++)
                 {
                     Temp.Add(false);
                 }
                 Visited.Add(Temp);
             }
 
-            BFSQuery.Add(point2);
-            while(BFSQuery.Count != 0)
-            {                
-                if (Field.frame2[BFSQuery[0].Item1][BFSQuery[0].Item2].Value == new Diamond().Value)
+            BFSQuery.Add(point);
+            while (BFSQuery.Count != 0)
+            {
+                if (Field.frame[BFSQuery[0].y][BFSQuery[0].x].Value == new Diamond().Value)
                 {
-                    return (BFSQuery[0]);
+                    return (BFSQuery[0].distance);
                 }
-                
-                if (Visited[BFSQuery[0].Item1+1][BFSQuery[0].Item2] == false && (Field.frame2[BFSQuery[0].Item1 + 1][BFSQuery[0].Item2].Value == new Diamond().Value || Field.frame2[BFSQuery[0].Item1 + 1][BFSQuery[0].Item2].Value == new Sand().Value || Field.frame2[BFSQuery[0].Item1 + 1][BFSQuery[0].Item2].Value == new Empty().Value))
+
+                if (BFSQuery[0].y > 0 && BFSQuery[0].x > 0) 
                 {
-                    var tuple = (BFSQuery[0].Item1 + 1, BFSQuery[0].Item2, BFSQuery[0].Item3 + 1);
-                    BFSQuery.Add(tuple);
-                    Visited[BFSQuery[0].Item1 + 1][BFSQuery[0].Item2] = true;
+                    AddToQuery(1, 0);
+                    AddToQuery(0, 1);
+                    AddToQuery(-1, 0);
+                    AddToQuery(0, -1);
                 }
-                if (Visited[BFSQuery[0].Item1 - 1][BFSQuery[0].Item2] == false && (Field.frame2[BFSQuery[0].Item1 - 1][BFSQuery[0].Item2].Value == new Diamond().Value || Field.frame2[BFSQuery[0].Item1 - 1][BFSQuery[0].Item2].Value == new Sand().Value || Field.frame2[BFSQuery[0].Item1 - 1][BFSQuery[0].Item2].Value == new Empty().Value))
-                {
-                    var tuple = (BFSQuery[0].Item1 - 1, BFSQuery[0].Item2, BFSQuery[0].Item3 + 1);
-                    BFSQuery.Add(tuple);
-                    Visited[BFSQuery[0].Item1 - 1][BFSQuery[0].Item2] = true;
-                }
-                if (Visited[BFSQuery[0].Item1][BFSQuery[0].Item2 + 1] == false && (Field.frame2[BFSQuery[0].Item1][BFSQuery[0].Item2+1].Value == new Diamond().Value || Field.frame2[BFSQuery[0].Item1][BFSQuery[0].Item2+1].Value == new Sand().Value || Field.frame2[BFSQuery[0].Item1][BFSQuery[0].Item2+1].Value == new Empty().Value))
-                {
-                    var tuple = (BFSQuery[0].Item1, BFSQuery[0].Item2 + 1, BFSQuery[0].Item3 + 1);
-                    BFSQuery.Add(tuple);
-                    Visited[BFSQuery[0].Item1][BFSQuery[0].Item2 + 1] = true;
-                }
-                if (Visited[BFSQuery[0].Item1][BFSQuery[0].Item2 - 1] == false && (Field.frame2[BFSQuery[0].Item1][BFSQuery[0].Item2 - 1].Value == new Diamond().Value || Field.frame2[BFSQuery[0].Item1][BFSQuery[0].Item2 - 1].Value == new Sand().Value || Field.frame2[BFSQuery[0].Item1][BFSQuery[0].Item2 - 1].Value == new Empty().Value))
-                {
-                    var tuple = (BFSQuery[0].Item1, BFSQuery[0].Item2 - 1, BFSQuery[0].Item3 + 1);
-                    BFSQuery.Add(tuple);
-                    Visited[BFSQuery[0].Item1][BFSQuery[0].Item2 - 1] = true;
-                }
+
                 BFSQuery.RemoveAt(0);
             }
 
-            return (1000,1000, 1000);
+            return (1000);
         }
 
-        public static int BFSRadar(int i1, int i2)
+        public static int BFSRadar(int y, int x)
         {
             BFSQuery.Clear();
+            
+            point = (y, x, 0);
+            int distance = BFSRadarStep(point);
 
-            (int, int, int) point2 = (i1, i2, 0);
-            (int, int, int) distance = BFSRadarStep(point2);
-
-            return distance.Item3;
+            return distance;
         }
 
         public static void Random2()
@@ -141,9 +128,9 @@ namespace Boulder_Dash_Project
                 GameField.maxpoint = 0;
                 bs = 0; bd = 0; br = 0;
                 prev = new Sand();
-                for (int i = 1; i < Field.frame2.Count - 1; i++)
+                for (int i = 1; i < Field.frame.Count - 1; i++)
                 {
-                    for (int x = 1; x < Field.frame2[i].Count - 1; x++)
+                    for (int x = 1; x < Field.frame[i].Count - 1; x++)
                     {
                         temp = randomNumber.Next() % 100;
                         if (prev.Value == new Sand().Value)
@@ -166,26 +153,26 @@ namespace Boulder_Dash_Project
                         }
                         if (temp < (70 + bs - bd - br))
                         {
-                            Field.frame2[i][x] = new Sand();
+                            Field.frame[i][x] = new Sand();
                             prev = new Sand();
                         }
                         else if (temp < 80 + bs + bd - br)
                         {
-                            Field.frame2[i][x] = new Diamond();
+                            Field.frame[i][x] = new Diamond();
                             GameField.maxpoint += 100;
                             prev = new Diamond();
                         }
                         else if (temp < 100 + bs + bd + br)
                         {
-                            Field.frame2[i][x] = new Rock();
+                            Field.frame[i][x] = new Rock();
                             prev = new Rock();
                         }
                     }
                 }
-                Field.frame2[1][1] = new Hero();
-                BFS_res = DFS(1, 1);
+                Field.frame[1][1] = new Hero();
+                BFSResult = DFS(1, 1);
             }
-            while (BFS_res == false);
+            while (BFSResult == false);
 
         }
 
@@ -201,9 +188,9 @@ namespace Boulder_Dash_Project
                 GameField.maxpoint = 0;
                 bs = 0; bd = 0; br = 0;
                 prev = new Sand().Value;
-                for (int i = 1; i < Field.frame2.Count - 1; i++)
+                for (int i = 1; i < Field.frame.Count - 1; i++)
                 {
-                    for (int x = 1; x < Field.frame2[i].Count - 1; x++)
+                    for (int x = 1; x < Field.frame[i].Count - 1; x++)
                     {
                         temp = randomNumber.Next() % 100;
                         if (prev == new Sand().Value)
@@ -226,18 +213,18 @@ namespace Boulder_Dash_Project
                         }
                         if (temp < (70 + bs - bd - br))
                         {
-                            Field.frame2[i][x] = new Sand();
+                            Field.frame[i][x] = new Sand();
                             prev = new Sand().Value;
                         }
                         else if (temp < 80 + bs + bd - br)
                         {
-                            Field.frame2[i][x] = new Diamond();
+                            Field.frame[i][x] = new Diamond();
                             GameField.maxpoint += 100;
                             prev = new Diamond().Value;
                         }
                         else if (temp < 100 + bs + bd + br)
                         {
-                            Field.frame2[i][x] = new Rock();
+                            Field.frame[i][x] = new Rock();
                             prev = new Rock().Value;
                         }
                     }
@@ -252,7 +239,7 @@ namespace Boulder_Dash_Project
                     {
                         num = num + 3;
                     }
-                    for (int x = 1; x < Field.frame2[0].Count - 1; x++)
+                    for (int x = 1; x < Field.frame[0].Count - 1; x++)
                     {
                         temp = randomNumber.Next() % 100;
                         prev = new Rock().Value;
@@ -268,21 +255,21 @@ namespace Boulder_Dash_Project
                         }
                         if (temp < 70 + br - bs)
                         {
-                            if (Field.frame2[num][x].Value == new Diamond().Value)
+                            if (Field.frame[num][x].Value == new Diamond().Value)
                             {
                                 GameField.maxpoint = GameField.maxpoint - 100;
                             }
-                            Field.frame2[num][x] = new Rock();
+                            Field.frame[num][x] = new Rock();
                             prev = new Rock().Value;
                         }
                         else
                         {
-                            if (Field.frame2[num][x].Value == new Diamond().Value)
+                            if (Field.frame[num][x].Value == new Diamond().Value)
                             {
                                 GameField.maxpoint = GameField.maxpoint - 100;
                             }
-                            Field.frame2[num][x] = new Sand();
-                            prev = new Sand().Value ;
+                            Field.frame[num][x] = new Sand();
+                            prev = new Sand().Value;
                         }
                     }
                 }
@@ -293,7 +280,7 @@ namespace Boulder_Dash_Project
                     {
                         num = num + 3;
                     }
-                    for (int x = 1; x < Field.frame2.Count - 1; x++)
+                    for (int x = 1; x < Field.frame.Count - 1; x++)
                     {
                         temp = randomNumber.Next() % 100;
                         prev = new Rock().Value;
@@ -309,30 +296,30 @@ namespace Boulder_Dash_Project
                         }
                         if (temp < 70 + br - bs)
                         {
-                            if (Field.frame2[x][num].Value == new Diamond().Value)
+                            if (Field.frame[x][num].Value == new Diamond().Value)
                             {
                                 GameField.maxpoint = GameField.maxpoint - 100;
                             }
-                            Field.frame2[x][num] = new Rock();
+                            Field.frame[x][num] = new Rock();
                             prev = new Rock().Value;
                         }
                         else
                         {
-                            if (Field.frame2[x][num].Value == new Diamond().Value)
+                            if (Field.frame[x][num].Value == new Diamond().Value)
                             {
                                 GameField.maxpoint = GameField.maxpoint - 100;
                             }
-                            Field.frame2[x][num] = new Sand();
+                            Field.frame[x][num] = new Sand();
                             prev = new Sand().Value;
                         }
                     }
                 }
 
 
-                Field.frame2[1][1] = new Hero();
-                BFS_res = DFS(1, 1);
+                Field.frame[1][1] = new Hero();
+                BFSResult = DFS(1, 1);
             }
-            while (BFS_res == false);
+            while (BFSResult == false);
             //gameField.Renderer(Boulder);
         }
     }

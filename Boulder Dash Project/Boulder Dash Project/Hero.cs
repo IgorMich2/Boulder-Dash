@@ -14,21 +14,19 @@ namespace Boulder_Dash_Project
         public static string value = "I";
         public static int RocksMoveByHero = 0;
 
-        public override char Value { get => 'I'; set => value = 'I'; }
-
-
-        /*public override string Value
+        public override char Value { get => 'I'; }
+        public override bool CanEnter()
         {
-            get { return value; }
-        }*/
+            return true;
+        }
 
         public static void FindHero()
         {
-            for (int y = 0; y < Field.frame2.Count; y++)
+            for (int y = 0; y < Field.frame.Count; y++)
             {
-                for (int x = 0; x < Field.frame2[y].Count; x++)
+                for (int x = 0; x < Field.frame[y].Count; x++)
                 {
-                    if (Field.frame2[y][x].Value == new Hero().Value)
+                    if (Field.frame[y][x].Value == new Hero().Value)
                     {
                         Hero.x = x;
                         Hero.y = y;
@@ -76,7 +74,7 @@ namespace Boulder_Dash_Project
             }
             else if (keyInfo.Key == ConsoleKey.F)
             {
-                GameField.SaveToFile();
+                Levels.SaveToFile();
             }
             else if (keyInfo.Key == ConsoleKey.T)
             {
@@ -94,49 +92,39 @@ namespace Boulder_Dash_Project
                 music.Start();
             }
 
-            Console.SetCursorPosition(40, 28);
-            Console.Write("Coordinates: x=" + Hero.x + ", y=" + Hero.y + " ");
-            Console.SetCursorPosition(40, 26);
-            Console.Write("Steps: " + steps + " ");
+            Logic.Coordinates();
+            Logic.Steps();
 
         }
 
         public static void GoHero(int y, int x)
         {
-            if (x >= 0 && y >= 0 && (Field.frame2[y][x].Value == new Sand().Value || Field.frame2[y][x].Value == new Empty().Value))
+            if (x >= 0 && y >= 0 && y < Field.frame.Count && x < Field.frame[0].Count && (Field.frame[y][x].CanEnter() == true))
             {
-                Field.frame2[Hero.y][Hero.x] = new Empty();
-                Field.frame2[y][x] = new Hero();
-                Console.SetCursorPosition(Hero.x, Hero.y);
-                Console.Write(new Empty().Value);
-                Console.SetCursorPosition(x, y);
-                Console.Write(new Hero().Value);
+                bool isdiamond = false;
+                if (Field.frame[y][x].Value == new Diamond().Value)
+                {
+                    isdiamond = true;
+                }
+                Field.frame[Hero.y][Hero.x] = new Empty();
+                Field.frame[y][x] = new Hero();
+                Logic.PrintCell(Hero.x, Hero.y, new Empty());
+                Logic.PrintCell(x, y, new Hero()); 
                 Hero.x = x;
                 Hero.y = y;
+                if (isdiamond)
+                {
+                    GameField.AddScores();
+                }
             }
-            else if (Field.frame2[y][x].Value == new Diamond().Value)
+            else if (x >= 0 && y >= 0 && y < Field.frame.Count && x < Field.frame[0].Count && x + (x - Hero.x) > 0 && x + (x - Hero.x) < Field.frame[0].Count && Math.Abs(x - Hero.x) == 1 && Field.frame[y][x + (x-Hero.x)].Value == new Empty().Value && Field.frame[y][x].Value == new Rock().Value)
             {
-                Field.frame2[Hero.y][Hero.x] = new Empty();
-                Field.frame2[y][x] = new Hero();
-                Console.SetCursorPosition(Hero.x, Hero.y);
-                Console.Write(new Empty().Value);
-                Console.SetCursorPosition(x, y);
-                Console.Write(new Hero().Value);
-                GameField.AddScores();
-                Hero.x = x;
-                Hero.y = y;
-            }
-            else if (x + (x - Hero.x) > 0 && x + (x - Hero.x) < Field.frame2[0].Count && Math.Abs(x - Hero.x) == 1 && Field.frame2[y][x + (x-Hero.x)].Value == new Empty().Value && Field.frame2[y][x].Value == new Rock().Value)
-            {
-                Field.frame2[y][Hero.x] = new Empty();
-                Field.frame2[y][x] = new Hero();
-                Field.frame2[y][x + (x-Hero.x)] = new Rock();
-                Console.SetCursorPosition(Hero.x, Hero.y);
-                Console.Write(new Empty().Value);
-                Console.SetCursorPosition(x, y);
-                Console.Write(new Hero().Value);
-                Console.SetCursorPosition(x + (x-Hero.x), y);
-                Console.Write(new Rock().Value);
+                Field.frame[y][Hero.x] = new Empty();
+                Field.frame[y][x] = new Hero();
+                Field.frame[y][x + (x-Hero.x)] = new Rock();
+                Logic.PrintCell(Hero.x, Hero.y, new Empty());
+                Logic.PrintCell(x, y, new Hero());
+                Logic.PrintCell(x + (x - Hero.x), y, new Rock());
                 Hero.x = x;
                 Hero.y = y;
                 RocksMoveByHero++;
@@ -145,11 +133,10 @@ namespace Boulder_Dash_Project
         }
         public static void GoDig(int y, int x)
         {
-            if (Field.frame2[y][x].Value == new Sand().Value)
+            if (Field.frame[y][x].Value == new Sand().Value)
             {
-                Field.frame2[y][x] = new Empty();
-                Console.SetCursorPosition(x, y);
-                Console.Write(new Empty().Value);
+                Field.frame[y][x] = new Empty();
+                Logic.PrintCell(x, y, new Empty());
                 digs++;
             }
         }

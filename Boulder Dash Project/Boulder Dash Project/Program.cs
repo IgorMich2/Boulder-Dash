@@ -11,19 +11,19 @@ namespace Boulder_Dash_Project
         {
             int choose;
             bool openfile = false;
-            Console.ForegroundColor = ConsoleColor.Cyan;
+            Logic.SetColor();
 
             Thread music = new Thread(Music.MusicFunction);
             music.Priority = ThreadPriority.Normal;
             
-            Thread lives = new Thread(GameField.LivesFunction);
+            Thread lives = new Thread(Lives.LivesFunction);
             lives.Priority = ThreadPriority.Highest;
 
-            Thread gravity = new Thread(GameField.GravityFunction);
+            Thread gravity = new Thread(Gravity.GravityFunction);
             gravity.Priority = ThreadPriority.Normal;
 
-            GameField.GetArrayFromFile("menu.txt");
-            GameField.Renderer();
+            Levels.GetArrayFromFile("menu.txt");
+            Levels.Renderer();
 
             music.Start();
             lives.Start();
@@ -42,16 +42,15 @@ namespace Boulder_Dash_Project
                 
                 while (choose == -1)
                 {
-                    Console.SetCursorPosition(40, 25);
-                    Console.Write("Last pressed key: ");
-                    var keyInfo = Console.ReadKey();
+                    Logic.LastPressedKey();
+                    var keyInfo = Logic.GetKey();
                     Hero.MoveHero(keyInfo);
-                    Console.Write("                   ");
+                    Logic.BigSpace();
                     if (GameField.score == 100)
                     {
-                        for (int k = 7; k < Field.frame2.Count; k++)
+                        for (int k = 7; k < Field.frame.Count; k++)
                         {
-                            if (Field.frame2[k][2].Value == new Hero().Value)
+                            if (Field.frame[k][2].Value == new Hero().Value)
                             {
                                 choose = k - 6;
                                 break;
@@ -60,9 +59,9 @@ namespace Boulder_Dash_Project
                     }
                 }
 
-                Console.Clear();
-                Field.frame2.Clear();
-                Console.SetCursorPosition(0, 0);
+                Logic.Clear();
+                Field.frame.Clear();
+                Logic.SetToZero();
                 GameField.score = 0;
                 GameField.maxpoint = 0;
                 Hero.steps = 0;
@@ -73,66 +72,65 @@ namespace Boulder_Dash_Project
                 {
                     case 1:
                         {
-                            GameField.GetArrayFromFile("1.txt");    
+                            Levels.GetArrayFromFile("1.txt");    
                             break;
                         }
                     case 2:
                         {
-                            GameField.GetArrayFromFile("2.txt");
+                            Levels.GetArrayFromFile("2.txt");
                             break;
                         }
                     case 3:
                         {
-                            GameField.GetArrayFromFile("3.txt");
+                            Levels.GetArrayFromFile("3.txt");
                             break;
                         }
                     case 4:
                         {
-                            GameField.GetArrayFromFile("4.txt");
+                            Levels.GetArrayFromFile("4.txt");
                             GenerationLevel.Random2();
                             break;
                         }
-                        
                     case 5:
                         {
-                            GameField.GetArrayFromFile("4.txt");
+                            Levels.GetArrayFromFile("4.txt");
                             GenerationLevel.Intellectual();
                             break;
                         }
                     case 6:
                         {
-                            GameField.GetArrayFromFile("6.txt");
+                            Levels.GetArrayFromFile("6.txt");
                             break;
                         }
                     case 7:
                         {
-                            GameField.GetArrayFromFile("menu.txt");
+                            Levels.GetArrayFromFile("menu.txt");
                             Process.Start(new ProcessStartInfo(@"6.txt") { UseShellExecute = true });
                             openfile = true;
                             break;
                         }
                     case 8:
                         {
-                            GameField.GetArrayFromFile("menu.txt");
-                            GameField.GetResults();
+                            Levels.GetArrayFromFile("menu.txt");
+                            Database.GetResults();
                             openfile = true;
                             break;
                         }
                     case 9:
                         {
-                            GameField.GetArrayFromFile("menu.txt");
-                            GameField.GetBestResults();
+                            Levels.GetArrayFromFile("menu.txt");
+                            Database.GetBestResults();
                             openfile = true;
                             break;
                         }
                     case 10:
                         {
-                            GameField.GetArrayFromFile("save.txt");
+                            Levels.GetArrayFromFile("save.txt");
                             break;
                         }
                     case 11:
                         {
-                            GameField.GetArrayFromFile("instruction.txt");
+                            Levels.GetArrayFromFile("instruction.txt");
                             GameField.TechnicalLevel = true;
                             break;
                         }
@@ -142,22 +140,19 @@ namespace Boulder_Dash_Project
                             break;
                         }
                 }
-                if (openfile == false && GameField.TechnicalLevel == false && GameField.Failedload == false)
+                if (openfile == false && GameField.TechnicalLevel == false && Levels.Failedload == false)
                 {
                     GameField.Time = DateTime.Now;
-                    GameField.Renderer();
+                    Levels.Renderer();
                     Hero.FindHero();
-                    Console.SetCursorPosition(1, 27);
-                    Console.Write("Score: " + GameField.score);
-                    Console.SetCursorPosition(1, 26);
-                    Console.Write("Lives: " + Hero.lives);
-
+                    Logic.Score();
+                    Logic.Lives();
+                    GameField.GameStatus = true;
                     while (true)
                     {
-                        Console.SetCursorPosition(40, 25);
-                        Console.Write("Last pressed key: ");
-                        var keyInfo = Console.ReadKey();
-                        Console.Write("                   ");
+                        Logic.LastPressedKey();
+                        var keyInfo = Logic.GetKey();
+                        Logic.BigSpace();
                         Hero.MoveHero(keyInfo);
 
                         if (GameField.score >= GameField.maxpoint)
@@ -165,41 +160,32 @@ namespace Boulder_Dash_Project
                             break;
                         }
 
-                        Console.SetCursorPosition(1, 29);
-                        Console.Write("Deadlock: " + !GenerationLevel.DFS(Hero.y, Hero.x) + " ");
-
-                        Console.SetCursorPosition(1, 28);
-                        Console.Write("Steps to @: " + GenerationLevel.BFSRadar(Hero.y, Hero.x));
-                        Console.Write("    ");
-
-                        Console.SetCursorPosition(1, 30);
-                        Console.Write("Time : " + DateTime.Now.Subtract(GameField.Time));
-
-                        Console.SetCursorPosition(40, 27);
-                        Console.Write("Digs: " + Hero.digs + " ");
+                        Logic.Deadlock();
+                        Logic.Radar();
+                        Logic.Time();
+                        Logic.Digs();
                     }
-
+                    GameField.GameStatus = false;
                     if (GameField.win == true)
                     {
-                        GameField.EndLevel("Win");
+                        Database.EndLevel("Win");
                     }
                     else
                     {
-                        GameField.EndLevel("Defeat");
+                        Database.EndLevel("Defeat");
                     }
                 }
                 else if (GameField.TechnicalLevel == true)
                 {
-                    GameField.Renderer();
+                    Levels.Renderer();
                     Hero.FindHero();
 
                     while (true)
                     {
-                        Console.SetCursorPosition(40, 25);
-                        Console.Write("Last pressed key: ");
-                        var keyInfo = Console.ReadKey();
+                        Logic.LastPressedKey();
+                        var keyInfo = Logic.GetKey();
                         Hero.MoveHero(keyInfo);
-                        Console.Write("                   ");
+                        Logic.BigSpace();
 
                         if (GameField.score >= GameField.maxpoint)
                         {
@@ -209,11 +195,12 @@ namespace Boulder_Dash_Project
                 }
                 GameField.score = 0;
                 openfile = false;
-                Console.Clear();
-                Field.frame2.Clear();
-                Console.SetCursorPosition(0, 0);
-                GameField.GetArrayFromFile("menu.txt");
-                GameField.Renderer();
+                Logic.Clear();
+                Field.frame.Clear();
+                Logic.SetToZero();
+                Logic.SetToZero();
+                Levels.GetArrayFromFile("menu.txt");
+                Levels.Renderer();
                 GameField.TechnicalLevel = false;
             }
         }
