@@ -1,10 +1,10 @@
-Name: Petya
+Name: Igor
 Result: Win
-Score: 3500
-Steps: 139
+Score: 3400
+Steps: 0
 Digs: 0
-Lives at the end: 490
-Time: 00:00:30.9490733
-Rock down by gravity: 17
-Rock moved by hero: 3
+Lives at the end: 500
+Time: 00:00:10.9060263
+Rock down by gravity: 0
+Rock moved by hero: 0
 Result: Win
