@@ -15,13 +15,13 @@ namespace Boulder_Dash_Project
                 {
                     if (Rock.CountRock() == 1)
                     {
-                        Rock.MoveRock1();
+                        MovingRocks.MoveRock1();
                     }
                     else if (Rock.CountRock() > 1)
                     {
-                        Rock.MoveRock1();
+                        MovingRocks.MoveRock1();
                         for (int i = 0; i < 5; i++)
-                            Rock.MoveRock2();
+                            MovingRocks.MoveRock2();
                     }
                 }
                 Thread.Sleep(200);

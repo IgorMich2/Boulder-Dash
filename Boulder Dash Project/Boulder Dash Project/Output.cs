@@ -92,6 +92,18 @@ namespace Boulder_Dash_Project
             Console.ForegroundColor = ConsoleColor.Cyan;
         }
 
+        public static void Renderer()
+        {
+            for (int i = 0; i < Field.frame.Count; i++)
+            {
+                for (int j = 0; j < Field.frame[0].Count; j++)
+                {
+                    Output.PrintCellSimple(Field.frame[i][j]);
+                }
+                Output.PrintSeparator();
+            }
+        }
+
         public static string GetName()
         {
             Console.SetCursorPosition(0, 0);
