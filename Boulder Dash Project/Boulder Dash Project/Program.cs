@@ -15,7 +15,7 @@ namespace Boulder_Dash_Project
 
             Thread music = new Thread(Music.MusicFunction);
             music.Priority = ThreadPriority.Normal;
-            
+
             Thread lives = new Thread(Lives.LivesFunction);
             lives.Priority = ThreadPriority.Highest;
 
@@ -39,7 +39,7 @@ namespace Boulder_Dash_Project
                 GameField.maxpoint = 400;
                 choose = -1;
 
-                
+
                 while (choose == -1)
                 {
                     Output.LastPressedKey();
@@ -72,7 +72,7 @@ namespace Boulder_Dash_Project
                 {
                     case 1:
                         {
-                            Levels.GetArrayFromFile("1.txt");    
+                            Levels.GetArrayFromFile("1.txt");
                             break;
                         }
                     case 2:
@@ -139,6 +139,17 @@ namespace Boulder_Dash_Project
                             System.Environment.Exit(0);
                             break;
                         }
+                    case 13:
+                        {
+                            Levels.GetArrayFromFile("5.txt");
+                            GameField.TechnicalLevel = true;
+                            break;
+                        }
+                    case 14:
+                        {
+                            Levels.GetArrayFromFile("5.txt");
+                            break;
+                        }
                 }
                 if (openfile == false && GameField.TechnicalLevel == false && Levels.Failedload == false)
                 {
@@ -175,7 +186,7 @@ namespace Boulder_Dash_Project
                         Database.EndLevel("Defeat");
                     }
                 }
-                else if (GameField.TechnicalLevel == true)
+                else if (GameField.TechnicalLevel == true && choose != 13)
                 {
                     Output.Renderer();
                     Hero.FindHero();
@@ -193,6 +204,55 @@ namespace Boulder_Dash_Project
                         }
                     }
                 }
+                else
+                {
+                    Output.Renderer();
+                    while (true)
+                    {
+                        var keyInfo = Output.GetKey();
+                        bool exit = false;
+
+                        switch (keyInfo.Key)
+                        {
+                            case ConsoleKey.W:
+                                {
+                                    LevelEditor.MoveCursor(0, -1);
+                                    break;
+                                }
+                            case ConsoleKey.A:
+                                {
+                                    LevelEditor.MoveCursor(-1, 0);
+                                    break;
+                                }
+                            case ConsoleKey.D:
+                                {
+                                    LevelEditor.MoveCursor(1, 0);
+                                    break;
+                                }
+                            case ConsoleKey.S:
+                                {
+                                    LevelEditor.MoveCursor(0, 1);
+                                    break;
+                                }
+                            case ConsoleKey.Spacebar:
+                                {
+                                    LevelEditor.ChangeCell();
+                                    break;
+                                }
+                            case ConsoleKey.Escape:
+                                {
+                                    exit = true;
+                                    break;
+                                }
+                        }
+                        
+                        
+                        if (exit == true)
+                        {
+                            break;
+                        }
+                    }
+                }
                 GameField.score = 0;
                 openfile = false;
                 Output.Clear();
@@ -204,6 +264,6 @@ namespace Boulder_Dash_Project
                 GameField.TechnicalLevel = false;
             }
         }
-      
+
     }
 }
